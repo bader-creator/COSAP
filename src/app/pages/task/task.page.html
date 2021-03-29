@@ -1,0 +1,784 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ng-container *ngIf='segment=="Archive" || segment=="BU" || segment=="EnCopie" '>
+            <ion-buttons slot="secondary">
+                <ion-button style="font-size: 18px;" *ngIf="!isSearchbarOpened" (click)="isSearchbarOpened=true">
+                    <ion-icon slot="start" name="search"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ng-container>
+        <ng-container *ngIf='segment=="EnCopie" '>
+            <ion-buttons slot="secondary">
+                <ion-button style="font-size: 18px;" (click)="EncopieByDate()">
+                    <ion-icon slot="start" name="calendar"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ng-container>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            <ng-container *ngIf='segment=="Request"'>
+                Actions assigned
+            </ng-container>
+            <ng-container *ngIf='segment=="To Do"'>
+                Actions todo
+            </ng-container>
+            <ng-container *ngIf='segment=="BU"'>
+                Team actions
+            </ng-container>
+            <ng-container *ngIf='segment=="EnCopie"'>
+                CC actions
+            </ng-container>
+            <ng-container *ngIf='segment=="Archive"'>
+                Archive actions
+            </ng-container>
+        </ion-title>
+
+    </ion-toolbar>
+
+</ion-header>
+
+
+
+
+
+
+
+
+<ion-content onclick="closeNav()">
+
+
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <ng-container *ngIf='segment=="Request"'>
+        <h5 *ngIf="TaskAsigned?.length == 0  && segment=='Request'" style="text-align: center; margin-top: 30%">No
+            Actions</h5>
+        <ng-container *ngFor="let task of TaskAsigned ;">
+
+
+            <ion-item-sliding no-padding no-marging *ngIf='task?.userDestination?.id != task?.userCreator?.id '>
+                <ion-item no-padding no-marging>
+
+
+
+                    <div class="card" style="margin:8px;  width: 100%; ">
+                        <div class="card-body shadow-lg" style="padding:10px;" (click)="hidefunc(task.id)">
+                            <div>
+                                <div style="float: left; font-weight: bold;">
+                                    <i *ngIf='task?.criticity?.code=="C01"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#CC0000"></i>
+                                    <i *ngIf='task?.criticity?.code=="C02"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#FF8800"></i>
+                                    <i *ngIf='task?.criticity?.code=="C03"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#0099CC"></i>
+                                    {{task?.intitule}}
+                                </div>
+
+
+                                <div style="float: right;">
+                                    <i *ngIf='task?.statut?.name=="Terminé"' class="far fa-calendar-check"
+                                        style="color:#00C851 "></i>
+                                    <i *ngIf='task?.statut?.name=="En cours"' class="fas fa-spinner"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Réaffectation"' class="far fa-file"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Ouvert"' class="fas fa-tasks"
+                                        style="color:#33b5e5"></i>
+                                </div>
+                                <br>
+
+                                <div style="float: left;font-size: 12px;color: #4B515D">{{task?.tache?.valeur}}</div>
+
+                            </div>
+                            <br>
+                            <p id="{{task.id}}"
+                                style="font-size: 12px; color:grey; margin-bottom: 0; overflow: hidden; display: none;"
+                                [innerHtml]="task?.description"></p>
+                        </div>
+
+
+                        <div *ngIf='dateDiff(task?.dateLimite) < 3' class="card-footer text-white"
+                            style="background-color:#ff4444" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) <= 7 &&   3 <= dateDiff(task?.dateLimite ) '
+                            class="card-footer text-white" style="background-color:#ffbb33"
+                            [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) > 7' class="card-footer text-white"
+                            style="background-color:#33b5e5" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+
+
+                </ion-item>
+                <ion-item-options>
+                    <ion-item-option>
+                        <img (click)="annulerTicket(task?.id)" src="./../../../assets/icon/notok.png"
+                            style="width:30px;height:30px;margin-right: 5px;" />
+                    </ion-item-option>
+                    <ion-item-option>
+                        <img (click)="validerTicket(task?.id,task)" src="./../../../assets/icon/ok.svg"
+                            style="width:30px;height:30px;margin-right: 3px;" />
+                    </ion-item-option>
+                    <ion-item-option>
+                        <ion-icon (click)="ArchiverTicker(task?.id)" name="archive"
+                            style="width:30px;height:30px;margin-right: 4px;color: black;"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+
+
+
+
+            <!------------->
+            <ion-item-sliding no-padding no-marging
+                *ngIf='task?.userDestination?.id == task?.userCreator?.id  && task?.statut?.name != "Validé"'>
+                <ion-item no-padding no-marging>
+
+
+                    <div class="card cardspec" style="margin:8px;  width: 100%; ">
+                        <div class="card-body shadow-lg" style="padding:10px;" (click)="hidefunc(task.id)">
+                            <div>
+                                <div style="float: left; font-weight: bold;">
+                                    <i *ngIf='task?.criticity?.code=="C01"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#CC0000"></i>
+                                    <i *ngIf='task?.criticity?.code=="C02"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#FF8800"></i>
+                                    <i *ngIf='task?.criticity?.code=="C03"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#0099CC"></i>
+                                    {{task?.intitule}}
+                                </div>
+
+
+                                <div style="float: right;">
+                                    <i *ngIf='task?.statut?.name=="Terminé"' class="far fa-calendar-check"
+                                        style="color:#00C851 "></i>
+                                    <i *ngIf='task?.statut?.name=="En cours"' class="fas fa-spinner"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Réaffectation"' class="far fa-file"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Ouvert"' class="fas fa-tasks"
+                                        style="color:#33b5e5"></i>
+                                </div>
+                                <br>
+
+                                <div style="float: left;font-size: 12px;color: #4B515D">{{task?.tache?.valeur}}</div>
+
+                            </div>
+                            <br>
+                            <p id="{{task.id}}"
+                                style="font-size: 12px; color:grey; margin-bottom: 0; overflow: hidden; display: none;"
+                                [innerHtml]="task?.description"></p>
+                        </div>
+
+
+
+
+
+
+
+                        <div *ngIf='dateDiff(task?.dateLimite) < 3' class="card-footer text-white"
+                            style="background-color:#ff4444" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) <= 7 &&   3 <= dateDiff(task?.dateLimite ) '
+                            class="card-footer text-white" style="background-color:#ffbb33"
+                            [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) > 7' class="card-footer text-white"
+                            style="background-color:#33b5e5" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+                    </div>
+
+
+                </ion-item>
+                <ion-item-options>
+                    <ion-item-option light>
+                        <img (click)="annulerTicket(task?.id)" src="./../../../assets/icon/notok.png"
+                            style="width:30px;height:30px;margin-right: 5px;" />
+                    </ion-item-option>
+                    <ion-item-option light>
+                        <img (click)="validerTicket(task?.id)" src="./../../../assets/icon/ok.svg"
+                            style="width:30px;height:30px;margin-right: 3px;" />
+                    </ion-item-option>
+                    <ion-item-option>
+                        <ion-icon (click)="ArchiverTicker(task?.id)" name="archive"
+                            style="width:30px;height:30px;margin-right: 4px;color: black;"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+
+
+
+        </ng-container>
+    </ng-container>
+
+
+
+
+
+
+    <ng-container *ngIf='segment=="EnCopie"'>
+
+        <ion-searchbar *ngIf="isSearchbarOpened" showCancelButton="true" (ionInput)="getItems($event)"
+            (ionCancel)="getItems($event)" (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
+
+        <h5 *ngIf="this?.api?.EnCopie?.length == 0  && segment=='EnCopie'" style="text-align: center; margin-top: 30%">
+            No
+            Actions
+        </h5>
+        <ng-container *ngFor="let task of this?.api?.EnCopie ;">
+            <ion-item-sliding no-padding no-marging>
+                <ion-item no-padding no-marging>
+
+
+
+
+                    <div class="card" *ngIf="task?.statut?.name != 'Validé'" style="margin:8px;  width: 95%; ">
+                        <div class="card-body shadow-lg" style="padding:10px;" (click)="hidefunc(task.id)">
+                            <div>
+                                <div style="float: left; font-weight: bold;">
+                                    <i *ngIf='task?.criticity?.code=="C01"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#CC0000"></i>
+                                    <i *ngIf='task?.criticity?.code=="C02"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#FF8800"></i>
+                                    <i *ngIf='task?.criticity?.code=="C03"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#0099CC"></i>
+                                    {{task?.intitule}}
+                                </div>
+
+
+                                <div style="float: right;">
+                                    <i *ngIf='task?.statut?.name=="Terminé"' class="far fa-calendar-check"
+                                        style="color:#00C851 "></i>
+                                    <i *ngIf='task?.statut?.name=="En cours"' class="fas fa-spinner"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Réaffectation"' class="far fa-file"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Ouvert"' class="fas fa-tasks"
+                                        style="color:#33b5e5"></i>
+                                </div>
+                                <br>
+
+                                <div style="float: left;font-size: 12px;color: #4B515D">{{task?.tache?.valeur}}</div>
+
+                            </div>
+                            <br>
+                            <p id="{{task.id}}"
+                                style="font-size: 12px; color:grey; margin-bottom: 0; overflow: hidden; display: none;"
+                                [innerHtml]="task?.description"></p>
+                        </div>
+
+
+
+
+
+
+
+                        <div *ngIf='dateDiff(task?.dateLimite) < 3' class="card-footer text-white"
+                            style="background-color:#ff4444" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userCreator?.lastName}} {{task?.userCreator?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) <= 7 &&   3 <= dateDiff(task?.dateLimite ) '
+                            class="card-footer text-white" style="background-color:#ffbb33"
+                            [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userCreator?.lastName}} {{task?.userCreator?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) > 7' class="card-footer text-white"
+                            style="background-color:#33b5e5" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userCreator?.lastName}} {{task?.userCreator?.firstName}}</i></div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </ion-item>
+
+                <ion-item-options>
+                    <ion-item-option light>
+
+                        <ion-icon (click)="annulerTicketCopie(task?.id)" name="eye-off"
+                            style="width:30px;height:30px;margin-right: 5px; color: black;"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+
+            </ion-item-sliding>
+        </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf='segment=="To Do"'>
+        <h5 *ngIf="TaskTOdo?.length == 0  && segment=='To Do'" style="text-align: center; margin-top: 30%">No Actions
+        </h5>
+        <ng-container *ngFor="let task of TaskTOdo ;">
+
+
+            <div class="card" style="margin:8px;  width: 95%; ">
+                <div class="card-body shadow-lg" style="padding:10px;" (click)="hidefunc(task.id)">
+                    <div>
+                        <div style="float: left; font-weight: bold;">
+                            <i *ngIf='task?.criticity?.code=="C01"' class="fas fa-bell"
+                                style="/*position: absolute;left:-10px;top:-10px;*/color:#CC0000"></i>
+                            <i *ngIf='task?.criticity?.code=="C02"' class="fas fa-bell"
+                                style="/*position: absolute;left:-10px;top:-10px;*/color:#FF8800"></i>
+                            <i *ngIf='task?.criticity?.code=="C03"' class="fas fa-bell"
+                                style="/*position: absolute;left:-10px;top:-10px;*/color:#0099CC"></i>
+                            {{task?.intitule}}
+                        </div>
+
+
+                        <div style="float: right;">
+                            <i *ngIf='task?.statut?.name=="Terminé"' class="far fa-calendar-check"
+                                style="color:#00C851 "></i>
+                            <i *ngIf='task?.statut?.name=="En cours"' class="fas fa-spinner" style="color:#33b5e5"></i>
+                            <i *ngIf='task?.statut?.name=="Réaffectation"' class="far fa-file"
+                                style="color:#33b5e5"></i>
+                            <i *ngIf='task?.statut?.name=="Ouvert"' class="fas fa-tasks" style="color:#33b5e5"></i>
+                        </div>
+                        <br>
+
+                        <div style="float: left;font-size: 12px;color: #4B515D">{{task?.tache?.valeur}}</div>
+
+                    </div>
+                    <br>
+                    <p id="{{task.id}}"
+                        style="font-size: 12px; color:grey; margin-bottom: 0; overflow: hidden; display: none;"
+                        [innerHtml]="task?.description"></p>
+                </div>
+
+
+
+
+
+
+
+                <div *ngIf='dateDiff(task?.dateLimite) < 3' class="card-footer text-white"
+                    style="background-color:#ff4444" [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                    <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                            {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                    <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                            {{task?.userCreator?.lastName}} {{task?.userCreator?.firstName}}</i></div>
+                </div>
+
+                <div *ngIf='dateDiff(task?.dateLimite ) <= 7 &&   3 <= dateDiff(task?.dateLimite ) '
+                    class="card-footer text-white" style="background-color:#ffbb33"
+                    [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                    <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                            {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                    <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                            {{task?.userCreator?.lastName}} {{task?.userCreator?.firstName}}</i></div>
+                </div>
+
+                <div *ngIf='dateDiff(task?.dateLimite ) > 7' class="card-footer text-white"
+                    style="background-color:#33b5e5" [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                    <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                            {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                    <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                            {{task?.userCreator?.lastName}} {{task?.userCreator?.firstName}}</i></div>
+                </div>
+
+
+
+
+
+            </div>
+        </ng-container>
+    </ng-container>
+
+
+
+
+
+
+    <ng-container *ngIf='segment=="BU"'>
+        <ion-searchbar *ngIf="isSearchbarOpened" showCancelButton="true" (ionInput)="getItems($event)"
+            (ionCancel)="getItems($event)" (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
+
+        <h5 *ngIf="Bu?.length == 0  && segment=='BU'" style="text-align: center; margin-top: 30%">No Actions</h5>
+        <ng-container *ngFor="let task of Bu ;">
+            <ng-container *ngIf='this?.user!=task.userDestination.personnel.superieur.id'>
+                <div class="card" style="margin:8px;  width: 95%; ">
+                    <div class="card-body shadow-lg" style="padding:10px;" (click)="hidefunc(task.id)">
+                        <div>
+                            <div style="float: left; font-weight: bold;">
+                                <i *ngIf='task?.criticity?.code=="C01"' class="fas fa-bell"
+                                    style="/*position: absolute;left:-10px;top:-10px;*/color:#CC0000"></i>
+                                <i *ngIf='task?.criticity?.code=="C02"' class="fas fa-bell"
+                                    style="/*position: absolute;left:-10px;top:-10px;*/color:#FF8800"></i>
+                                <i *ngIf='task?.criticity?.code=="C03"' class="fas fa-bell"
+                                    style="/*position: absolute;left:-10px;top:-10px;*/color:#0099CC"></i>
+                                {{task?.intitule}}
+                            </div>
+
+
+                            <div style="float: right;">
+                                <i *ngIf='task?.statut?.name=="Terminé"' class="far fa-calendar-check"
+                                    style="color:#00C851 "></i>
+                                <i *ngIf='task?.statut?.name=="En cours"' class="fas fa-spinner"
+                                    style="color:#33b5e5"></i>
+                                <i *ngIf='task?.statut?.name=="Réaffectation"' class="far fa-file"
+                                    style="color:#33b5e5"></i>
+                                <i *ngIf='task?.statut?.name=="Ouvert"' class="fas fa-tasks" style="color:#33b5e5"></i>
+                            </div>
+                            <br>
+
+                            <div style="float: left;font-size: 12px;color: #4B515D">{{task?.tache?.valeur}}</div>
+
+                        </div>
+                        <br>
+                        <p id="{{task.id}}"
+                            style="font-size: 12px; color:grey; margin-bottom: 0; overflow: hidden; display: none;"
+                            [innerHtml]="task?.description"></p>
+                    </div>
+
+
+                    <div *ngIf='dateDiff(task?.dateLimite) < 3' class="card-footer text-white"
+                        style="background-color:#ff4444" [routerLink]="'/detail-task/' + task?.id"
+                        routerDirection="root">
+                        <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                        <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                    </div>
+
+                    <!---->
+                    <div *ngIf='dateDiff(task?.dateLimite ) <= 7 &&   3 <= dateDiff(task?.dateLimite ) '
+                        class="card-footer text-white" style="background-color:#ffbb33"
+                        [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                        <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                        <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                    </div>
+
+                    <div *ngIf='dateDiff(task?.dateLimite ) > 7' class="card-footer text-white"
+                        style="background-color:#33b5e5" [routerLink]="'/detail-task/' + task?.id"
+                        routerDirection="root">
+                        <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                        <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                    </div>
+
+
+
+
+
+                </div>
+            </ng-container>
+            <ng-container *ngIf='this?.user==task.userDestination.personnel.superieur.id'>
+                <ion-item-sliding no-padding no-marging>
+                    <ion-item no-padding no-marging>
+
+
+
+                        <div class="card" style="margin:8px;  width: 100%; ">
+                            <div class="card-body shadow-lg" style="padding:10px;" (click)="hidefunc(task.id)">
+                                <div>
+                                    <div style="float: left; font-weight: bold;">
+                                        <i *ngIf='task?.criticity?.code=="C01"' class="fas fa-bell"
+                                            style="/*position: absolute;left:-10px;top:-10px;*/color:#CC0000"></i>
+                                        <i *ngIf='task?.criticity?.code=="C02"' class="fas fa-bell"
+                                            style="/*position: absolute;left:-10px;top:-10px;*/color:#FF8800"></i>
+                                        <i *ngIf='task?.criticity?.code=="C03"' class="fas fa-bell"
+                                            style="/*position: absolute;left:-10px;top:-10px;*/color:#0099CC"></i>
+                                        {{task?.intitule}}
+                                    </div>
+
+
+                                    <div style="float: right;">
+                                        <i *ngIf='task?.statut?.name=="Terminé"' class="far fa-calendar-check"
+                                            style="color:#00C851 "></i>
+                                        <i *ngIf='task?.statut?.name=="En cours"' class="fas fa-spinner"
+                                            style="color:#33b5e5"></i>
+                                        <i *ngIf='task?.statut?.name=="Réaffectation"' class="far fa-file"
+                                            style="color:#33b5e5"></i>
+                                        <i *ngIf='task?.statut?.name=="Ouvert"' class="fas fa-tasks"
+                                            style="color:#33b5e5"></i>
+                                    </div>
+                                    <br>
+
+                                    <div style="float: left;font-size: 12px;color: #4B515D">{{task?.tache?.valeur}}
+                                    </div>
+
+                                </div>
+                                <br>
+                                <p id="{{task.id}}"
+                                    style="font-size: 12px; color:grey; margin-bottom: 0; overflow: hidden; display: none;"
+                                    [innerHtml]="task?.description"></p>
+                            </div>
+
+
+                            <div *ngIf='dateDiff(task?.dateLimite) < 3' class="card-footer text-white"
+                                style="background-color:#ff4444" [routerLink]="'/detail-task/' + task?.id"
+                                routerDirection="root">
+                                <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                        {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                                <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                        {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i>
+                                </div>
+                            </div>
+
+                            <div *ngIf='dateDiff(task?.dateLimite ) <= 7 &&   3 <= dateDiff(task?.dateLimite ) '
+                                class="card-footer text-white" style="background-color:#ffbb33"
+                                [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                                <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                        {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                                <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                        {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i>
+                                </div>
+                            </div>
+
+                            <div *ngIf='dateDiff(task?.dateLimite ) > 7' class="card-footer text-white"
+                                style="background-color:#33b5e5" [routerLink]="'/detail-task/' + task?.id"
+                                routerDirection="root">
+                                <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                        {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                                <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                        {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+                    </ion-item>
+                    <ion-item-options>
+                        <ion-item-option>
+                            <img (click)="annulerTicket(task?.id)" src="./../../../assets/icon/notok.png"
+                                style="width:30px;height:30px;margin-right: 5px;" />
+                        </ion-item-option>
+                        <ion-item-option>
+                            <img (click)="validerTicket(task?.id,task)" src="./../../../assets/icon/ok.svg"
+                                style="width:30px;height:30px;margin-right: 3px;" />
+                        </ion-item-option>
+                        <ion-item-option>
+                            <ion-icon (click)="ArchiverTicker(task?.id)" name="archive"
+                                style="width:30px;height:30px;margin-right: 4px;color: black;"></ion-icon>
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+
+
+
+    <ng-container *ngIf='segment=="Archive"'>
+        <ion-searchbar *ngIf="isSearchbarOpened" showCancelButton="true" (ionInput)="getItems($event)"
+            (ionCancel)="getItems($event)" (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
+
+        <h5 *ngIf="archive?.length == 0  && segment=='Archive'" style="text-align: center; margin-top: 30%">No
+            Actions
+        </h5>
+        <ng-container *ngFor="let task of archive ;">
+            <ion-item-sliding no-padding no-marging>
+                <ion-item no-padding no-marging>
+
+
+                    <div class="card" style="margin:8px;  width: 100%; ">
+                        <div class="card-body shadow-lg" style="padding:10px;" (click)="hidefunc(task.id)">
+                            <div>
+                                <div style="float: left; font-weight: bold;">
+                                    <i *ngIf='task?.criticity?.code=="C01"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#CC0000"></i>
+                                    <i *ngIf='task?.criticity?.code=="C02"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#FF8800"></i>
+                                    <i *ngIf='task?.criticity?.code=="C03"' class="fas fa-bell"
+                                        style="/*position: absolute;left:-10px;top:-10px;*/color:#0099CC"></i>
+                                    {{task?.intitule}}
+                                </div>
+
+                                <div style="float: right;">
+                                    <i *ngIf='task?.statut?.name=="Terminé"' class="far fa-calendar-check"
+                                        style="color:#00C851 "></i>
+                                    <i *ngIf='task?.statut?.name=="En cours"' class="fas fa-spinner"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Réaffectation"' class="far fa-file"
+                                        style="color:#33b5e5"></i>
+                                    <i *ngIf='task?.statut?.name=="Ouvert"' class="fas fa-tasks"
+                                        style="color:#33b5e5"></i>
+                                </div>
+                                <br>
+
+                                <div style="float: left;font-size: 12px;color: #4B515D">{{task?.tache?.valeur}}</div>
+
+                            </div>
+                            <br>
+                            <p id="{{task.id}}"
+                                style="font-size: 12px; color:grey; margin-bottom: 0; overflow: hidden; display: none;"
+                                [innerHtml]="task?.description"></p>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite) < 3' class="card-footer text-white"
+                            style="background-color:#ff4444" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) <= 7 &&   3 <= dateDiff(task?.dateLimite ) '
+                            class="card-footer text-white" style="background-color:#ffbb33"
+                            [routerLink]="'/detail-task/' + task?.id" routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+                        <div *ngIf='dateDiff(task?.dateLimite ) > 7' class="card-footer text-white"
+                            style="background-color:#33b5e5" [routerLink]="'/detail-task/' + task?.id"
+                            routerDirection="root">
+                            <div style="float: left;"><i class="far fa-calendar-alt" style="margin-right:2px;">
+                                    {{task?.dateLimite | date: 'dd-MM-yyyy'}}</i></div>
+                            <div style="float: right;"><i class="far fa-user-circle" style="margin-right:2px;">
+                                    {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}}</i></div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </ion-item>
+                <ion-item-options>
+                    <ion-item-option>
+                        <ion-icon (click)="RemmettreTicket(task?.id)" name="refresh-circle"
+                            style="width:30px;height:30px;margin-right: 4px;color: black;"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+
+            </ion-item-sliding>
+        </ng-container>
+    </ng-container>
+
+
+
+
+</ion-content>
+
+<ng-container *ngIf="!this?.Stagiaire">
+    <ion-footer no-padding no-marging>
+
+        <ion-segment no-padding no-marging style="font-size: 10px;" [(ngModel)]="segment">
+            <ion-segment-button style="min-width: 60px;" value="Request" checked>
+                <ion-icon size="small" name="md-trending-up"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button style="min-width: 60px;" value="To Do" (click)="GetTaskTOdo()">
+                <ion-icon size="small" name="md-trending-down"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button style="min-width: 60px;" value="EnCopie" (click)="GetTaskEnCopie()">
+                <ion-icon size="small" name="undo"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button style="min-width: 60px;" value="BU" (click)="GetTaskByBU()">
+                <ion-icon size="small" name="contacts"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button style="min-width: 60px;" value="Archive" (click)="GetTaskArchive()">
+                <ion-icon size="small" name="filing"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button style="min-width: 60px;" routerDirection='root' routerLink='/add-task'>
+                <ion-icon size="small" name="add"></ion-icon>
+            </ion-segment-button>
+
+        </ion-segment>
+
+    </ion-footer>
+</ng-container>
+<!-----------------------------------------Stagiaire---------------------------------------------------------->
+
+<ng-container *ngIf="this?.Stagiaire">
+    <ion-footer no-padding no-marging>
+
+        <ion-segment no-padding no-marging style="font-size: 10px;" [(ngModel)]="segment">
+            <ion-segment-button style="min-width: 60px;" value="Request" checked>
+                <ion-icon size="small" name="md-trending-up"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button style="min-width: 60px;" value="To Do">
+                <ion-icon size="small" name="md-trending-down"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button style="min-width: 60px;" value="EnCopie">
+                <ion-icon size="small" name="undo"></ion-icon>
+            </ion-segment-button>
+
+        </ion-segment>
+
+    </ion-footer>
+</ng-container>
+<!-----------------------------------------Stagiaire---------------------------------------------------------->

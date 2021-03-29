@@ -1,0 +1,99 @@
+.avatar img {
+    width: 50px;
+    height: 50px;
+    max-width: 46px;
+    max-height: 46px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.overlay-layer {
+    width: 90%;
+    height: 10%;
+    position: absolute;
+    margin-top: -40px;
+    opacity: 1;
+    z-index: 0;
+    font-size: 25px;
+    text-align: center;
+    line-height: 40px;
+}
+
+.upload_btn {
+    position: absolute;
+    width: 90%;
+    height: 10%;
+    margin-top: -40px;
+    z-index: 10;
+    opacity: 0;
+}
+
+.cardspec {
+    border: 1px solid #EF9A9A;
+    /* Set up Border */
+}
+
+ion-item-option {
+    background: none;
+}
+
+ion-item {
+    --inner-border-width: 0 0 0 0;
+    --padding-start: 0px;
+    --inner-padding-end: 0px;
+}
+
+.notify-badge {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    text-align: center;
+}
+
+.sidenav {
+    height: 100%;
+    /* 100% Full-height */
+    width: 0;
+    /* 0 width - change this with JavaScript */
+    position: fixed;
+    /* Stay in place */
+    z-index: 20;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    left: 0;
+    background-color: #fafafa;
+    /* Black*/
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+}
+
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+#demopurpose {
+    background-color: #edf0f5;
+}
+
+.profile-card {
+    height: 100%;
+    position: relative;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, .05);
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-card .btn-edit {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-size: 1.4rem;
+}
+
+.profile-card .profile-picture {
+    width: 7.4rem;
+}
+
+.profile-card .quote-text {
+    font-size: .85rem;
+    line-height: 1.55rem;
+}

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="secondary" fixed>
+    <ion-buttons slot="start" (click)="onDismiss()">
+      <ion-icon name="arrow-round-back" size="large"></ion-icon>
+
+    </ion-buttons>
+    <ion-title> Liste des destinataires</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ng-container *ngFor="let p of destinataire">
+
+
+      <ion-item>
+
+        <div class="content-profile" style="padding: 6px;">
+          <img src='{{env}}{{p?.user?.path || "empty.png"}}' class="list-img img-fluid z-depth-1 rounded-circle">
+        </div>
+
+        <label style="margin-left: 8px;margin-top: 10px;">{{p.nom}} {{p.prenom}}</label>
+
+
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+</ion-content>

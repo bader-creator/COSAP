@@ -1,0 +1,264 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Détail
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="card" style="margin:8px;">
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+
+                <i class="fas fa-indent" style="margin-right:2px;"></i>Intitulé</div>
+            <i *ngIf='edit' class="fas fa-pen" style="margin-right:2px;float: right;"></i>
+            <br>
+            <div *ngIf='!edit' style="font-size: 14px;margin-right:10px;">{{task?.intitule}} </div>
+            <input *ngIf='edit' [(ngModel)]="ticketObject.titre" name="ticketObject.titre" class="form-control input-sm">
+
+
+
+        </div>
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+
+                <i class="fas fa-indent" style="margin-right:2px;"></i> Type d'action</div>
+            <div style="float: right;font-size: 14px;margin-right:10px;">{{task?.tache?.valeurNomenclature?.name}}
+                <br>
+                <div style="float: right;font-size: 12px;margin-right:10px;">{{task?.tache?.valeur}}</div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+
+                <i class="fas fa-project-diagram" style="margin-right:2px;"></i> Projet Interne </div>
+            <div style="float: right;font-size: 14px;margin-right:10px;">{{task?.projetInterne?.intitule}}</div><br>
+            <div style="float: right;font-size: 12px;margin-right:10px;">{{task?.projetInterne?.dateDebut | date: 'dd-MM-yyyy'}}</div>
+
+        </div>
+        <!--
+          <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                
+                <i class="fas fa-asterisk"  style="margin-right:2px;"></i>Référence</div>
+              <div style="float: right;font-size: 14px;margin-right:10px;">{{task?.reference}}</div>
+
+          </div>
+          -->
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="fas fa-exclamation" style="margin-right:2px;"></i> Criticity</div>
+            <div *ngIf='task?.criticity?.code=="C01"' style="float: right;font-size: 14px;margin-right:10px; color:red;">{{task?.criticity?.name}}</div>
+            <div *ngIf='task?.criticity?.code=="C02"' style="float: right;font-size: 14px;margin-right:10px; color:rgb(255, 115, 0)">{{task?.criticity?.name}}</div>
+            <div *ngIf='task?.criticity?.code=="C03"' style="float: right;font-size: 14px;margin-right:10px; color:green">{{task?.criticity?.name}}</div>
+        </div>
+
+        <div class="card-footer text-muted">
+
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="fas fa-flag" style="margin-right:2px;"></i> Statut</div>
+            <div style="float: right;font-size: 14px;margin-right:10px;">{{task?.statut?.name}}</div>
+
+        </div>
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="far fa-calendar-alt" style="margin-right:2px;"></i> Date Création </div>
+            <div style="float: right;font-size: 14px;margin-right:10px;">{{task?.dateCreation | date: 'dd-MM-yyyy HH:mm'}}</div>
+
+        </div>
+
+
+
+
+        <div *ngIf='!edit' class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="far fa-calendar-alt" style="margin-right:2px;"></i> Date limite </div>
+            <div style="float: right;font-size: 14px;margin-right:10px;">{{task?.dateLimite | date: 'dd-MM-yyyy HH:mm'}}</div>
+        </div>
+
+
+
+
+
+
+
+
+
+        <!--
+
+              <div *ngIf='edit'  class="card-footer text-muted">
+                  <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="far fa-calendar-alt" style="margin-right:2px;"></i> Date limite </div>
+                <i *ngIf='edit'  class="fas fa-pen"  style="margin-right:2px;float: right;"></i>
+
+                <form style="float: right;font-size: 14px;margin-right:10px;">
+                    <input type="datetime-local" [(ngModel)]="ticketObject.Echeance" name="datedebut" (ngModelChange)="onDateChanged()"  class="upload_btn">
+                    
+                    <div class="overlay-layer"> {{ticketObject.Echeance | date: 'dd-MM-yyyy HH:mm'}}</div>
+                    
+                </form>
+
+ </div>
+-->
+
+
+
+
+
+        <div *ngIf='edit' class="card-footer text-muted">
+            <div style="float: left;margin-left: 5px;width:40%;text-align: left">Date Limite</div><br>
+            <div class="row" style="margin-left: 10px;">
+                <ion-item style="margin-right: 10px;">
+                    <ion-icon name="calendar"></ion-icon>
+                    <ion-datetime displayFormat="DD MMM ,YYYY" min="2019-10-17" max="2022-12-31" placeholder="Select Date" [(ngModel)]="ticketObject.Echeance" name="ticketObject.Echeance"></ion-datetime>
+                </ion-item>
+
+                <ion-item>
+                    <ion-icon name="time"></ion-icon>
+                    <ion-datetime displayFormat="HH:mm" placeholder="Select Time" minuteValues="0,10,20,30,40,50" [(ngModel)]="ticketObject.time" name="ticketObject.time"></ion-datetime>
+                </ion-item>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="fas fa-user-alt" style="margin-right:2px;"></i> Destiné à </div>
+            <div style="float: right;font-size: 14px;margin-right:10px;"> {{task?.userFirstDestination?.lastName}} {{task?.userFirstDestination?.firstName}} </div><br>
+            <div style="float: right;font-size: 12px;margin-right:10px;"> {{task?.userFirstDestination?.job?.name}} </div>
+        </div>
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="fas fa-user-alt" style="margin-right:2px;"></i> réaffecté à </div>
+            <div style="float: right;font-size: 14px;margin-right:10px;"> {{task?.userDestination?.lastName}} {{task?.userDestination?.firstName}} </div><br>
+            <div style="float: right;font-size: 12px;margin-right:10px;"> {{task?.userDestination?.job?.name}} </div>
+        </div>
+
+        <div class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="fas fa-user-alt" style="margin-right:2px;"></i> Créé par </div>
+            <div style="float: right;font-size: 14px;margin-right:10px;"> {{task?.userCreator?.lastName}} {{task?.userCreator?.firstName}}</div><br>
+            <div style="float: right;font-size: 12px;margin-right:10px;"> {{task?.userCreator?.job?.name}} </div>
+        </div>
+
+
+        <div *ngIf='!edit' class="card-footer text-muted">
+            <div style="float: left;font-size: 14px;margin-right:10px;">
+                <i class="fas fa-users" style="margin-right:2px;"></i> Utilisateurs en copie </div>
+
+            <br>
+            <div *ngFor="let user of task?.users ;" style="float: left;font-size: 12px;margin-right:10px;"> {{user?.email}} </div>
+        </div>
+
+        <div *ngIf='edit' class="card-footer text-muted">
+
+            <a [routerLink]="'/users/2'" routerDirection="root">Utilisateurs en copie</a>
+            <i *ngIf='edit' class="fas fa-pen" style="margin-right:2px;float: right;"></i>
+
+            <div *ngFor="let user of task?.users ;" style="float: left;font-size: 12px;margin-right:10px;"> {{user?.email}} </div><br>
+            <div *ngFor="let user of usersEnCopie;" style="float: left;font-size: 12px;margin-right:10px;"> {{user?.email}} </div>
+
+            <br>
+        </div>
+
+
+
+
+
+        <ng-container *ngIf='task?.path'>
+            <div class="card-footer text-muted">
+                <a href="{{env}}{{task?.path}}" download="att">Pièce jointe</a>
+            </div>
+        </ng-container>
+
+        <div *ngIf='edit' class="card-footer text-muted">
+
+            <button type="button" class="btn btn-block btn-success" (click)="editticket()"> Confirmer modification</button>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</ion-content>
+
+
+
+
+
+
+
+
+<ion-footer no-padding no-marging>
+
+
+    <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button><i class="fas fa-list"></i></ion-fab-button>
+
+        <ion-fab-list side="top">
+            <ion-fab-button [routerLink]="'/tracabilite/' + task?.id" routerDirection="root"><i class="far fa-comment-dots"></i></ion-fab-button>
+
+
+            <ng-container *ngIf='task?.userDestination?.id==currentUser?.id && task?.statut?.code=="S01"'>
+                <ion-fab-button (click)="terminerTicket(task?.id)"><i class="far fa-check-circle" style="margin-right:2px;"></i></ion-fab-button>
+            </ng-container>
+            <ng-container *ngIf='task?.userDestination?.id==currentUser?.id && task?.statut?.code=="S02"'>
+                <ion-fab-button (click)="terminerTicket(task?.id)"><i class="far fa-check-circle" style="margin-right:2px;"></i></ion-fab-button>
+            </ng-container>
+
+
+            <ng-container *ngIf='task?.userDestination?.id==currentUser?.id && task?.statut?.code != "S03"'>
+                <ion-fab-button (click)="MAJTicket(task?.id)"><i class="fas fa-arrow-circle-right" style="margin-right:2px;"></i></ion-fab-button>
+            </ng-container>
+            <ng-container *ngIf='task?.userCreator?.id==currentUser?.id && task?.statut?.code != "S03"  && task?.statut?.code != "S01"  '>
+                <ion-fab-button (click)="MAJTicket(task?.id)"><i class="fas fa-arrow-circle-right" style="margin-right:2px;"></i></ion-fab-button>
+            </ng-container>
+
+            <ng-container *ngIf='task?.userCreator?.id==currentUser?.id || task?.userDestination?.id==currentUser?.id'>
+                <ion-fab-button (click)="showedit(true)"><i class="far fa-edit" style="margin-right:2px;"></i></ion-fab-button>
+            </ng-container>
+
+
+        </ion-fab-list>
+
+        <!-- && task?.statut?.code == "S03" -->
+        <ng-container *ngIf='task?.userCreator?.id==currentUser?.id'>
+            <ion-fab-list side="start">
+                <ion-fab-button (click)="reaffecterTicket(task?.id)"><i class="fas fa-user-edit" style="margin-right:2px;"></i></ion-fab-button>
+            </ion-fab-list>
+        </ng-container>
+
+    </ion-fab>
+</ion-footer>

@@ -1,0 +1,226 @@
+<ion-content padding>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <button type="button" class="btn btn-link" (click)="closeModal()">
+                <ion-icon name="arrow-round-back"></ion-icon> Retour
+            </button>
+        </ion-buttons>
+
+        <ion-buttons slot="end">
+            <button type="button" class="btn btn-link" (click)="onPressUp(date,iduser)">
+                <ion-icon name="add-circle"></ion-icon> Action
+            </button>
+
+            <ng-container *ngIf="currentUserId==iduser?.id">
+                <button type="button" class="btn btn-link" (click)="onPressUpConge(date,iduser)" routerDirection='root'
+                    routerLink='/listdemande' (click)="closeModal()">
+                    <ion-icon name="add-circle"></ion-icon> Congé
+                </button>
+            </ng-container>
+
+        </ion-buttons>
+    </ion-toolbar>
+
+    <div class="avatar" style="height: 40px;width: 60px; float: left;">
+        <img alt="" src="{{env}}{{iduser?.path}}">
+    </div>
+    <div style="height: 40px;font-size: 12px;padding-top: 10px">
+        {{iduser?.nom}} {{iduser?.prenom}}<br>{{iduser?.poste}}<br>
+        <ion-icon name="at"> </ion-icon> {{iduser?.email}}<br>
+        <ion-icon name="phone-portrait"></ion-icon> {{iduser?.phone}}&nbsp;&nbsp;
+
+        <ion-icon name="call"></ion-icon>{{iduser?.numeroPosteInterne}}&nbsp;&nbsp;
+        <ion-icon name="qr-scanner"></ion-icon>{{iduser?.matricule}}<br>
+        <ion-icon name="battery-charging"></ion-icon>{{iduser?.charge}} % par mois
+
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <div class="row mbr-justify-content-center">
+
+        <div class="col-lg-6 mbr-col-md-10">
+            <div class="text-wrap vcenter">
+
+                <ng-container *ngIf="iduser?.tickets?.length">
+
+                    <ng-container *ngFor="let element of iduser.tickets;">
+                        <ng-container *ngIf="element[index].value">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p style="margin:0px;"><b>Action : </b>
+                                        <ion-label>{{element[index].intitule}}</ion-label> <a
+                                            [routerLink]="'/detail-task/' + element[index]?.id"
+                                            style="font-size: 14px; float:right;" routerDirection="root"
+                                            (click)="closeModal()"> Plus</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </ng-container>
+                    <hr>
+                </ng-container>
+
+                <ng-container *ngIf="iduser?.conges?.length ">
+
+                    <ng-container *ngFor="let element of iduser.conges;">
+                        <ng-container *ngIf="element[index].value">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"> <span>Durée
+                                            Congé</span></h3>
+                                    <div *ngIf='element[index].nbJours == "1"'>
+                                        <p>
+                                            <ion-label>{{element[index].nbJours}} Jour</ion-label> <a
+                                                [routerLink]="'/detail/' + element[index]?.id"
+                                                style="font-size: 14px;float:right;" routerDirection="root"
+                                                (click)="closeModal()"> Plus</a>
+                                        </p>
+                                    </div>
+                                    <div *ngIf='element[index].nbJours != "1"'>
+                                        <p>
+                                            <ion-label>{{element[index].nbJours}} Jours</ion-label> <a
+                                                [routerLink]="'/detail/' + element[index]?.id"
+                                                style="font-size: 14px;float:right;" routerDirection="root"
+                                                (click)="closeModal()"> Plus</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </ng-container>
+                    <hr>
+                </ng-container>
+
+                <ng-container *ngIf="iduser?.teletravail?.length">
+
+                    <ng-container *ngFor="let element of iduser.teletravail;">
+                        <ng-container *ngIf="element[index].value">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p style="margin-top: -5px;">
+                                        <ion-icon name="desktop"></ion-icon>
+                                        <ion-label>TéleTravail</ion-label>
+                                    </p>
+                                    <p style="margin-top: -5px;">
+                                        <ion-icon name="calendar"></ion-icon> Date Debut:
+                                        <ion-label>{{element[index].debut | date: 'dd-MM-yyyy HH:mm' }}
+                                        </ion-label>
+                                    </p>
+                                    <p style="margin-top: -5px;">
+                                        <ion-icon name="calendar"></ion-icon> Date Fin:
+                                        <ion-label>{{element[index].fin | date: 'dd-MM-yyyy HH:mm' }}
+                                        </ion-label>
+                                    </p>
+                                    <p style="margin-top: -5px;">
+                                        <ion-icon name="calendar"></ion-icon> Date Reprise:
+                                        <ion-label>{{element[index].reprise | date: 'dd-MM-yyyy HH:mm' }}
+                                        </ion-label>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </ng-container>
+                    <hr>
+                </ng-container>
+
+                <ng-container *ngIf="iduser?.sorties?.length">
+
+                    <ng-container *ngFor="let element of iduser.sorties;">
+                        <ng-container *ngIf="element[index].value">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5">
+                                        <span>Autorisation de sortie</span>
+                                    </h3>
+                                    <p>
+                                        <ion-label> De {{element[index].datedebut | date:'HH:mm' }}
+                                        </ion-label> <b>à </b>
+                                        <ion-label>{{element[index].datefin | date: 'HH:mm' }} h
+                                        </ion-label> <a [routerLink]="'/detail-demande-sortie/' + element[index]?.id"
+                                            style="font-size: 14px; float:right;" routerDirection="root"
+                                            (click)="closeModal()"> Plus</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </ng-container>
+
+                    </ng-container>
+                    <hr>
+                </ng-container>
+
+                <ng-container *ngIf="iduser?.events?.length">
+
+                    <ng-container *ngFor="let element of iduser.events;">
+                        <ng-container *ngIf="element[index].value">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <p>
+                                        <ion-icon name="people"></ion-icon>
+                                        <ion-label>{{element[index].nom}}</ion-label>
+                                    </p>
+                                    <p>
+                                        <ion-icon name="settings"></ion-icon>
+                                        <ion-label>{{element[index].type}}</ion-label>
+                                    </p>
+                                    <p style="margin-top: -5px;">
+                                        <ion-icon name="calendar"></ion-icon>
+                                        <ion-label>{{element[index].debut | date: 'dd-MM-yyyy HH:mm' }}
+                                        </ion-label>
+                                    </p>
+                                    <p *ngIf="element[index].salle" style="margin-top: -5px;">
+                                        <ion-icon name="pin"></ion-icon>
+                                        <ion-label>{{element[index].salle.etage}} salle de
+                                            {{element[index].salle.nom}}</ion-label>
+                                    </p>
+                                    <p *ngIf="element[index].description" style="margin-top: 10px;">
+                                        <ion-icon name="chatboxes"></ion-icon>
+                                        <ion-label style="word-break: break-all;">{{element[index].description}}
+                                        </ion-label>
+                                    </p>
+
+                                    <ng-container *ngIf='this?.EventsID.indexOf(element[index].id)==-1'>
+                                        <ion-badge color="primary" style="font-size: 14px; float:right;" hide
+                                            (click)="Participer(currentUserId,element[index].id)">Participer</ion-badge>
+                                    </ng-container>
+
+                                    <ng-container *ngIf='this?.EventsID.indexOf(element[index].id)!=-1'>
+                                        <ion-badge color="danger"
+                                            style="font-size: 14px; float:right;margin-right: 5px;"
+                                            (click)="Quitter(currentUserId,element[index].id)">Quitter</ion-badge>
+
+                                    </ng-container>
+                                    <br>
+
+                                </div>
+                            </div>
+
+                        </ng-container>
+
+                    </ng-container>
+                    <hr>
+                </ng-container>
+
+                <ng-container *ngIf="currentUserId==iduser?.id">
+                    <button type="button" class="btn btn-link" slot="end"
+                        (click)="ajouterEvent(currentUserId,index,true)">
+                        <ion-icon name="arrow-dropright"></ion-icon> Déplacement
+                    </button>
+                    <button type="button" class="btn btn-link" slot="end"
+                        (click)="ajouterEvent(currentUserId,index,false)">
+                        <ion-icon name="arrow-dropright"></ion-icon> Réunion
+                    </button>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+
+</ion-content>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "930975385538",
+    "firebase_url": "https://si-gestionconge.firebaseio.com",
+    "project_id": "si-gestionconge",
+    "storage_bucket": "si-gestionconge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930975385538:android:a519fc7c832dd081",
+        "android_client_info": {
+          "package_name": "io.sfm.si"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930975385538-1uhf03i6hib26siv6a5sgkbaa1lubpag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmnCZMg_1lW7CSWTSXddkqd8ym1tYNVTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930975385538-1uhf03i6hib26siv6a5sgkbaa1lubpag.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "930975385538-719ddr166vvuo5m7d2kan7tm75inursr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.sfm.si"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

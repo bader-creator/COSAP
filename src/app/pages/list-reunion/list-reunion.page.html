@@ -1,0 +1,183 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Réunions & Déplacements
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <!------------------------Reunion-------------------------------->
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
+        </ion-refresher-content>
+    </ion-refresher>
+    <div class="container" style="height: 100%; width: 100%;">
+        <h5 *ngIf="Event?.length == 0" style="text-align: center; margin-top: 30%">No Event
+        </h5>
+        <div class="row" *ngFor="let liste of Event">
+            <ng-container *ngIf='liste.renion'>
+                <div class="container-fluid content">
+                    <div class="card">
+                        <ng-container *ngIf='liste.presence == 1'>
+                            <ion-icon name="happy" class="statut" style="color: #0080009e;"></ion-icon>
+                        </ng-container>
+                        <ng-container *ngIf='liste.presence == 0'>
+                            <ion-icon name="sad" class="statut" style="color: #ff000099;"></ion-icon>
+                        </ng-container>
+                        <ng-container *ngIf='liste.presence != 0 && liste.presence != 1'>
+                            <ion-icon name="information-circle" class="statut" style="color: #ffa500ab;"></ion-icon>
+                        </ng-container>
+                        <div class="card-body" (click)="GoesTOListePresence(liste.renion.id,liste.renion.type)">
+                            <div class="d-flex  w-100 align-items-center text-left">
+                                <div class="col">
+                                    <div class="content-profile">
+                                        <img src="./../../../assets/icon/reunion.png" class="list-img img-fluid z-depth-1 rounded-circle">
+                                    </div>
+                                    <ion-label class="overme">{{liste.renion.nom}}</ion-label><br>
+                                    <ion-label class="type">{{liste.renion.type}}</ion-label>
+                                    <div class="date" style="position: absolute; top: 99px;left: 62px">
+                                        <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+                                        <ion-label>{{liste.renion.lieu}}</ion-label>
+                                    </div>
+
+                                    <div class="date" style="position: absolute; top: 43px;left: 62px">
+                                        <ion-icon name="calendar" style="font-size: 20px;"></ion-icon>
+                                        <ion-label>{{liste.renion.debut | date: 'dd-MM-yyyy HH:mm'}}</ion-label>
+
+                                    </div>
+                                    <div class="date" style="position: absolute;top: 71px;left: 62px;">
+                                        <ion-icon name="calendar" style="font-size: 20px;"></ion-icon>
+                                        <ion-label>{{liste.renion.fin | date: 'dd-MM-yyyy HH:mm'}}</ion-label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ion-fab vertical="bottom" horizontal="end" style="height: 36px; width: 41px;">
+                            <ion-fab-button style="height: 41px; width: 41px;">
+                                <ion-icon name="arrow-dropdown-circle"></ion-icon>
+                            </ion-fab-button>
+                            <ion-fab-list side="top">
+                                <ion-fab-button (click)="changeState(liste?.id)" (click)='hideShow()'>
+                                    <ion-icon item-end [name]="ViewIcon" class="ViewIcon"></ion-icon>
+                                </ion-fab-button>
+                            </ion-fab-list>
+                            <ng-container *ngIf='this?.currentUser == liste.renion.createur.id'>
+                                <ion-fab-list side="bottom">
+                                    <ion-fab-button (click)="AlertSupperssion(liste.renion.id)">
+                                        <ion-icon name="trash"></ion-icon>
+                                    </ion-fab-button>
+                                </ion-fab-list>
+                            </ng-container>
+                            <ng-container *ngIf='this?.currentUser == liste.renion.createur.id'>
+                                <ion-fab-list side="start">
+                                    <ion-fab-button (click)="Modifier(liste.renion.id)">
+                                        <ion-icon name="create"></ion-icon>
+                                    </ion-fab-button>
+                                </ion-fab-list>
+                            </ng-container>
+                        </ion-fab>
+                        <br>
+                    </div>
+
+                </div>
+                <ng-container *ngIf='isenabled && idenabled==liste?.id'>
+                    <div class="card-footer ">
+                        <div class="date">
+                            <ion-icon name="chatbubbles" style="font-size: 20px;"></ion-icon>
+                            <ion-label>{{liste.renion.description}}</ion-label>
+                        </div>
+                    </div>
+                </ng-container>
+
+            </ng-container>
+
+            <!------------------------------------------Deplacement------------------------------------------>
+            <ng-container *ngIf='liste.deplacement'>
+                <div class="container-fluid content">
+
+                    <div class="card">
+                        <ng-container *ngIf='liste.presence == 1'>
+                            <ion-icon name="happy" class="statut" style="color: #0080009e;"></ion-icon>
+                        </ng-container>
+                        <ng-container *ngIf='liste.presence == 0'>
+                            <ion-icon name="sad" class="statut" style="color: #ff000099;"></ion-icon>
+                        </ng-container>
+                        <ng-container *ngIf='liste.presence != 0 && liste.presence != 1'>
+                            <ion-icon name="information-circle" class="statut" style="color: #ffa500ab;"></ion-icon>
+                        </ng-container>
+                        <div class="card-body" (click)="GoesTOListePresence(liste.deplacement.id,liste.deplacement.type)">
+                            <div class="d-flex  w-100 align-items-center text-left">
+                                <div class="col">
+                                    <div class="content-profile">
+                                        <img src="./../../../assets/icon/reunion.png" class="list-img img-fluid z-depth-1 rounded-circle">
+                                    </div>
+                                    <ion-label class="overme">{{liste.deplacement.nom}}</ion-label><br>
+                                    <ion-label class="type">{{liste.deplacement.type}}</ion-label>
+                                    <div class="date" style="position: absolute; top: 99px;left: 62px">
+                                        <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+                                        <ion-label>{{liste.deplacement.lieu}}</ion-label>
+                                    </div>
+
+                                    <div class="date" style="position: absolute; top: 43px;left: 62px">
+                                        <ion-icon name="calendar" style="font-size: 20px;"></ion-icon>
+                                        <ion-label>{{liste.deplacement.debut | date: 'dd-MM-yyyy HH:mm'}}
+                                        </ion-label>
+
+                                    </div>
+                                    <div class="date" style="position: absolute;top: 71px;left: 62px;">
+                                        <ion-icon name="calendar" style="font-size: 20px;"></ion-icon>
+                                        <ion-label>{{liste.deplacement.fin | date: 'dd-MM-yyyy HH:mm'}}</ion-label>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <ion-fab vertical="bottom" horizontal="end" style="height: 36px; width: 41px;">
+                            <ion-fab-button style="height: 41px; width: 41px;">
+                                <ion-icon name="arrow-dropdown-circle"></ion-icon>
+                            </ion-fab-button>
+                            <ion-fab-list side="top">
+                                <ion-fab-button (click)="changeState(liste?.id)" (click)='hideShow()'>
+                                    <ion-icon item-end [name]="ViewIcon" class="ViewIcon"></ion-icon>
+                                </ion-fab-button>
+                            </ion-fab-list>
+                            <ng-container *ngIf='this?.currentUser == liste.deplacement.createur.id'>
+                                <ion-fab-list side="bottom">
+                                    <ion-fab-button (click)="AlertSupperssion(liste.deplacement.id)">
+                                        <ion-icon name="trash"></ion-icon>
+                                    </ion-fab-button>
+                                </ion-fab-list>
+                            </ng-container>
+                            <ng-container *ngIf='this?.currentUser == liste.deplacement.createur.id'>
+                                <ion-fab-list side="start">
+                                    <ion-fab-button (click)="Modifier(liste.deplacement.id)">
+                                        <ion-icon name="create"></ion-icon>
+                                    </ion-fab-button>
+                                </ion-fab-list>
+                            </ng-container>
+                        </ion-fab>
+                        <br>
+                    </div>
+                </div>
+                <ng-container *ngIf='isenabled && idenabled==liste?.id'>
+                    <div class="card-footer ">
+                        <div class="date">
+                            <ion-icon name="chatbubbles" style="font-size: 20px;"></ion-icon>
+                            <ion-label>{{liste.deplacement.description}}</ion-label>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</ion-content>

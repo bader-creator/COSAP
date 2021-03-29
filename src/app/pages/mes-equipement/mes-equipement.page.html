@@ -1,0 +1,172 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title (click)="FilterByGroupe()">Mes équipements</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ng-container *ngIf='assets'>
+        <ion-segment [(ngModel)]="segment">
+            <ion-segment-button value="mesequipement" checked>
+                <ion-label><b>Mes emprunts</b></ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="equipement">
+                <ion-label><b>Mes équipements</b></ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ng-container>
+    <div style="padding:1rem;">
+        <ng-container *ngIf='!assets'>
+            <h5 *ngIf="Mesequipements?.length == 0" style="text-align: center; margin-top: 30%">Pas d'équipement</h5>
+            <ion-list>
+                <ng-container *ngFor="let equipe of Mesequipements">
+                    <ng-container *ngFor="let tra of equipe.traciblite">
+                        <ion-item>
+                            <div style="margin-bottom: 5px;">
+                                <ion-icon name="cart" class="position"></ion-icon>
+                                <ion-label>{{equipe.nom}}</ion-label>
+                                <ion-icon name="basket" class="position" style="font-size: 16px; margin-left: 5px;">
+                                </ion-icon>
+                                <ion-label style="font-size: 13.5px; overflow: initial;">{{tra.quantite}} Pièces
+                                </ion-label>
+                                <ion-icon name="calendar" class="position" style="font-size: 16px; margin-left: 5px;">
+                                </ion-icon>
+                                <ion-label style="font-size: 13.5px; overflow: initial;">
+                                    {{equipe.datePret | date: 'dd-MM-yyyy'}}</ion-label>
+
+                            </div>
+                            <br>
+
+                            <ion-button color="dark" fill="outline" slot="end" (click)="Render(tra.id)"
+                                *ngIf='tra?.destinataire?.id && !tra?.rendre?.id'>Rendre
+                            </ion-button>
+                            <ion-button color="danger" fill="outline" slot="end" (click)="AnnulerREnder(tra.id)"
+                                *ngIf='tra?.rendre?.id '>Annuler</ion-button>
+                            <ion-button color="success" fill="outline" slot="end" (click)="Confirmer(equipe.id,tra.id)"
+                                *ngIf='tra?.reaffecteur?.id'>Confirmer</ion-button>
+                            <ion-button fill="outline" slot="end" style="margin-right: -15px;margin-left: 4px;"
+                                (click)="godetail(equipe.id,equipe.quantite)">View</ion-button>
+
+                        </ion-item>
+                    </ng-container>
+                </ng-container>
+            </ion-list>
+        </ng-container>
+
+        <ng-container *ngIf='assets'>
+
+            <ng-container *ngIf='segment=="mesequipement"'>
+                <h5 *ngIf="Mesequipements?.length == 0" style="text-align: center; margin-top: 30%">Pas d'équipement
+                </h5>
+
+                <ion-list>
+                    <ng-container *ngFor="let equipe of Mesequipements">
+                        <ng-container *ngFor="let tra of equipe.traciblite">
+                            <ng-container
+                                *ngIf='tra?.reaffecteur?.id == currentUser || tra?.destinataire?.id == currentUser  '>
+                                <ion-item>
+                                    <div style="margin-bottom: 5px;">
+
+
+                                        <ion-icon name="cart" class="position"></ion-icon>
+                                        <ion-label>{{equipe.nom}}</ion-label>
+                                        <ion-icon name="basket" class="position"
+                                            style="font-size: 16px; margin-left: 5px; "></ion-icon>
+                                        <ion-label style="font-size: 13.5px; overflow: initial;">{{tra.quantite}}
+                                            Pièces
+                                        </ion-label>
+                                        <ion-icon name="calendar" class="position"
+                                            style="font-size: 16px; margin-left: 5px;"></ion-icon>
+                                        <ion-label style="font-size: 13.5px; overflow: initial;">
+                                            {{equipe.datePret | date: 'dd-MM-yyyy'}}</ion-label>
+
+                                    </div>
+                                    <br>
+                                    <ion-button color="dark" fill="outline" slot="end" (click)="Render(tra.id)"
+                                        *ngIf='tra?.destinataire?.id && !tra?.rendre?.id'>
+                                        Rendre</ion-button>
+                                    <ion-button color="danger" fill="outline" slot="end" (click)="AnnulerREnder(tra.id)"
+                                        *ngIf='tra?.rendre?.id && tra?.destinataire?.id == currentUser'>
+                                        Annuler
+                                    </ion-button>
+                                    <ion-button color="success" fill="outline" slot="end"
+                                        (click)="Confirmer(equipe.id,tra.id)" *ngIf='tra?.reaffecteur?.id'>Confirmer
+                                    </ion-button>
+                                    <ion-button fill="outline" slot="end"
+                                        style="margin-right: -15px;margin-left: 4px; float: right;"
+                                        (click)="godetail(equipe.id,equipe.quantite)">View</ion-button>
+
+                                </ion-item>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </ion-list>
+
+            </ng-container>
+
+            <ng-container *ngIf='segment=="equipement"'>
+                <h5 *ngIf="equipements?.length == 0" style="text-align: center; margin-top: 30%">Pas d'équipement
+                </h5>
+                <ion-list>
+                    <ng-container *ngFor="let equipe of equipements ">
+
+                        <ng-container *ngIf='equipe?.owner?.id == currentUser'>
+                            <ion-item>
+                                <div style="margin-bottom: 5px;">
+                                    <ion-icon name="cart" class="position"></ion-icon>
+                                    <ion-label>{{equipe.nom}} </ion-label>
+                                    <ion-icon name="basket" class="position" style="font-size: 16px; margin-left: 5px;">
+                                    </ion-icon>
+                                    <ion-label style="font-size: 13.5px;   overflow: initial;">{{equipe.quantite}}
+                                        Pièces</ion-label>
+                                </div>
+                                <br>
+
+                                <ng-container *ngFor="let tra of equipe.traciblite">
+                                    <ion-button color="danger" fill="outline" slot="end" (click)="Annuler(tra.id)"
+                                        *ngIf='tra?.reaffecteur?.id && equipe?.owner?.id == currentUser'>
+                                        Annuler
+                                    </ion-button>
+                                    <ion-button color="success" fill="outline" slot="end"
+                                        (click)="ConfirmerREnder(equipe.id,tra.id)" *ngIf='tra?.rendre?.id'>
+                                        Confirmer
+                                    </ion-button>
+                                </ng-container>
+                                <ng-container *ngIf='equipe?.owner?.id == currentUser'>
+                                    <ion-button fill="outline" slot="end"
+                                        style="margin-right: -15px;margin-left: 4px; float: right;"
+                                        (click)="godetail(equipe.id,equipe.quantite)">View</ion-button>
+                                </ng-container>
+
+                            </ion-item>
+                        </ng-container>
+
+                    </ng-container>
+                </ion-list>
+
+            </ng-container>
+
+        </ng-container>
+    </div>
+    <br><br>
+</ion-content>
+
+
+<ng-container *ngIf='segment=="equipement"'>
+    <ion-footer no-padding no-marging>
+        <ion-fab vertical="bottom" horizontal="end">
+            <ion-fab-button routerDirection='root' routerLink='/add-equipement'>
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+    </ion-footer>
+</ng-container>

@@ -1,0 +1,47 @@
+.presence {
+    height: 80%;
+}
+
+tr {
+    font-size: 8px;
+}
+
+td,
+th {
+    white-space: nowrap;
+}
+
+tr:hover {
+    background-color: rgb(143, 218, 241) !important;
+}
+
+.avatar img {
+    width: 50px;
+    height: 50px;
+    max-width: 46px;
+    max-height: 46px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+table td+td {
+    border-left: 1px solid grey;
+}
+
+table th+th {
+    border-left: 1px solid white;
+}
+
+table th {
+    padding: .0rem;
+}
+
+.col-4 ion-icon{
+    font-size: 18px;
+    margin-bottom: -5px;
+}
+.col-4 ion-label{
+    font-size: 12px;
+}

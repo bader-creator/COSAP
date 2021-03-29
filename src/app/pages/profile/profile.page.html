@@ -1,0 +1,111 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Profil
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <img src='{{env}}{{currentUser?.path || "empty.png"}}' class="shadow-lg img-fluid z-depth-1 rounded-circle" style="width:200px;height: 200px;">
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h1><b>{{currentUser?.nom || "Tanya"}} {{currentUser?.prenom || "...."}} </b></h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h5 style="margin-top: 0px;color: #FF8800">{{ currentUser?.job?.name || "...."}} </h5>
+    </div>
+
+    <br>
+
+
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-sm-11 col-md-8 col-lg-5">
+
+
+                <div class="profile-card py-3 card">
+                    <div class="card-body px-4 px-md-3 py-3">
+
+                        <div class="row mt-1 justify-content-center">
+
+
+                            <div class="col">
+
+                                <ion-icon name="umbrella" style="color:#0099CC;font-size: 26px;"></ion-icon><br>
+                                <label style="color:#0099CC;font-size: 12px;">{{infoSolde?.soldeConge || "0"}} J</label>
+
+
+                            </div>
+                            <div class="col">
+
+                                <ion-icon name="bed" style="color:#0099CC;font-size: 26px;"></ion-icon><br>
+                                <label style="color:#0099CC;font-size: 12px;">{{infoSolde?.soldeMaladie || "0"}} J</label>
+
+                            </div>
+
+                            <div class="col">
+
+
+                                <ion-icon name="walk" style="color:#0099CC;font-size: 26px;"></ion-icon><br>
+                                <label style="color:#0099CC;font-size: 12px;">{{((infoSolde?.cumulSortieARetirerConge)-(infoSolde?.cumulSortieARetirerConge%60))/60  || "0"  }}h {{infoSolde?.cumulSortieARetirerConge%60 || "0"}} m</label>
+
+
+                            </div>
+
+                            <div class="col">
+
+                                <ion-icon name="trophy" style="color:#0099CC;font-size: 26px;"></ion-icon><br>
+                                <label style="color:#0099CC;font-size: 12px;">{{infoSolde?.point  || "0" }} points</label>
+
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+
+
+
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="fas fa-at"></i>&nbsp;&nbsp;{{ currentUser?.email || "...."}}</div>
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="fas fa-mobile-alt"></i> &nbsp;&nbsp;+216 {{ currentUser?.telephone || "...."}}</div>
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="far fa-building"></i> &nbsp;&nbsp;{{ currentUser?.adresse || "...."}}</div>
+
+
+
+
+</ion-content>

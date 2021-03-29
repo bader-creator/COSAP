@@ -1,0 +1,28 @@
+.scroll-content {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+ion-card.card {
+    box-shadow: none;
+    margin-top: 55px;
+    height: 58%;
+    font-size: 38px;
+    border-radius: 35px;
+}
+
+.Download {
+    background-color: DodgerBlue;
+    border-radius: 37px;
+    margin-left: 120px;
+    color: white;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+
+/* Darker background on mouse-over */

@@ -1,0 +1,137 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Historique
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-sm-11 col-md-8 col-lg-5">
+
+                <h2 class="text-dark h5 font-weight-bold mt-4 mb-1">Historique congé</h2>
+                <div class="profile-card card">
+                    <div class="card-body">
+                        <ng-container *ngFor="let h of historique;">
+                            <div style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;float: left;" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="fas fa-calendar-day"></i>&nbsp;&nbsp;{{h?.dateDebutConge| date: 'dd-MM-yyyy'}}</div>
+                            <div style="text-align: right;width:50%;font-size: 14px;margin-bottom: 5px;color:#59687f;float: right" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="far fa-calendar-times"></i> &nbsp;&nbsp;{{h.dateFinConge | date: 'dd-MM-yyyy'}}</div><br><br>
+
+                            <div *ngIf='h?.nbJours == "1"' style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;float: left;" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="fas fa-sun"></i> &nbsp;&nbsp;{{h?.nbJours}} Jour</div>
+
+
+                            <div *ngIf='h?.nbJours != "1"' style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;float: left;" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="fas fa-sun"></i> &nbsp;&nbsp;{{h?.nbJours}} Jours</div>
+
+                            <div *ngIf='h?.etat=="Validée"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#00C851;float: right" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#00C851"></i>&nbsp;&nbsp;C. {{h?.etat}}
+                            </div>
+
+                            <div *ngIf='h?.etat=="Refusée"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#CC0000;float: right" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#CC0000"></i>&nbsp;&nbsp;C. {{h?.etat}}
+                            </div>
+
+                            <div *ngIf='h?.etat=="En Cours"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#FF8800;float: right" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#FF8800"></i>&nbsp;&nbsp;C. {{h?.etat}}
+                            </div>
+
+                            <div *ngIf='h?.etat=="Supprimée"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#ff4444;float: right" [routerLink]="'/detail/' + h.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#ff4444"></i>&nbsp;&nbsp;C. {{h?.etat}}
+                            </div>
+
+                            <div class="dropdown-divider" style="width:80%;"></div>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <br>
+
+
+
+
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-sm-11 col-md-8 col-lg-5">
+
+                <h2 class="text-dark h5 font-weight-bold mt-4 mb-1">Historique autorisation</h2>
+                <div class="profile-card card">
+                    <div class="card-body">
+                        <ng-container *ngFor="let s of historiquesortie;">
+                            <div style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;float: left;" [routerLink]="'/detail-demande-sortie/' + s.id" routerDirection="root">
+                                <i class="fas fa-calendar-day"></i>&nbsp;&nbsp;{{s?.dateSortie | date: 'dd-MM-yyyy'}} {{s?.heureDebut| date: 'HH:mm'}} </div>
+                            <div style="text-align: right;width:50%;font-size: 14px;margin-bottom: 5px;color:#59687f;float: right" [routerLink]="'/detail-demande-sortie/' + s.id" routerDirection="root">
+                                <i class="far fa-calendar-times"></i> &nbsp;&nbsp;{{s?.heureFin| date: 'HH:mm'}}</div><br><br>
+                            <div style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;float: left;" [routerLink]="'/detail-demande-sortie/' + s.id" routerDirection="root">
+                                <i class="fas fa-sun"></i> &nbsp;&nbsp;{{((s?.duree)-(s?.duree%60))/60}}h{{s?.duree%60}}m</div>
+
+                            <div *ngIf='s?.etat=="Validée"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#00C851;float: right" [routerLink]="'/detail-demande-sortie/' + s.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#00C851"></i>&nbsp;&nbsp;A. {{s?.etat}}
+                            </div>
+
+                            <div *ngIf='s?.etat=="Refusée"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#CC0000;float: right" [routerLink]="'/detail-demande-sortie/' + s.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#CC0000"></i>&nbsp;&nbsp;A. {{s?.etat}}
+                            </div>
+
+                            <div *ngIf='s?.etat=="En Cours"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#FF8800;float: right" [routerLink]="'/detail-demande-sortie/' + s.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#FF8800"></i>&nbsp;&nbsp;A. {{s?.etat}}
+                            </div>
+
+                            <div *ngIf='s?.etat=="Supprimée"' style="width:50%;text-align: right;font-size: 14px;margin-bottom: 5px;color:#ff4444;float: right" [routerLink]="'/detail-demande-sortie/' + s.id" routerDirection="root">
+                                <i class="far fa-flag" style="color:#ff4444"></i>&nbsp;&nbsp;A. {{s?.etat}}
+                            </div>
+
+                            <div class="dropdown-divider" style="width:80%;"></div>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+</ion-content>

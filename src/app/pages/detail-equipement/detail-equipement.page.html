@@ -1,0 +1,160 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Détail</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ng-container *ngFor="let d of detail">
+        <div class="card">
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="text"></ion-icon> Description
+                </div>
+                <div style="float: right;font-size: 14px;margin-right:10px;">{{d.description}}</div>
+
+            </div>
+
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="calendar"></ion-icon>Date Acquisition :
+                </div>
+                <div style="float: right;font-size: 14px;margin-right:10px;">{{d.dateAcquisition | date: 'dd-MM-yyyy'}}
+                </div>
+
+            </div>
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="person"></ion-icon> Propriétaire:
+                </div>
+                <div style="float: right;font-size: 17px; margin-right:10px;">{{d.owner.nom}} {{d.owner.prenom}}</div>
+
+            </div>
+
+
+            <div class="card-footer text-muted">
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="person"></ion-icon> Déstinataire:
+                </div>
+                <div style="float: right;font-size: 17px; margin-right:10px;" (click)="ListDestinatiare()">
+                    <ion-icon name="eye" style="font-size: 25px; margin-bottom: -7px;"></ion-icon>
+                </div>
+
+            </div>
+
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="apps"></ion-icon> Catégorie:
+                </div>
+                <div style="float: right;font-size: 17px;margin-right:10px;">{{d.categorie.name}}</div>
+
+            </div>
+
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="cog"></ion-icon> Etat:
+                </div>
+                <div style="float: right;font-size: 17px;margin-right:10px;">{{d.etat.name}}</div>
+
+            </div>
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="cash"></ion-icon> Prix :
+                </div>
+                <div style="float: right;font-size: 17px;margin-right:10px;">{{d.prix}}</div>
+
+            </div>
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="basket"></ion-icon> Quantite :
+                </div>
+                <div style="float: right;font-size: 17px;margin-right:10px;">{{d.quantite}}</div>
+
+            </div>
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="barcode"></ion-icon> Numéro de série / Réference :
+                </div>
+                <div style="float: right;font-size: 17px;margin-right:10px;">{{d.numeroSerie}}</div>
+
+            </div>
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="pin"></ion-icon> Localisation :
+                </div>
+                <div style="float: right;font-size: 17px;margin-right:10px;">{{d.localisation}}</div>
+
+            </div>
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="cart"></ion-icon> Nom :
+                </div>
+                <div style="float: right;font-size: 14px;margin-right:10px;">{{d.nom}}</div>
+
+            </div>
+            <div class="card-footer text-muted">
+
+                <div style="float: left;font-size: 17px;">
+                    <ion-icon name="chatboxes"></ion-icon> Commentaire :
+                </div>
+                <div style="float: right;font-size: 14px;margin-right:10px;">{{d.commentaire}}</div>
+
+            </div>
+
+            <ng-container *ngIf='d?.photo'>
+                <div class="card-footer text-muted">
+                    <a href="{{env}}{{d?.photo}}" download="att">Pièce jointe</a>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+    <br><br>
+</ion-content>
+
+<ion-footer no-padding no-marging>
+
+    <ng-container *ngIf='assets'>
+        <ng-container>
+            <ion-fab vertical="bottom" horizontal="end">
+                <ion-fab-button><i class="fas fa-list"></i></ion-fab-button>
+
+                <ion-fab-list side="top">
+                    <ion-fab-button [routerLink]="'/editer-equipement/' + id_equipement" routerDirection="root">
+                        <ion-icon name="create"></ion-icon>
+                    </ion-fab-button>
+                    <ion-fab-button (click)="DeleteEquipement()">
+                        <ion-icon name="trash"></ion-icon>
+                    </ion-fab-button>
+                    <ion-fab-button (click)="AffecterEquipement()">
+                        <ion-icon name="share-alt"></ion-icon>
+                    </ion-fab-button>
+                    <ion-fab-button (click)="ChangeType()">
+                        <ion-icon name="sync"></ion-icon>
+                    </ion-fab-button>
+
+
+                </ion-fab-list>
+
+            </ion-fab>
+        </ng-container>
+    </ng-container>
+</ion-footer>

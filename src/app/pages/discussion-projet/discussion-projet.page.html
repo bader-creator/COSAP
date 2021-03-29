@@ -1,0 +1,91 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ng-container *ngIf='messages'>
+            <ion-title>{{messages[0]?.projet?.intitule}}</ion-title>
+        </ng-container>
+
+    </ion-toolbar>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+</ion-header>
+
+<ion-content class="scrollable" style=" overflow: scroll;height: 200px;width: 100%;;overflow-x: hidden;">
+    <div class="card-body msg_card_body">
+        <div *ngFor="let msg of messages">
+            <ng-container *ngIf='msg.partage != 1 '>
+                <div *ngIf='this.currentUser == msg.personnel_sender.id && msg.message != "" '>
+
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            <span class="user_right">{{msg.personnel_sender.prenom}} {{msg.personnel_sender.nom}}</span>
+                            <br> {{msg.message}}
+
+                            <span class="msg_time_send">{{msg.created | date: 'HH:mm'}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf='this.currentUser != msg.personnel_sender.id && msg.message != "" '>
+                    <div class="d-flex justify-content-start mb-4">
+                        <div class="msg_cotainer">
+                            <div class="user_left">{{msg.personnel_sender.prenom}} {{msg.personnel_sender.nom}}</div>
+
+                            {{msg.message}}
+
+                            <span class="msg_time">{{msg.created | date: 'HH:mm'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <div *ngIf='msg.partage == 1'>
+                <div class="d-flex justify-content-start mb-4">
+                    <div class="Partage_Action">
+                        <div class="user_left">{{msg.personnel_sender.prenom}} {{msg.personnel_sender.nom}}</div>
+                        <div [routerLink]="'/detail-task/' + msg?.ticket?.id" routerDirection="root">
+                            {{msg.message}}
+                        </div>
+                        <span class="msg_time">{{msg.created |  date: 'dd-MM-yyyy'}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf='msg.ticket'>
+                <div class="d-flex justify-content-end mb-4">
+                    <div class="msg_tache_valide">
+                        <span class="user_right">{{msg.ticket.userDestination.firstName}} {{msg.ticket.userDestination.lastName}}</span>
+                        <br>
+                        <div [routerLink]="'/detail-task/' + msg?.ticket?.id" routerDirection="root">
+                            {{msg.ticket.intitule}}
+                        </div>
+
+
+                        <span class="msg_time_send">{{msg.ticket.ticketTracability[0].dateAction | date: 'dd-MM-yyyy'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id='div1' style='overflow:scroll;overflow-x:hidden;max-height:200px;'></div>
+
+</ion-content>
+
+<ion-footer class="footer">
+    <ion-item>
+        <textarea class="form-control type_msg" rows="1" placeholder="Envoyer un message" maxlength="500" autocapitalize="on" autosize [(ngModel)]="message.newMessage">
+      </textarea>
+        <ion-buttons slot="end">
+            <ion-button class="input-group-text send_btn" (click)="sendMessage()" id="submit">
+                <ion-icon name="send"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-item>
+</ion-footer>

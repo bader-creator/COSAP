@@ -1,0 +1,57 @@
+<ion-header style="height: 5%;">
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
+<ng-container *ngIf="!this?.Stagiaire">
+    <super-tabs>
+        <super-tabs-toolbar slot="top" color="secondary">
+            <super-tab-button style="padding: 30px;">
+                <ion-label style="color: white;padding-top: 18px;">P. Interne</ion-label>
+            </super-tab-button>
+            <super-tab-button style="padding: 30px;">
+                <ion-label style="color: white;padding-top: 18px;">P. Stagiaire</ion-label>
+            </super-tab-button>
+        </super-tabs-toolbar>
+        <super-tabs-container>
+            <super-tab>
+                <ion-content>
+                    <ion-list>
+                        <ion-item *ngFor="let p of projets ">
+                            <button (click)="godiscussion(p.id)" class="position">  <ion-icon name="chatbubbles" class="position"></ion-icon></button> <label (click)="godiscussion(p.id,'Projetsfm')">{{p.intitule}}</label>
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+            </super-tab>
+            <super-tab>
+                <ion-content>
+                    <ion-list>
+                        <ion-item *ngFor="let p of ListeEncadrant ">
+                            <button (click)="godiscussion(p.id)" class="position">  <ion-icon name="chatbubbles" class="position"></ion-icon></button><label (click)="godiscussion(p.id,'Projetstagiaire')">{{p.title}}</label>
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+            </super-tab>
+        </super-tabs-container>
+    </super-tabs>
+</ng-container>
+
+<ng-container *ngIf="this?.Stagiaire">
+    <br>
+    <ion-content>
+        <ion-list>
+            <ion-item *ngFor="let p of Stagiaires " style="padding-top: 2px;">
+                <button (click)="godiscussion(p.id)" class="position">  <ion-icon name="chatbubbles" class="position"></ion-icon></button><label (click)="godiscussion(p.id,'Projetstagiaire')">{{p.title}}</label>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ng-container>

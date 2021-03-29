@@ -1,0 +1,124 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Demande
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <img src='{{env}}{{demandesortie?.personnel?.user?.path || "empty.png"}}' class="shadow-lg img-fluid z-depth-1 rounded-circle" style="width:200px;height: 200px;">
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h1><b>{{demandesortie?.personnel?.nom}} {{demandesortie?.personnel?.prenom}}</b></h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h5 style="margin-top: 0px;color: #FF8800">{{ demandesortie?.personnel?.user?.job?.name || "...."}} </h5>
+    </div>
+
+    <br>
+
+
+
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-sm-11 col-md-8 col-lg-5">
+
+
+                <div class="profile-card py-3 card">
+                    <div class="card-body px-4 px-md-3 py-3">
+
+                        <div class="row mt-1 justify-content-center">
+
+
+                            <div class="desc" style="width: 100%;text-align: center;">Autorisation de {{((demandesortie?.duree)-(demandesortie?.duree%60))/60}} : {{demandesortie?.duree%60}}</div>
+
+
+
+
+
+                            <div class="row" style="width: 100%;">
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Heure Début</label><br>
+                                    <span style="font-size: 14px;"><b>{{demandesortie?.heure_debut | date: 'HH:mm' }}</b></span>
+
+
+                                </div>
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Heure Fin</label><br>
+                                    <span style="font-size: 14px;"><b>{{demandesortie?.heure_fin | date: 'HH:mm' }}</b></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="width: 100%;">
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Demande</label><br>
+                                    <span style="font-size: 14px;"><b>{{demandesortie?.date_demande | date: 'dd-MM-yyyy' }}</b></span>
+
+
+                                </div>
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Sortie</label><br>
+                                    <span style="font-size: 14px;"><b>{{demandesortie?.date_sortie | date: 'dd-MM-yyyy' }}</b></span>
+
+                                </div>
+
+                            </div>
+                            <br>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+
+
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="fas fa-at"></i>&nbsp;&nbsp;{{demandesortie?.personnel?.email}}</div>
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="fas fa-mobile-alt"></i> &nbsp;&nbsp;+216 {{demandesortie?.personnel?.telephone}}</div>
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="far fa-building"></i> &nbsp;&nbsp;{{demandesortie?.personnel?.adresse}}</div>
+
+
+
+
+
+</ion-content>

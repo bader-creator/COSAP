@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar color="secondary" fixed>
+    <ion-title style="font-size: 17px;">Programme de la journée</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button fill="solid" style="font-size: 18px;" routerDirection="root" routerLink="/home" color="secondary">
+        <ion-icon slot="start" name="home" style="color: white;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <super-tabs>
+    <super-tabs-toolbar slot="top" style="background-color: #8a8e91b0;box-shadow: 12px 0px 2px 1px #8a8e91b0;">
+      <super-tab-button style="padding-bottom: 47px;">
+        <ion-label style="padding-top: 50px; color: white;font-size: 12.2px;">Réunions</ion-label>
+      </super-tab-button>
+      <super-tab-button style="padding-bottom: 47px;">
+        <ion-label style="padding-top: 50px;color: white;font-size: 12.2px;">Actions</ion-label>
+      </super-tab-button>
+    </super-tabs-toolbar>
+
+    <super-tabs-container>
+      <super-tab>
+        <ion-content>
+          <h5 *ngIf="listReunion?.length == 0" style="text-align: center; margin-top: 30%">No Event
+          </h5>
+          <ion-card *ngFor="let liste of listReunion">
+            <ion-card-content>
+              <div class="d-flex  w-100 align-items-center text-left">
+                <div class="col">
+                  <div class="content-profile">
+                    <img src="./../../../assets/icon/reunion.png" class="list-img img-fluid z-depth-1 rounded-circle">
+                  </div>
+                  <ion-label class="overme">{{liste.renion.nom}}</ion-label><br>
+                  <ion-label class="type">{{liste.renion.type}}</ion-label>
+                  <div class="date" style="position: absolute; top: 99px;left: 62px">
+                    <ion-icon name="pin"></ion-icon>
+                    <ion-label>{{liste.renion.lieu}}</ion-label>
+                  </div>
+
+                  <div class="date" style="position: absolute; top: 43px;left: 62px">
+                    <ion-icon name="calendar"></ion-icon>
+                    <ion-label>{{liste.renion.debut | date: 'dd-MM-yyyy HH:mm'}}</ion-label>
+
+                  </div>
+                  <div class="date" style="position: absolute;top: 71px;left: 62px;">
+                    <ion-icon name="calendar"></ion-icon>
+                    <ion-label>{{liste.renion.fin | date: 'dd-MM-yyyy HH:mm'}}</ion-label>
+                  </div>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-content>
+      </super-tab>
+
+      <super-tab>
+        <ion-content>
+          <h5 *ngIf="listActions?.length == 0" style="text-align: center; margin-top: 30%">No Action
+          </h5>
+          <ion-card *ngFor="let action of listActions">
+            <ion-card-content>
+              <div class="d-flex  w-100 align-items-center text-left">
+                <div class="col">
+                  <div class="content-profile">
+                    <img src="./../../../assets/icon/action.png" class="list-img img-fluid z-depth-1 rounded-circle">
+                  </div>
+                  <ion-label class="overme" style="top: 8px;">{{action.intitule}}</ion-label><br>
+                  <div class="date" style="position: absolute; top: 99px;left: 62px">
+                    <ion-icon name="hourglass"></ion-icon>
+                    <ion-label>{{action.nbjours}} H/J</ion-label>
+                  </div>
+
+                  <div class="date" style="position: absolute; top: 43px;left: 62px">
+                    <ion-icon name="calendar"></ion-icon>
+                    <ion-label>{{action.dateCreation | date: 'dd-MM-yyyy HH:mm'}}</ion-label>
+
+                  </div>
+                  <div class="date" style="position: absolute;top: 71px;left: 62px;">
+                    <ion-icon name="calendar"></ion-icon>
+                    <ion-label>{{action.dateLimite | date: 'dd-MM-yyyy HH:mm'}}</ion-label>
+                  </div>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-content>
+
+      </super-tab>
+
+    </super-tabs-container>
+  </super-tabs>
+
+
+</ion-content>

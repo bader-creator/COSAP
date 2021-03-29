@@ -1,0 +1,172 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Demandes
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-segment [(ngModel)]="segment">
+        <ion-segment-button value="conge" checked>
+            <label><b>Congé</b></label>
+        </ion-segment-button>
+        <ion-segment-button value="sortie">
+            <label><b>sortie</b></label>
+        </ion-segment-button>
+        <ion-segment-button value="tele">
+            <label><b>TéléTravail</b></label>
+        </ion-segment-button>
+    </ion-segment>
+
+
+
+    <ng-container *ngIf='segment=="conge"'>
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+            <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
+                refreshingSpinner="circles" refreshingText="Refreshing...">
+            </ion-refresher-content>
+        </ion-refresher>
+        <br>
+        <div class="container" *ngFor="let d of demandeCongeEnCours;">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="d-flex flex-row border rounded">
+                        <div class="p-0 w-25">
+                            <img style="width:100%;height: 100%;" src="{{env}}{{d?.personnel?.user?.path}}"
+                                class="img-thumbnail border-0 rounded mx-auto d-block" />
+
+                        </div>
+                        <div class="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
+                            <h5 class="text-primary" style="list-style: none; margin:0; padding: 0">
+                                {{d?.personnel?.nom}}
+                                {{ d?.personnel?.prenom}}</h5>
+                            <p class="text-info" style="list-style: none; margin:0; padding: 0;font-size: 14px;">
+                                {{d?.personnel?.poste?.intitule}}</p>
+                            <ul class="m-0 float-left" style="list-style: none; margin:0; padding: 0;">
+
+                                <li style="font-size: 12px;"><i class="far fa-commenting"></i>
+                                    {{d?.typeConge?.libelle }}
+                                </li>
+                                <li style="font-size: 12px;"><i class="far fa-calendar-check"></i>
+                                    {{d?.dateDebutConge | date: 'dd-MM-yyyy HH:mm' }}</li>
+                                <li style="font-size: 12px;"><i class="fas fa-calendar-day"></i>
+                                    {{d?.dateFinConge | date: 'dd-MM-yyyy HH:mm' }} </li>
+                            </ul>
+                            <p class="text-right m-0"><a [routerLink]="'/detailconge-confirmation/' + d.id"
+                                    routerDirection="root" class="btn btn-primary btn-sm">Détail</a></p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <h5 *ngIf="demandeCongeEnCours?.length == 0 " style="text-align: center; margin-top: 30%">Pas de demande</h5>
+    </ng-container>
+    <ng-container *ngIf='segment=="sortie"'>
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+            <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
+                refreshingSpinner="circles" refreshingText="Refreshing...">
+            </ion-refresher-content>
+        </ion-refresher>
+        <br>
+        <div class="container" *ngFor="let s of demandeSortieEnCours;">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="d-flex flex-row border rounded">
+                        <div class="p-0 w-25">
+                            <img style="width:100%;height: 100%;" src="{{env}}{{s?.personnel?.user?.path}}"
+                                class="img-thumbnail border-0 rounded mx-auto d-block" />
+
+                        </div>
+                        <div class="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
+                            <h5 class="text-primary" style="list-style: none; margin:0; padding: 0">
+                                {{s?.personnel?.nom}}
+                                {{ s?.personnel?.prenom}}</h5>
+                            <p class="text-info" style="list-style: none; margin:0; padding: 0;font-size: 14px;">
+                                {{s?.personnel?.poste?.intitule}}</p>
+                            <ul class="m-0 float-left" style="list-style: none; margin:0; padding: 0;">
+
+
+                                <li style="font-size: 12px;"><i class="far fa-calendar-check"></i>
+                                    {{s?.dateSortie | date: 'dd-MM-yyyy' }} {{s?.heureDebut | date: 'HH:mm' }} </li>
+                                <li style="font-size: 12px;"><i class="fas fa-calendar-day"></i>
+                                    {{s?.dateSortie | date: 'dd-MM-yyyy' }} {{s?.heureFin| date: ' HH:mm' }} </li>
+                            </ul>
+                            <p class="text-right m-0"><a [routerLink]="'/detailsortie-confirmation/' + s.id"
+                                    routerDirection="root" class="btn btn-primary btn-sm">Détail</a></p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <h5 *ngIf=" demandeSortieEnCours?.length == 0" style="text-align: center; margin-top: 30%">Pas de demande</h5>
+    </ng-container>
+
+
+
+    <ng-container *ngIf='segment=="tele"'>
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+            <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
+                refreshingSpinner="circles" refreshingText="Refreshing...">
+            </ion-refresher-content>
+        </ion-refresher>
+        <br>
+
+        <div class="container" *ngFor="let d of demandeTeletravailEncours;">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="d-flex flex-row border rounded">
+                        <div class="p-0 w-25">
+                            <img style="width:100%;height: 100%;" src="{{env}}{{d?.createur?.user?.path}}"
+                                class="img-thumbnail border-0 rounded mx-auto d-block" />
+
+                        </div>
+                        <div class="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
+                            <h5 class="text-primary" style="list-style: none; margin:0; padding: 0">
+                                {{d?.createur?.nom}}
+                                {{ d?.createur?.prenom}}</h5>
+                            <ul class="m-0 float-left" style="list-style: none; margin:0; padding: 0;">
+
+                                <li style="font-size: 12px;"><i class="far fa-calendar-check"></i>
+                                    {{d?.dateDebut| date: 'dd-MM-yyyy' }}</li>
+                                <li style="font-size: 12px;"><i class="fas fa-calendar-day"></i>
+                                    {{d?.dateFin | date: 'dd-MM-yyyy' }} </li>
+                            </ul>
+                            <p class="text-right m-0"><a [routerLink]="'/detail-teletravail/' + d.id"
+                                    routerDirection="root" class="btn btn-primary btn-sm">Détail</a></p>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <h5 *ngIf="demandeTeletravailEncours?.length == 0 " style="text-align: center; margin-top: 30%">Pas de demande
+        </h5>
+
+    </ng-container>
+
+
+
+
+
+</ion-content>

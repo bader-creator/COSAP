@@ -1,0 +1,131 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Demande
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <img src='{{env}}{{conge?.personnel?.user?.path || "empty.png"}}' class="shadow-lg img-fluid z-depth-1 rounded-circle" style="width:200px;height: 200px;">
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h1><b>{{conge?.personnel?.nom}} {{conge?.personnel?.prenom}}</b></h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h5 style="margin-top: 0px;color: #FF8800">{{ conge?.personnel?.user?.job?.name || "...."}} </h5>
+    </div>
+
+    <br>
+
+
+
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-sm-11 col-md-8 col-lg-5">
+
+
+                <div class="profile-card py-3 card">
+                    <div class="card-body px-4 px-md-3 py-3">
+
+                        <div class="row mt-1 justify-content-center">
+
+
+                            <div *ngIf='conge?.nbJours == "1" ' class="desc" style="width: 100%;text-align: center;"> Congé {{conge?.nbJours }} jour</div>
+                            <br>
+                            <div *ngIf='conge?.nbJours != "1" ' class="desc" style="width: 100%;text-align: center;"> Congé {{conge?.nbJours }} jours</div>
+                            <br> {{conge?.typeConge?.libelle }}
+
+
+
+                            <div class="row" style="width: 100%;">
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Début</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateDebutConge| date: 'dd-MM-yyyy' }}</b></span>
+
+
+                                </div>
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Fin</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateFinConge | date: 'dd-MM-yyyy' }}</b></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="width: 100%;">
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Demande</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateDemande | date: 'dd-MM-yyyy' }}</b></span>
+
+
+                                </div>
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Reprise</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateReprise | date: 'dd-MM-yyyy' }}</b></span>
+
+                                </div>
+
+                            </div>
+                            <br>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+
+
+
+
+    <input style="margin: 5px;" type="text" class="form-control" [(ngModel)]="commentaire" placeholder="Commentaire">
+    <br>
+    <br>
+
+
+    <div class="d-flex justify-content-center">
+
+        <br>
+        <div style="margin-right: 20px;">
+            <button type="button" class="btn btn-success" (click)="traiterdemande('Validée')">Valider</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-danger" (click)="traiterdemande('Refusée')">Refuser</button>
+        </div>
+
+    </div>
+    <br>
+    <br>
+</ion-content>

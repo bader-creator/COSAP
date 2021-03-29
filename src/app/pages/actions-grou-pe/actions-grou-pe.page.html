@@ -1,0 +1,1062 @@
+<ion-header>
+  <ion-toolbar color="secondary" fixed>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Bilan quotidien</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button fill="solid" style="font-size: 18px;" routerDirection="root" routerLink="/home" color="secondary">
+        <ion-icon slot="start" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="segment">
+    <ion-segment-button value="Me" checked>
+      <label><b>Me</b></label>
+    </ion-segment-button>
+    <ion-segment-button value="TEAM">
+      <label><b>My TEAM</b></label>
+    </ion-segment-button>
+    <ion-segment-button value="User">
+      <label><b>Historique</b></label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ng-container *ngIf="!this?.supervision">
+    <ng-container *ngIf='segment=="Me"'>
+      <div class="row" style="overflow-x: auto;margin-top: 5px;margin-left: 0px;margin-right: 0px;">
+        <div class="table-responsive-xl">
+          <table class="table table-striped" style="position: relative;">
+            <ng-container *ngIf="this?.TasksParId != null || this?.TasksSpontanee != null">
+              <thead style="display: block; background-color: #6f91d6 !important;">
+                <tr>
+                  <th>
+                    <ion-label>Actions</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Détail du jour
+                    </ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;position: relative;left: -17px;">Durée (heures)</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;position: relative;left: -64px;">Affichage Projet</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;position: relative;left: -53px;">Etat</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Date Bilan</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Doc.Attaché</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">OK</ion-label>
+                  </th>
+                </tr>
+              </thead>
+            </ng-container>
+
+            <tbody style="display: block; overflow-y: auto;">
+              <tr *ngFor="let task of TasksParId; let i=index;">
+                <td data-th="Action">
+                  <label style=" word-break: normal;width: 100px;">{{task?.intitule}}</label>
+                </td>
+                <td data-th="Détail du jour">
+                  <div class="form-group">
+                    <ion-icon name="chatboxes" style="font-size: 18px;margin-bottom: -6px;margin-left: -4px;">
+                    </ion-icon><label style="font-size: 12px;">Commentaire :</label>
+                    <textarea [(ngModel)]="task.commentaire" [(ngModel)]="ticket.commentaire"
+                      class="form-control form-control-large" style="font-size: 10px; width: 104%;" rows="4"></textarea>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="time" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -15px; font-size: 12px;" hourValues="00,01,02,03,04,05,06,07,08"
+                      minuteValues="00,15,30,45" [(ngModel)]="task.hours" [(ngModel)]="ticket.hours"
+                      displayFormat="HH:mm" placeholder="Select Time">
+                    </ion-datetime>
+                  </ion-item>
+                  <ng-container *ngIf="!ticket.hours && verifeChamp">
+                    <div style="font-size: 10px;color: red;">
+                      * Champ obligatoire
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Affichage Projet" (click)="presentAlertConfirm(task?.id)">
+                  <ion-item class="AffichageProjet" style="
+                      border-radius: 11px;">
+                    <ion-label style="font-size: 11.3px;">Share</ion-label>
+                    <ion-toggle color="primary"></ion-toggle>
+                  </ion-item>
+                </td>
+                <td data-th="Etat">
+                  <div class="form-group" style="margin-bottom: 32px;">
+                    <ion-icon name="settings" style="font-size: 18px;margin-bottom: -5px;margin-left: -4px;">
+                    </ion-icon><label style="font-size: 12px;">Etat :</label>
+                    <select class="custom-select" [(ngModel)]="task.etat" [(ngModel)]="ticket.etat">
+                      <option [value]="1">RAS</option>
+                      <option [value]="2">Blocage</option>
+                      <option [value]="3">Retard</option>
+                    </select>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="calendar" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -5px;" displayFormat="DD/MM/YYYY" min="{{task.dateMin}}"
+                      max="{{task.date}}" [(ngModel)]="task.date" [(ngModel)]="ticket.date" placeholder="Select Date">
+                    </ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Doc.Attaché">
+                  <ion-item class="docs" (click)="PieceJoint()" style="border-radius: 11px;width: 107%;">
+                    <img width="23px" style="margin-left: -3px; margin-right: 2px;" src="../../../assets/icon/pp.png" />
+                    <div style="font-size:12px;">
+                      <b style="font-size:7px;">pièce jointe </b>
+                    </div>
+                  </ion-item>
+                </td>
+                <td data-th="OK">
+                  <button type="button" class="btn btn-success" (click)="validerAction(task?.id)">
+                    Valider
+                  </button>
+                </td>
+              </tr>
+              <!------------------------------------- TasksSpontanee--------------------------------    -->
+              <tr *ngFor="let task of TasksSpontanee; let i=index;">
+                <td data-th="Action">
+                  <label style="
+                      word-break: normal;
+                      width: 100px;
+                    ">{{task?.intitule}}</label>
+                </td>
+                <td data-th="Détail du jour">
+                  <div class="form-group">
+                    <ion-icon name="chatboxes" style="
+                        font-size: 18px;
+                        margin-bottom: -6px;
+                        margin-left: -4px;
+                      "></ion-icon><label style="font-size: 12px;">Commentaire :</label>
+                    <textarea id="{{task?.id}}commentaire" value="{{task?.commentaire}}"
+                      class="form-control form-control-large" style="font-size:10px; width: 104%;" name="description"
+                      rows="4">
+                        </textarea>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="time" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime id="{{task?.id}}hours" style="margin-left: -15px; font-size: 12px;"
+                      hourValues="00,01,02,03,04,05,06,07,08" minuteValues="00,15,30,45" value="{{task?.hours}}"
+                      displayFormat="HH:mm" placeholder="Select Time">{{task?.hours}}</ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Affichage Projet">
+                  <ion-item class="AffichageProjet"
+                    style="border-radius: 11px;--ion-background-color: #87888a !important;">
+                    <ion-label style="font-size: 11.3px;">Share</ion-label>
+                    <ion-toggle color="primary"></ion-toggle>
+                  </ion-item>
+                </td>
+                <td data-th="Etat">
+                  <div class="form-group" style="margin-bottom: 32px;">
+                    <ion-icon name="settings" style="font-size: 18px;margin-bottom: -5px;margin-left: -4px;"></ion-icon>
+                    <label style="font-size: 12px;">Etat :</label>
+                    <select class="custom-select" id="{{task?.id}}etat" value="{{task?.etat}}">
+                      <option [value]="1">RAS</option>
+                      <option [value]="2">Blocage</option>
+                      <option [value]="3">Retard</option>
+                    </select>
+                  </div>
+                </td>
+
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="calendar" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime id="{{task?.id}}dateCreation" style="margin-left: -5px;" displayFormat="DD/MM/YYYY"
+                      min="{{this?.Mindate}}" max="{{action.date}}" placeholder="Select Date"
+                      value="{{task?.dateCreation}}">{{task?.dateCreation}}</ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Doc.Attaché">
+                  <ng-container *ngIf="task?.photo">
+                    <ion-item class="docs" style="border-radius: 11px;width:107%;">
+                      <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                        src="../../../assets/icon/pp.png" />
+                      <div style="font-size:12px;">
+                        <a style="font-size:7px;" href="{{environment}}{{task?.photo}}">pièce jointe
+                        </a>
+                      </div>
+                    </ion-item>
+                  </ng-container>
+                  <ng-container *ngIf="!task?.photo">
+                    <ion-item class="docs"
+                      style="border-radius: 11px;width:107%;--ion-background-color: #87888a !important;">
+                      <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                        src="../../../assets/icon/pp.png" />
+                      <div style="font-size:12px;">
+                        <i style="font-size:7px;">pièce jointe</i>
+                      </div>
+                    </ion-item>
+                  </ng-container>
+                </td>
+                <td data-th="OK">
+                  <div class="row" style="margin-left:-5px;">
+                    <div class="col" id="icons" style="margin-right: 10px;">
+                      <img (click)="AlertDelete(task?.id)" src="./../../../assets/icon/notok.png"
+                        style="width: 30px; height: 30px; margin-right: 5px;" />
+                    </div>
+                    <div class="col" id="icons" style="margin-right: 12px;">
+                      <img (click)="AlertUpdate(task?.id,task)" src="./../../../assets/icon/modifier.png"
+                        style="width: 30px; height: 30px; margin-right: 3px;" />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <!-------------------------------------------------------------------------------------->
+
+              <!--  ----------------------------------- actions by button add--------------------------------    -->
+
+              <tr *ngFor="let act of actions">
+                <td data-th="Action">
+                  <ion-icon name="close" style="color: #CC0000;font-size: 25px;" (click)="removeAddActionSponT(i)">
+                  </ion-icon>
+                  <div class="form-group">
+                    <label style="
+                        word-break: normal;
+                        width: 100px;
+                      ">Intitulé</label>
+                    <input style=" width: 100px;" [(ngModel)]="action.titre" name="action.titre"
+                      class="form-control input-sm" />
+                  </div>
+                  <ng-container *ngIf="!action.titre && verifeChamp">
+                    <div style="
+                        font-size: 10px;
+                        color: red;
+                      ">
+                      * Champ obligatoire
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Détail du jour">
+                  <div class="form-group">
+                    <ion-icon name="chatboxes" style="font-size: 18px;margin-bottom: -6px;margin-left: -4px;">
+                    </ion-icon><label style="font-size: 12px;">Commentaire :</label>
+                    <textarea [(ngModel)]="action.comment" name="action.comment" class="form-control form-control-large"
+                      style="font-size: 10px; width: 104%;" name="description" rows="4"></textarea>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="time" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -15px; font-size: 12px;" hourValues="00,01,02,03,04,05,06,07,08"
+                      minuteValues="00,15,30,45" [(ngModel)]="action.heure" name="action.heure" displayFormat="HH:mm"
+                      placeholder="Select Time">
+                    </ion-datetime>
+                  </ion-item>
+                  <ng-container *ngIf="!action.heure && verifeChamp">
+                    <div style="font-size: 10px;color: red;">
+                      * Champ obligatoire
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Affichage Projet">
+                  <ion-item class="AffichageProjet"
+                    style="border-radius: 11px;--ion-background-color: #87888a !important;width: 107%;">
+                    <ion-label style="font-size: 11.3px;">Share</ion-label>
+                    <ion-toggle color="primary"></ion-toggle>
+                  </ion-item>
+                </td>
+                <td data-th="Etat">
+                  <div class="form-group" style="margin-bottom: 32px;">
+                    <ion-icon name="settings" style="font-size: 18px;margin-bottom: -5px;margin-left: -4px;"></ion-icon>
+                    <label style="font-size: 12px;">Etat :</label>
+                    <select class="custom-select" name="action.statut" [(ngModel)]="action.statut">
+                      <option [value]="1">RAS</option>
+                      <option [value]="2">Blocage</option>
+                      <option [value]="3">Retard</option>
+                    </select>
+                  </div>
+                </td>
+
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="calendar" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -5px;" displayFormat="DD/MM/YYYY" min="{{this?.Mindate}}"
+                      max="{{action.date}}" [(ngModel)]="action.date" placeholder="Select Date"></ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Doc.Attaché">
+                  <ion-item class="docs" (click)="alert()" style="border-radius: 11px;">
+                    <img width="23px" style="margin-left: -3px; margin-right: 2px;" src="../../../assets/icon/pp.png" />
+                    <div style="font-size: 12px;">
+                      <b style="font-size:7px;">pièce jointe </b>
+                    </div>
+                  </ion-item>
+                </td>
+                <td data-th="OK">
+                  <button type="button" class="btn btn-success" (click)="validerActionSpontanee()">
+                    Valider
+                  </button>
+                </td>
+              </tr>
+              <!--  -----------------------------------------------------------------    -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br /><br />
+      <ng-container>
+        <ion-footer no-padding no-marging>
+          <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: -5px;" (click)="AddActionSponT()">
+            <ion-fab-button>
+              <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-footer>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf='segment=="TEAM"'>
+      <div class="row" style="
+          overflow-x: auto;
+          margin-top: 5px;
+          margin-left: 0px;
+          margin-right: 0px;
+        ">
+        <div class="table-responsive-xl">
+          <table id="tabledtwo" class="table table-striped">
+            <ng-container *ngIf="this?.PersonnelBySupperieur != null">
+              <thead style="display: block; background-color: #6f91d6 !important;">
+                <tr>
+                  <th>
+                    <ion-label>Photo</ion-label>
+                  </th>
+                  <th>
+                    <ion-label>Prenom</ion-label>
+                  </th>
+                  <th>
+                    <ion-label>Nom</ion-label>
+                  </th>
+                  <th>
+                    <ion-label>Point</ion-label>
+                  </th>
+                </tr>
+              </thead>
+            </ng-container>
+            <tbody style="display: block; overflow-y: auto;">
+              <tr *ngFor="let perso of PersonnelBySupperieur ">
+                <td data-th="Photo " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <ng-container *ngIf="!perso?.tt[0]?.etat">
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf='perso?.tt[0]?.etat == 1'>
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        style="box-shadow:2px 2px 10px 2px rgba(14, 179, 12, 0.59); border: 2px solid green;"
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="perso?.tt[0]?.etat==2">
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        style=" box-shadow: 2px 2px 10px 2px rgba(241, 3, 3, 0.59); border: 2px solid red;"
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="perso?.tt[0]?.etat==3">
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        style="box-shadow:2px 2px 10px 2px rgba(228, 169, 2, 0.59); border: 2px solid goldenrod;"
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Prenom " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <label style="margin-left: -42px;">{{perso?.prenom}}</label>
+                </td>
+                <td data-th="Nom " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <label style="margin-left: -48px;">{{perso?.nom}}</label>
+                </td>
+                <td data-th="Point " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <label style="margin-left: -55px;">{{perso?.user?.point}}</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf='segment=="User"'>
+      <div class="row" style="
+          overflow-x: auto;
+          margin-top: 5px;
+          margin-left: 0px;
+          margin-right: 0px;
+        ">
+        <div class="table-responsive-xl">
+          <table id="tablethree" class="table table-striped" style="position: relative;">
+            <ng-container *ngIf="this?.arrayTT">
+              <thead style="display: block; background-color: #6f91d6 !important;">
+                <tr>
+                  <th>
+                    <ion-label style="margin-left: -39px;">Actions</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Résultat du jour
+                    </ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Doc.Attaché</ion-label>
+                  </th>
+                </tr>
+              </thead>
+            </ng-container>
+
+            <tbody style="display: block; overflow-y: auto;">
+              <ng-container *ngFor="let hi of arrayTT;let i=index;">
+                <tr style="background-color: #f4f3ef;border-top: none;">
+                  <ion-label style="margin-left: 7px;white-space: nowrap;font-size: 16px;">{{hi[0]}}</ion-label>
+                </tr>
+                <ng-container *ngFor="let s of hi[1]">
+                  <tr *ngIf='s?.ticket?.intitule'>
+                    <td data-th="Action">
+                      <label style="
+                      word-break: normal;
+                      width: 100px;
+                      margin-left: -110px;
+                    ">{{s?.ticket?.intitule}}</label>
+                    </td>
+                    <td data-th="Résultat du jour">
+                      <ion-item class="Resultat" style="
+                      border-radius: 11px;
+                      position: absolute;
+                      margin-top: -25px;
+                      left: 182px;
+                    " (click)="GoesTOHistorique(s?.id)">
+                        <ion-icon name="desktop" style="font-size: 20px; margin-left: -1px;"></ion-icon>
+                        <ion-label style="font-size: 11px; margin: 4px;">Historique</ion-label>
+                      </ion-item>
+                    </td>
+                    <td data-th="Doc.Attaché">
+                      <ng-container *ngIf="s?.ticket?.path">
+                        <ion-item class="docs" style="
+                        border-radius: 11px;
+                        position: absolute;
+                        margin-top: -25px;
+                        left: 386px;
+                      ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <a style="font-size: 9px;" href="{{environment}}{{s?.ticket?.path}}">pièce jointe
+                            </a>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                      <ng-container *ngIf="!s?.ticket?.path">
+                        <ion-item class="docs" style="
+                        border-radius: 11px;
+                        position: absolute;
+                        margin-top: -25px;
+                        left: 386px;
+                        --ion-background-color: #87888a !important;
+                      ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <i style="font-size: 9px;">pièce jointe</i>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                    </td>
+                  </tr>
+
+                  <tr *ngIf='s?.intitule'>
+                    <td data-th="Action">
+                      <label style="
+                      word-break: normal;
+                      width: 100px;
+                      margin-left: -110px;
+                    ">{{s?.intitule}}</label>
+                    </td>
+                    <td data-th="Résultat du jour">
+                      <ion-item class="Resultat" style="
+                      border-radius: 11px;
+                      position: absolute;
+                      margin-top: -25px;
+                      left: 193px;
+                    " (click)="GoesTODetail(s?.id)">
+                        <ion-icon name="desktop" style="font-size: 20px; margin-left: -1px;"></ion-icon>
+                        <ion-label style="font-size: 11px; margin: 4px;">Détail</ion-label>
+                      </ion-item>
+                    </td>
+                    <td data-th="Doc.Attaché">
+                      <ng-container *ngIf="s?.photo">
+                        <ion-item class="docs" style="
+                        border-radius: 11px;
+                        position: absolute;
+                        margin-top: -25px;
+                        left: 386px;
+                      ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <a style="font-size: 9px;" href="{{environment}}{{s?.photo}}">pièce jointe
+                            </a>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                      <ng-container *ngIf="!s?.photo">
+                        <ion-item class="docs" style="
+                        border-radius: 11px;
+                        position: absolute;
+                        margin-top: -25px;
+                        left: 386px;
+                        --ion-background-color: #87888a !important;
+                      ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <i style="font-size: 9px;">pièce jointe</i>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="this?.supervision">
+    <ng-container *ngIf='segment=="Me"'>
+      <div class="row" style="overflow-x: auto;margin-top: 5px;margin-left: 0px;margin-right: 0px;">
+        <div class="table-responsive-xl">
+          <table class="table table-striped" style="position: relative;">
+            <ng-container *ngIf="this?.TasksParId != null || this?.TasksSpontanee != null">
+              <thead style="display: block; background-color: #6f91d6 !important;">
+                <tr>
+                  <th>
+                    <ion-label>Actions</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Détail du jour
+                    </ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;position: relative;left: -17px;">Durée (heures)</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;position: relative;left: -64px;">Affichage Projet</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;position: relative;left: -53px;">Etat</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Date Bilan</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Doc.Attaché</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">OK</ion-label>
+                  </th>
+                </tr>
+              </thead>
+            </ng-container>
+
+            <tbody style="display: block; overflow-y: auto;">
+              <tr *ngFor="let task of TasksParId; let i=index;">
+                <td data-th="Action">
+                  <label style=" word-break: normal;width: 100px;">{{task?.intitule}}</label>
+                </td>
+                <td data-th="Détail du jour">
+                  <div class="form-group">
+                    <ion-icon name="chatboxes" style="font-size: 18px;margin-bottom: -6px;margin-left: -4px;">
+                    </ion-icon><label style="font-size: 12px;">Commentaire :</label>
+                    <textarea [(ngModel)]="task.commentaire" [(ngModel)]="ticket.commentaire"
+                      class="form-control form-control-large" style="font-size: 10px; width: 104%;" rows="4"></textarea>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon type="time" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -15px; font-size: 12px;" hourValues="00,01,02,03,04,05,06,07,08"
+                      minuteValues="00,15,30,45" [(ngModel)]="task.hours" [(ngModel)]="ticket.hours"
+                      displayFormat="HH:mm" placeholder="Select Time">
+                    </ion-datetime>
+                  </ion-item>
+                  <ng-container *ngIf="!ticket.hours && verifeChamp">
+                    <div style="font-size: 10px;color: red;">
+                      * Champ obligatoire
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Affichage Projet" (click)="presentAlertConfirm(task?.id)">
+                  <ion-item class="AffichageProjet" style="
+                      border-radius: 11px;">
+                    <ion-label style="font-size: 11.3px;">Share</ion-label>
+                    <ion-toggle color="primary"></ion-toggle>
+                  </ion-item>
+                </td>
+                <td data-th="Etat">
+                  <div class="form-group" style="margin-bottom: 32px;">
+                    <ion-icon name="settings" style="font-size: 18px;margin-bottom: -5px;margin-left: -4px;">
+                    </ion-icon><label style="font-size: 12px;">Etat :</label>
+                    <select class="custom-select" [(ngModel)]="task.etat" [(ngModel)]="ticket.etat">
+                      <option [value]="1">RAS</option>
+                      <option [value]="2">Blocage</option>
+                      <option [value]="3">Retard</option>
+                    </select>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="calendar" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -5px;" displayFormat="DD/MM/YYYY" min="{{task.dateMin}}"
+                      max="{{task.date}}" [(ngModel)]="task.date" [(ngModel)]="ticket.date" placeholder="Select Date">
+                    </ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Doc.Attaché">
+                  <ion-item class="docs" (click)="PieceJoint()" style="border-radius: 11px;width: 107%;">
+                    <img width="23px" style="margin-left: -3px; margin-right: 2px;" src="../../../assets/icon/pp.png" />
+                    <div style="font-size:12px;">
+                      <b style="font-size:7px;">pièce jointe </b>
+                    </div>
+                  </ion-item>
+                </td>
+                <td data-th="OK">
+                  <button type="button" class="btn btn-success" (click)="validerAction(task?.id)">
+                    Valider
+                  </button>
+                </td>
+              </tr>
+              <!------------------------------------- TasksSpontanee--------------------------------    -->
+              <tr *ngFor="let task of TasksSpontanee; let i=index;">
+                <td data-th="Action">
+                  <label style="
+                      word-break: normal;
+                      width: 100px;
+                    ">{{task?.intitule}}</label>
+                </td>
+                <td data-th="Détail du jour">
+                  <div class="form-group">
+                    <ion-icon name="chatboxes" style="
+                        font-size: 18px;
+                        margin-bottom: -6px;
+                        margin-left: -4px;
+                      "></ion-icon><label style="font-size: 12px;">Commentaire :</label>
+                    <textarea id="{{task?.id}}commentaire" value="{{task?.commentaire}}"
+                      class="form-control form-control-large" style="font-size:10px; width: 104%;" name="description"
+                      rows="4">
+                        </textarea>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon type="time" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime id="{{task?.id}}hours" style="margin-left: -15px; font-size: 12px;"
+                      hourValues="00,01,02,03,04,05,06,07,08" minuteValues="00,15,30,45" value="{{task?.hours}}"
+                      displayFormat="HH:mm" placeholder="Select Time">{{task?.hours}}</ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Affichage Projet">
+                  <ion-item class="AffichageProjet"
+                    style="border-radius: 11px;--ion-background-color: #87888a !important;">
+                    <ion-label style="font-size: 11.3px;">Share</ion-label>
+                    <ion-toggle color="primary"></ion-toggle>
+                  </ion-item>
+                </td>
+                <td data-th="Etat">
+                  <div class="form-group" style="margin-bottom: 32px;">
+                    <ion-icon name="settings" style="font-size: 18px;margin-bottom: -5px;margin-left: -4px;"></ion-icon>
+                    <label style="font-size: 12px;">Etat :</label>
+                    <select class="custom-select" id="{{task?.id}}etat" value="{{task?.etat}}">
+                      <option [value]="1">RAS</option>
+                      <option [value]="2">Blocage</option>
+                      <option [value]="3">Retard</option>
+                    </select>
+                  </div>
+                </td>
+
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="calendar" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime id="{{task?.id}}dateCreation" style="margin-left: -5px;" displayFormat="DD/MM/YYYY"
+                      min="{{this?.Mindate}}" max="{{action.date}}" placeholder="Select Date"
+                      value="{{task?.dateCreation}}">{{task?.dateCreation}}</ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Doc.Attaché">
+                  <ng-container *ngIf="task?.photo">
+                    <ion-item class="docs" style="border-radius: 11px;width:107%;">
+                      <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                        src="../../../assets/icon/pp.png" />
+                      <div style="font-size:12px;">
+                        <a style="font-size:7px;" href="{{environment}}{{task?.photo}}">pièce jointe
+                        </a>
+                      </div>
+                    </ion-item>
+                  </ng-container>
+                  <ng-container *ngIf="!task?.photo">
+                    <ion-item class="docs"
+                      style="border-radius: 11px;width:107%;--ion-background-color: #87888a !important;">
+                      <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                        src="../../../assets/icon/pp.png" />
+                      <div style="font-size:12px;">
+                        <i style="font-size:7px;">pièce jointe</i>
+                      </div>
+                    </ion-item>
+                  </ng-container>
+                </td>
+                <td data-th="OK">
+                  <div class="row" style="margin-left:-5px;">
+                    <div class="col" id="icons" style="margin-right: 10px;">
+                      <img (click)="AlertDelete(task?.id)" src="./../../../assets/icon/notok.png"
+                        style="width: 30px; height: 30px; margin-right: 5px;" />
+                    </div>
+                    <div class="col" id="icons" style="margin-right: 12px;">
+                      <img (click)="AlertUpdate(task?.id,task)" src="./../../../assets/icon/modifier.png"
+                        style="width: 30px; height: 30px; margin-right: 3px;" />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <!-------------------------------------------------------------------------------------->
+
+              <!--  ----------------------------------- actions by button add--------------------------------    -->
+
+              <tr *ngFor="let act of actions">
+                <td data-th="Action">
+                  <ion-icon name="close" style="color: #CC0000;font-size: 25px;" (click)="removeAddActionSponT(i)">
+                  </ion-icon>
+                  <div class="form-group">
+                    <label style="
+                        word-break: normal;
+                        width: 100px;
+                      ">Intitulé</label>
+                    <input style=" width: 100px;" [(ngModel)]="action.titre" name="action.titre"
+                      class="form-control input-sm" />
+                  </div>
+                  <ng-container *ngIf="!action.titre && verifeChamp">
+                    <div style="
+                        font-size: 10px;
+                        color: red;
+                      ">
+                      * Champ obligatoire
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Détail du jour">
+                  <div class="form-group">
+                    <ion-icon name="chatboxes" style="font-size: 18px;margin-bottom: -6px;margin-left: -4px;">
+                    </ion-icon><label style="font-size: 12px;">Commentaire :</label>
+                    <textarea [(ngModel)]="action.comment" name="action.comment" class="form-control form-control-large"
+                      style="font-size: 10px; width: 104%;" name="description" rows="4"></textarea>
+                  </div>
+                </td>
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="time" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -15px; font-size: 12px;" hourValues="00,01,02,03,04,05,06,07,08"
+                      minuteValues="00,15,30,45" [(ngModel)]="action.heure" name="action.heure" displayFormat="HH:mm"
+                      placeholder="Select Time">
+                    </ion-datetime>
+                  </ion-item>
+                  <ng-container *ngIf="!action.heure && verifeChamp">
+                    <div style="font-size: 10px;color: red;">
+                      * Champ obligatoire
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Affichage Projet">
+                  <ion-item class="AffichageProjet"
+                    style="border-radius: 11px;--ion-background-color: #87888a !important;width: 107%;">
+                    <ion-label style="font-size: 11.3px;">Share</ion-label>
+                    <ion-toggle color="primary"></ion-toggle>
+                  </ion-item>
+                </td>
+                <td data-th="Etat">
+                  <div class="form-group" style="margin-bottom: 32px;">
+                    <ion-icon name="settings" style="font-size: 18px;margin-bottom: -5px;margin-left: -4px;"></ion-icon>
+                    <label style="font-size: 12px;">Etat :</label>
+                    <select class="custom-select" name="action.statut" [(ngModel)]="action.statut">
+                      <option [value]="1">RAS</option>
+                      <option [value]="2">Blocage</option>
+                      <option [value]="3">Retard</option>
+                    </select>
+                  </div>
+                </td>
+
+                <td>
+                  <ion-item style="border-radius: 11px;">
+                    <ion-icon name="calendar" style="font-size: 16px; margin-bottom: 1px;"></ion-icon>
+                    <ion-datetime style="margin-left: -5px;" displayFormat="DD/MM/YYYY" min="{{this?.Mindate}}"
+                      max="{{action.date}}" [(ngModel)]="action.date" placeholder="Select Date"></ion-datetime>
+                  </ion-item>
+                </td>
+                <td data-th="Doc.Attaché">
+                  <ion-item class="docs" (click)="alert()" style="border-radius: 11px;">
+                    <img width="23px" style="margin-left: -3px; margin-right: 2px;" src="../../../assets/icon/pp.png" />
+                    <div style="font-size: 12px;">
+                      <b style="font-size:7px;">pièce jointe </b>
+                    </div>
+                  </ion-item>
+                </td>
+                <td data-th="OK">
+                  <button type="button" class="btn btn-success" (click)="validerActionSpontanee()">
+                    Valider
+                  </button>
+                </td>
+              </tr>
+              <!--  -----------------------------------------------------------------    -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <br /><br />
+      <ng-container>
+        <ion-footer no-padding no-marging>
+          <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: -5px;" (click)="AddActionSponT()">
+            <ion-fab-button>
+              <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-footer>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf='segment=="TEAM"'>
+      <div class="row" style="
+        overflow-x: auto;
+        margin-top: 5px;
+        margin-left: 0px;
+        margin-right: 0px;
+      ">
+        <div class="table-responsive-xl">
+          <table id="tabledtwo" class="table table-striped">
+            <ng-container *ngIf="this?.users != null">
+              <thead style="display: block; background-color: #6f91d6 !important;">
+                <tr>
+                  <th>
+                    <ion-label>Photo</ion-label>
+                  </th>
+                  <th>
+                    <ion-label>Prenom</ion-label>
+                  </th>
+                  <th>
+                    <ion-label>Nom</ion-label>
+                  </th>
+                  <th>
+                    <ion-label>Point</ion-label>
+                  </th>
+                </tr>
+              </thead>
+            </ng-container>
+            <tbody style="display: block; overflow-y: auto;">
+              <tr *ngFor="let perso of users ">
+                <td data-th="Photo " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <ng-container *ngIf="!perso?.tt[0]?.etat">
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf='perso?.tt[0]?.etat == 1'>
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        style="box-shadow:2px 2px 10px 2px rgba(14, 179, 12, 0.59); border: 2px solid green;"
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="perso?.tt[0]?.etat==2">
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        style=" box-shadow: 2px 2px 10px 2px rgba(241, 3, 3, 0.59); border: 2px solid red;"
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="perso?.tt[0]?.etat==3">
+                    <div class="content-profile" style="margin-left: -61px;">
+                      <img src='{{env}}{{perso?.user?.path || "empty.png "}}'
+                        style="box-shadow:2px 2px 10px 2px rgba(228, 169, 2, 0.59); border: 2px solid goldenrod;"
+                        class="list-img img-fluid z-depth-1 rounded-circle" />
+                    </div>
+                  </ng-container>
+                </td>
+                <td data-th="Prenom " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <label style="margin-left: -42px;">{{perso?.prenom}}</label>
+                </td>
+                <td data-th="Nom " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <label style="margin-left: -48px;">{{perso?.nom}}</label>
+                </td>
+                <td data-th="Point " (click)="getTasksGFromHistorique(perso?.id) ">
+                  <label style="margin-left: -55px;">{{perso?.user?.point}}</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf='segment=="User"'>
+      <div class="row" style="
+        overflow-x: auto;
+        margin-top: 5px;
+        margin-left: 0px;
+        margin-right: 0px;
+      ">
+        <div class="table-responsive-xl">
+          <table id="tablethree" class="table table-striped" style="position: relative;">
+            <ng-container *ngIf="this?.arrayTT">
+              <thead style="display: block; background-color: #6f91d6 !important;">
+                <tr>
+                  <th>
+                    <ion-label style="margin-left: -39px;">Actions</ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Résultat du jour
+                    </ion-label>
+                  </th>
+                  <th>
+                    <ion-label style="white-space: nowrap;">Doc.Attaché</ion-label>
+                  </th>
+                </tr>
+              </thead>
+            </ng-container>
+
+            <tbody style="display: block; overflow-y: auto;">
+              <ng-container *ngFor="let hi of arrayTT;let i=index;">
+                <tr style="background-color: #f4f3ef;border-top: none;">
+                  <ion-label style="margin-left: 7px;white-space: nowrap;font-size: 16px;">{{hi[0]}}</ion-label>
+                </tr>
+                <ng-container *ngFor="let s of hi[1]">
+                  <tr *ngIf='s?.ticket?.intitule'>
+                    <td data-th="Action">
+                      <label style="
+                    word-break: normal;
+                    width: 100px;
+                    margin-left: -110px;
+                  ">{{s?.ticket?.intitule}}</label>
+                    </td>
+                    <td data-th="Résultat du jour">
+                      <ion-item class="Resultat" style="
+                    border-radius: 11px;
+                    position: absolute;
+                    margin-top: -25px;
+                    left: 182px;
+                  " (click)="GoesTOHistorique(s?.id)">
+                        <ion-icon name="desktop" style="font-size: 20px; margin-left: -1px;"></ion-icon>
+                        <ion-label style="font-size: 11px; margin: 4px;">Historique</ion-label>
+                      </ion-item>
+                    </td>
+                    <td data-th="Doc.Attaché">
+                      <ng-container *ngIf="s?.ticket?.path">
+                        <ion-item class="docs" style="
+                      border-radius: 11px;
+                      position: absolute;
+                      margin-top: -25px;
+                      left: 386px;
+                    ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <a style="font-size: 9px;" href="{{environment}}{{s?.ticket?.path}}">pièce jointe
+                            </a>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                      <ng-container *ngIf="!s?.ticket?.path">
+                        <ion-item class="docs" style="
+                      border-radius: 11px;
+                      position: absolute;
+                      margin-top: -25px;
+                      left: 386px;
+                      --ion-background-color: #87888a !important;
+                    ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <i style="font-size: 9px;">pièce jointe</i>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                    </td>
+                  </tr>
+
+                  <tr *ngIf='s?.intitule'>
+                    <td data-th="Action">
+                      <label style="
+                    word-break: normal;
+                    width: 100px;
+                    margin-left: -110px;
+                  ">{{s?.intitule}}</label>
+                    </td>
+                    <td data-th="Résultat du jour">
+                      <ion-item class="Resultat" style="
+                    border-radius: 11px;
+                    position: absolute;
+                    margin-top: -25px;
+                    left: 193px;
+                  " (click)="GoesTODetail(s?.id)">
+                        <ion-icon name="desktop" style="font-size: 20px; margin-left: -1px;"></ion-icon>
+                        <ion-label style="font-size: 11px; margin: 4px;">Détail</ion-label>
+                      </ion-item>
+                    </td>
+                    <td data-th="Doc.Attaché">
+                      <ng-container *ngIf="s?.photo">
+                        <ion-item class="docs" style="
+                      border-radius: 11px;
+                      position: absolute;
+                      margin-top: -25px;
+                      left: 386px;
+                    ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <a style="font-size: 9px;" href="{{environment}}{{s?.photo}}">pièce jointe
+                            </a>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                      <ng-container *ngIf="!s?.photo">
+                        <ion-item class="docs" style="
+                      border-radius: 11px;
+                      position: absolute;
+                      margin-top: -25px;
+                      left: 386px;
+                      --ion-background-color: #87888a !important;
+                    ">
+                          <img width="23px" style="margin-left: -3px; margin-right: 2px;"
+                            src="../../../assets/icon/pp.png" />
+                          <div style="font-size: 13px;">
+                            <i style="font-size: 9px;">pièce jointe</i>
+                          </div>
+                        </ion-item>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+
+  </ng-container>
+</ion-content>

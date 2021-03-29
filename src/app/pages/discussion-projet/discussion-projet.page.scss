@@ -1,0 +1,108 @@
+.container {
+    align-content: center;
+}
+
+.msg_time {
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+}
+
+.msg_time_send {
+    position: absolute;
+    right: 0;
+    bottom: -15px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+}
+
+.user_right {
+    //position: absolute;
+    right: 0;
+    margin-top: 50px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.user_left {
+    //position: absolute;
+    left: 0;
+    // margin-top: 50px;
+    //margin-right:5px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.send_btn {
+    border-radius: 0 15px 15px 0 !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+.type_msg {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
+    color: white !important;
+    overflow-y: auto;
+}
+
+.type_msg:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
+
+.msg_card_body {
+    overflow-y: auto;
+    height: 100%;
+    margin: 0;
+    background: #7F7FD5;
+    background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+}
+
+.msg_cotainer {
+    margin-top: 15px;
+    margin-bottom: auto;
+    margin-right: 30px;
+    border-radius: 25px;
+    background-color: #82ccdd;
+    padding: 10px;
+    position: relative;
+    max-width: 100%
+}
+
+.msg_cotainer_send {
+    margin-top: 15px;
+    margin-bottom: auto;
+    margin-left: 30px;
+    border-radius: 25px;
+    background-color: #78e08f;
+    padding: 10px;
+    position: relative;
+    max-width: 100%;
+}
+
+.msg_tache_valide {
+    margin-top: 15px;
+    margin-bottom: auto;
+    margin-left: 30px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.199);
+    padding: 10px;
+    position: relative;
+}
+
+.Partage_Action {
+    margin-top: 15px;
+    margin-bottom: auto;
+    margin-right: 30px;
+    border-radius: 25px;
+    background-color: #747574;
+    padding: 10px;
+    position: relative;
+    max-width: 100%
+}

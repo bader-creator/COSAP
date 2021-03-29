@@ -1,0 +1,79 @@
+<ion-content padding margin >
+
+<h1><b>Login</b></h1>
+<h1>COSAP SFM</h1>
+
+<br>
+<form [formGroup]="credentialsForm" (ngSubmit)="onSubmit()">
+  <input type="text" class="form-control card shadow-lg" placeholder="Email Address" formControlName="username" type="text" aria-describedby="basic-addon1"
+  style="border: 0px;border-radius: 4px;height: 40px;">
+  <br>
+  
+  <input [type]="passwordType" required type="password" class="form-control card shadow-lg" placeholder="Mot de passe" formControlName="password" aria-describedby="basic-addon1"
+  style="border: 0px;border-radius: 4px;height: 40px;" >
+  <br>
+  <p (click)='hideShowPassword()'><b class="line">Show Password</b></p>
+
+<br>
+  <button type="submit" [disabled]="!credentialsForm.valid" class="btn btn-block btn-success">Login</button>
+</form>
+  <br>
+  <p>Don't have an account?<b class="line"> Signup</b></p>
+  <p>Forget Password?<b class="line"> Reset Password</b></p>
+        
+</ion-content >
+
+
+
+
+
+
+<!--
+
+<ion-content >
+<br>
+<br>
+			<div class="col-md-5 mx-auto">
+				<div class="myform form ">
+					 <div class="logo mb-3">
+						 <div class="col-md-12 text-center">
+               <img src="./../../../assets/icon/Logo.png" width="50%">
+						
+						 </div>
+          </div>
+         
+                   <form [formGroup]="credentialsForm" (ngSubmit)="onSubmit()">
+                      User Name:
+                      <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="far fa-user-circle"></i></span>
+                          </div>
+                          <input formControlName="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                      Password:
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i  class="fas fa-eye-slash"  (click)='hideShowPassword()' ></i></span>
+                            </div>
+                            <input [type]="passwordType" formControlName="password" required type="password" class="form-control" placeholder="Mot de passe" aria-label="Mot de passe" aria-describedby="basic-addon1">
+                          </div>
+
+
+
+                        
+                      
+                          
+                           <div class="col-md-12 text-center ">
+                              <button type="submit" [disabled]="!credentialsForm.valid" class=" btn btn-block mybtn btn-primary tx-tfm">Connecter</button>
+                           </div>
+                        
+                      
+                          
+                        </form>
+                 
+				</div>
+			</div>
+
+
+    </ion-content >
+    -->

@@ -1,0 +1,326 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Ajouter une demande
+        </ion-title>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ng-container>
+        <ion-segment [(ngModel)]="segment">
+            <ion-segment-button value="conge" checked>
+                <ion-label><b>D. Congé</b></ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="sortie">
+                <ion-label><b>D. Sortie</b></ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tele">
+                <ion-label><b>D. Téletravail</b></ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ng-container>
+    <div style="padding:1rem;">
+
+        <ng-container *ngIf='segment=="conge"'>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 0.8rem">
+
+                    <div class="d-flex px-1 w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                                Motif Congé
+                            </p>
+                            <br>
+                            <ng-container *ngIf='typeCongeId'>
+                                <select class="form-control" name="typeCongeId" [(ngModel)]="typeCongeId">
+                                    <option *ngFor="let type of typeConges;" [value]="type?.id">Congé {{type?.libelle}}
+                                    </option>
+                                </select>
+                            </ng-container>
+                            <br>
+                            <ng-container *ngIf='typeCongeId==1'>
+                                <div (click)="presentAlertConfirm()" style="margin-top: 10px;">
+                                    <div style="font-size: 12px;margin-left: 5px;width:40%;text-align: left">
+                                        <b>Certificat médical</b></div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 0.8rem">
+
+                    <div class="d-flex px-1 w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Date debut :
+                            </p>
+
+                            <div class="row">
+                                <ion-item style="margin-right: 10px;">
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="DD MMM ,YYYY"
+                                        min="2019-10-17" max="2022-12-31" placeholder="Select Date"
+                                        [(ngModel)]="datedebut" name="datedebut"></ion-datetime>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-icon name="time"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="HH:mm"
+                                        placeholder="Select Time" hourValues="8,14" minuteValues="0"
+                                        [(ngModel)]="timedebut" name="timedebut"></ion-datetime>
+                                </ion-item>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 0.8rem">
+
+                    <div class="d-flex px-1 w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Date fin :
+                            </p>
+
+                            <div class="row">
+                                <ion-item style="margin-right: 10px;">
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="DD MMM ,YYYY"
+                                        min="2019-10-17" max="2022-12-31" placeholder="Select Date"
+                                        [(ngModel)]="datefin" name="datefin"></ion-datetime>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-icon name="time"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="HH:mm"
+                                        placeholder="Select Time" hourValues="18,12" minuteValues="0,30"
+                                        [(ngModel)]="timefin" name="timefin"></ion-datetime>
+                                </ion-item>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 1rem">
+
+                    <div class="d-flex  w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Date reprise :
+                            </p>
+
+                            <div class="row">
+                                <ion-item style="margin-right: 10px;">
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" min="2019-10-17" max="2022-12-31"
+                                        displayFormat="DD MMM ,YYYY" placeholder="Select Date" [(ngModel)]="datereprise"
+                                        name="datereprise"></ion-datetime>
+                                </ion-item>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!------------------------------>
+
+            <br>
+
+            <button type="button" class="btn btn-block btn-success"
+                (click)="presentAlertConfirmDemandeConge()">Confirmer demande</button>
+
+        </ng-container>
+        <ng-container *ngIf='segment=="sortie"'>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 0.8rem">
+
+                    <div class="d-flex px-1 w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Autorisation le :
+                            </p>
+
+                            <div class="row">
+                                <ion-item style="margin-right: 10px;">
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="DD MMM ,YYYY"
+                                        min="2019-10-17" max="2022-12-31" placeholder="Select Date"
+                                        [(ngModel)]="Datesortie" name="Datesortie"></ion-datetime>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-icon name="time"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="HH:mm"
+                                        placeholder="Select Time" [(ngModel)]="timesortie" name="timesortie">
+                                    </ion-datetime>
+                                </ion-item>
+
+                            </div>
+
+                            <br>
+
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Heure de Retour :
+                            </p>
+                            <br>
+
+                            <select class="form-control" [(ngModel)]="dureesortie" name="dureesortie"
+                                (ngModelChange)="addtime(dureesortie)">
+                                <option value="1:00">1 Heure</option>
+                                <option value="1:30">1 Heure 30 Min</option>
+                                <option value="2:00">2 Heures</option>
+                                <option value="2:30">2 Heures 30 Min</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <br>
+
+            <button type="button" class="btn btn-block btn-success" (click)="ConfirmerDemandeDeSortie()">Confirmer
+                demande</button>
+
+        </ng-container>
+        <ng-container *ngIf='segment=="tele"'>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 0.8rem">
+
+                    <div class="d-flex px-1 w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Date debut :
+                            </p>
+
+                            <div class="d-block p-2">
+                                <ion-item style="margin-right: 10px;">
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="DD MMM ,YYYY"
+                                        min="2019-10-17" max="2022-12-31" placeholder="Select Date"
+                                        [(ngModel)]="teletravail.datedebut" name="teletravail.datedebut"></ion-datetime>
+                                </ion-item>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 0.8rem">
+
+                    <div class="d-flex px-1 w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Date fin :
+                            </p>
+
+                            <div class="d-block p-2">
+                                <ion-item style="margin-right: 10px;">
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" displayFormat="DD MMM ,YYYY"
+                                        min="2019-10-17" max="2022-12-31" placeholder="Select Date"
+                                        [(ngModel)]="teletravail.datefin" name="teletravail.datefin"></ion-datetime>
+                                </ion-item>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+            <div class="profile-card card text-center">
+
+                <div class="card-body" style="padding: 1rem">
+
+                    <div class="d-flex  w-100 align-items-center text-left">
+                        <div class="w-100">
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                                Date reprise :
+                            </p>
+
+                            <div class="d-block p-2">
+                                <ion-item style="margin-right: 10px;">
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <ion-datetime (ionChange)="updateMyDate($event)" min="2019-10-17" max="2022-12-31"
+                                        displayFormat="DD MMM ,YYYY" placeholder="Select Date"
+                                        [(ngModel)]="teletravail.datereprise" name="teletravail.datereprise">
+                                    </ion-datetime>
+                                </ion-item>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!------------------------------>
+
+            <br>
+
+            <button type="button" class="btn btn-block btn-success" (click)="AlertdemandeTeleTravail()">Confirmer
+                demande</button>
+
+        </ng-container>
+    </div>
+
+
+</ion-content>

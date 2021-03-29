@@ -1,0 +1,118 @@
+<ion-app>
+    <ion-menu side="start" menuId="first" contentId="content1">
+        <ion-content>
+
+            <div class="profile-card py-3 card text-center" style="height: 100%">
+                <a class="btn-edit" style="width: 38%;position: relative;left: 58%;margin-bottom: 68px;"
+                    (click)="logout()">
+                    <i class="fas fa-sign-out-alt" style="float: right;
+                  margin-right: 20px;margin-top: 10px;"></i>
+                    <span style="float: right;margin-right: 5px;margin-top: 5px;">LogOut </span>
+
+                </a>
+                <div class="card-body py-4">
+                    <img class="profile-picture rounded-circle" style="width: 150px;
+                  height: 150px;" src="{{env}}{{User?.path || 'empty.png'}}" routerDirection='root'
+                        routerLink='/profile' />
+                    <h2 class="text-dark h5 font-weight-bold mt-4 mb-1" routerDirection='root' routerLink='/profile'>
+                        {{User?.nom || "nom"}} {{User?.prenom || "prenom"}}
+                    </h2>
+                    <p class="text-muted font-weight-bold small" routerDirection='root' routerLink='/profile'>
+                        {{ User?.job?.name || "..."}}
+                    </p>
+                    <div class="dropdown-divider"></div>
+
+                    <div class="d-flex px-1 w-100 align-items-center text-left">
+                        <div class="w-100">
+
+
+
+                            <ng-container *ngIf='!this.authService.Stagiaire && !this.authService.sfmCameroun'>
+                                <ion-menu-toggle auto-hide="true">
+                                    <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                        routerDirection='root' routerLink='/index'>
+                                        <i class="fas fa-chalkboard-teacher"></i> Présence
+                                    </p>
+                                </ion-menu-toggle>
+                            </ng-container>
+
+
+                            <ng-container *ngIf='this.authService.Stagiaire'>
+                                <ion-menu-toggle auto-hide="true">
+                                    <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                        routerDirection='root' routerLink='/presence-stagiaire'>
+                                        <i class="fas fa-chalkboard-teacher"></i> Présence Stagiaire
+                                    </p>
+                                </ion-menu-toggle>
+                            </ng-container>
+                            <ng-container *ngIf='this.authService.sfmCameroun'>
+                                <ion-menu-toggle auto-hide="true">
+                                    <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                        routerDirection='root' routerLink='//sfm-cameroun-presence'>
+                                        <i class="fas fa-chalkboard-teacher"></i> Présence SFM Cameroun
+                                    </p>
+                                </ion-menu-toggle>
+                            </ng-container>
+                            <ion-menu-toggle auto-hide="true">
+                                <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                    routerDirection='root' routerLink='/event'>
+                                    <i class="fas fa-plus-circle"></i> Ajouter un Événement
+                                </p>
+                            </ion-menu-toggle>
+
+
+                            <ion-menu-toggle auto-hide="true">
+                                <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                    routerDirection='root' routerLink='/congeavalider'>
+                                    <i class="far fa-calendar-check"></i> Demandes à valider
+                                </p>
+                            </ion-menu-toggle>
+
+
+                            <ion-menu-toggle auto-hide="true">
+                                <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                    routerDirection='root' routerLink="/task/Request">
+                                    <i class="fas fa-tasks"></i> Actions
+                                </p>
+                            </ion-menu-toggle>
+
+                            <ng-container *ngIf='!this?.Stagiaire'>
+                                <ion-menu-toggle auto-hide="true">
+                                    <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                        routerDirection='root' routerLink='/add-task'>
+                                        <i class="fas fa-plus-circle"></i> Ajouter une action
+                                    </p>
+                                </ion-menu-toggle>
+                            </ng-container>
+
+
+                            <ion-menu-toggle auto-hide="true">
+                                <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                    routerDirection='root' routerLink='/historiqueconge'>
+                                    <i class="fas fa-umbrella-beach"></i> Demandes
+                                </p>
+                            </ion-menu-toggle>
+
+
+
+                            <ion-menu-toggle auto-hide="true">
+                                <p (click)="toggleMenu()" class="text-muted font-weight-bold small"
+                                    routerDirection='root' routerLink='/listdemande'>
+                                    <i class="fas fa-plus-circle"></i> Ajouter une demande
+                                </p>
+                            </ion-menu-toggle>
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="content1"></ion-router-outlet>
+</ion-app>

@@ -1,0 +1,90 @@
+.content-profile {
+    position: relative;
+}
+
+.list-img {
+    margin-left: -20px;
+    box-shadow: 0px 1px 6px 0px rgba(134, 134, 134, 0.59);
+    width: 60px;
+    padding: 2px;
+    height: 60px;
+    margin-top: -7px;
+}
+
+.content {
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-top: 12px;
+}
+
+.date ion-label {
+    font-weight: 700;
+    font-size: 18px;
+    z-index: 3;
+    color: #00080bc9;
+    font-family: Roboto Condensed;
+    overflow: initial;
+    position: relative;
+    top: -4px;
+    margin-left: 4px;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #d7e8fe;
+    background-clip: border-box;
+    border: 3px solid rgba(64, 64, 71, 0.125);
+    border-radius: 0.25rem;
+}
+
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    word-wrap: break-word;
+    background-color: #c2d3e9;
+    width: 97%;
+    margin-left: 6px;
+    margin-top: 1px;
+    border-radius: 0.25rem;
+    border: 3px solid rgba(64, 64, 71, 0.125);
+}
+
+.overme {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 213px;
+    font-weight: 700;
+    font-size: 18px;
+    z-index: 3;
+    color: #00080bc9;
+    font-family: Roboto Condensed;
+    position: absolute;
+    top: -16px;
+    left: 61px;
+}
+
+.type {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 213px;
+    font-weight: 700;
+    font-size: 18px;
+    z-index: 3;
+    color: #00080bc9;
+    font-family: Roboto Condensed;
+    position: absolute;
+    top: 12px;
+    left: 61px;
+}
+
+.statut {
+    font-size: 40px;
+    position: absolute;
+    right: 8px;
+    margin-top: 6px;
+}

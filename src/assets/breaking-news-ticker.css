@@ -1,0 +1,123 @@
+
+
+/*********************************/
+/*news item style start **********/
+.bn-news{
+  height: 100%;
+  overflow: hidden;
+}
+.bn-news ul{
+  display: block;
+  height: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  
+}
+.bn-news ul li{
+  white-space: nowrap;
+  overflow:hidden !important;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  -webkit-transition: color .2s linear;
+  -moz-transition: color .2s linear;
+  -o-transition: color .2s linear;
+  transition: color .2s linear;
+  width: 100%;
+  display: none;
+  color: #333;
+  font-size: 10px;
+  margin-left: 5px;
+  line-height:20px;
+}
+
+.bn-loader-text{
+  padding: 0 10px;
+}
+.bn-seperator{
+  display: inline-block;
+  float: left;
+  margin-right: 15px;
+  width: 30px;
+  height: 40px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.bn-seperator.bn-news-dot{
+  margin-right: 0;
+}
+.bn-seperator.bn-news-dot:after{
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #333;
+  border-radius: 50%;
+  top: 50%;
+  margin-top: -4px;
+  left: 50%;
+  margin-left: -4px;
+}
+.bn-prefix{
+  color: #d65d7a;
+  margin-right: 15px;
+  padding-left: 10px;
+}
+.bn-positive{
+  color: #0b8457;
+  font-weight: bold;
+}
+.bn-negative{
+  color: #dc2f2f;
+  font-weight: bold;
+}
+/*news item style end ************/
+
+
+.bn-direction-rtl{
+  direction: rtl;
+}
+.bn-direction-rtl .bn-label{
+  left: auto;
+  right: 0;
+}
+.bn-direction-rtl .bn-controls{
+  right: auto;
+  left: 0;
+}
+.bn-direction-rtl .bn-seperator{
+  margin-left: 15px;
+  margin-right: 0;
+  float: right;
+}
+.bn-direction-rtl .bn-prefix{
+  margin-left: 15px;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 10px;
+}
+.bn-direction-rtl .bn-controls button{
+  border-left: none;
+  border-right: solid 1px #EEE;
+}
+
+.bn-effect-scroll .bn-news ul{
+  display: block;
+  width: 100%;
+  position: relative;
+}
+.bn-effect-scroll .bn-news ul li{
+  display: list-item;
+  float: left;
+  position: relative;
+  width: auto;
+}
+.bn-effect-scroll.bn-direction-rtl .bn-news ul li{
+  float: right;
+}
+
+/*********************************/
+/*********************************/
