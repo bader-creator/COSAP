@@ -1,0 +1,93 @@
+<!------------------------SLIDES-------------------------------->
+<ion-header style="height: 5%;">
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <super-tabs>
+        <super-tabs-toolbar slot="top" color="secondary" style="padding: 10px;">
+            <super-tab-button style="padding: 10px;padding-bottom: 47px;">
+                <ion-label style="padding-top: 50px; color: white;font-size: 12.2px;">Mes demandes</ion-label>
+            </super-tab-button>
+            <super-tab-button style="padding: 10px;padding-bottom: 47px;">
+                <ion-label style="padding-top: 50px;color: white;font-size: 12.2px;">A.Valider</ion-label>
+            </super-tab-button>
+            <super-tab-button style="padding: 10px;padding-bottom: 47px;">
+                <ion-label style="padding-top: 50px;color: white;font-size: 12.2px;">Archive</ion-label>
+            </super-tab-button>
+        </super-tabs-toolbar>
+        <super-tabs-container>
+            <super-tab>
+                <!-------------------------------------------------------->
+                <ion-content>
+                    <ion-list>
+                        <ion-item *ngFor="let docs of MesDocuments ">
+                            <ion-icon name="folder"></ion-icon> <label style="margin-left: 8px;margin-top: 10px;">{{docs.nom}}</label>
+                            <div *ngIf='docs?.etat!="0" && docs?.etat!="1"' style=" top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color: #FF8800;font-weight: 700;margin-right:5px;"></i><label style="color:#FF8800 ">En Cours</label></div>
+                            <div *ngIf='docs?.etat=="1"' style="top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color:green; font-weight: 700;margin-right:5px;"></i><label style="color:green ">Validé</label></div>
+                            <div *ngIf='docs?.etat=="0"' style="top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color:#CC0000;font-weight: 700;margin-right:5px;"></i><label style="color:#CC0000 ">Refusé</label></div>
+
+                            <ion-button fill="outline" slot="end" style="float: right;margin-top: 10px;" (click)="godetail(docs.id)">View</ion-button>
+                        </ion-item>
+                    </ion-list>
+                    <br><br><br>
+                </ion-content>
+                <!----------------------------fooeter---------------------------->
+                <ion-footer no-padding no-marging>
+                    <ion-fab vertical="bottom" horizontal="end">
+                        <ion-fab-button routerDirection="forward" [routerLink]="'/add-docs'">
+                            <ion-icon name="add"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab>
+                </ion-footer>
+                <!------------------------------- -------------------------------->
+            </super-tab>
+            <super-tab>
+                <ion-content>
+                    <!-------------------------------------------------------->
+                    <ion-list>
+                        <ion-item *ngFor="let docs of Documentvalider ">
+                            <ion-icon name="folder"></ion-icon> <label style="margin-left: 8px;margin-top: 10px;">{{docs.nom}}</label>
+                            <div *ngIf='docs?.etat!="0" && docs?.etat!="1"' style=" top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color: #FF8800;font-weight: 700;margin-right:5px;"></i><label style="color:#FF8800 ">En Cours</label></div>
+                            <div *ngIf='docs?.etat=="1"' style="top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color:green; font-weight: 700;margin-right:5px;"></i><label style="color:green ">Validé</label></div>
+                            <div *ngIf='docs?.etat=="0"' style="top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color:#CC0000;font-weight: 700;margin-right:5px;"></i><label style="color:#CC0000 ">Refusé</label></div>
+
+                            <ion-button fill="outline" slot="end" style="float: right;margin-top: 10px;" (click)="godetail(docs.id)">View</ion-button>
+                        </ion-item>
+                    </ion-list>
+                    <!-------------------------------------------------------->
+                </ion-content>
+
+            </super-tab>
+
+            <super-tab>
+                <ion-content>
+                    <!-------------------------------------------------------->
+                    <ion-list>
+                        <ion-item *ngFor="let arch of MesArchives ">
+
+                            <ion-icon name="folder"></ion-icon> <label style="margin-left: 8px;margin-top: 10px;">{{arch.nom}}</label>
+                            <div *ngIf='arch?.etat=="1"' style="top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color:green; font-weight: 700;margin-right:5px;"></i><label style="color:green ">Validé</label></div>
+                            <div *ngIf='arch?.etat=="0"' style="top: 14px;position: absolute;right: 80px;font-weight: 700;"><i class="far fa-flag " style="color:#CC0000;font-weight: 700;margin-right:5px;"></i><label style="color:#CC0000 ">Refusé</label></div>
+                            <ion-button fill="outline" slot="end" style="float: right;margin-top: 10px;margin-right: 59px;" (click)="goesToAvalider(arch.id)">
+                                <ion-icon name="refresh-circle"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="outline" slot="end" style="float: right;margin-top: 10px;" (click)="godetail(arch.id)">View</ion-button>
+
+                        </ion-item>
+                    </ion-list>
+                    <!-------------------------------------------------------->
+                </ion-content>
+
+            </super-tab>
+        </super-tabs-container>
+    </super-tabs>
+</ion-content>

@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Détail
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngFor="let docs of MesDocuments">
+        <ion-card class="card">
+            <ion-card-header style="margin-top: 16px;">
+                <ng-container>
+                    <div>
+                        <img style="float: left; width: 10%;" src="../../../assets/icon/pp.png" />
+                        <a href="{{env}}{{docs?.path}}" download="att" style="font-size: 20px;">Pièce jointe</a>
+                    </div>
+                </ng-container>
+                <br><br>
+            </ion-card-header>
+            <ion-card-content>
+
+                <ion-icon name="folder" style="font-size: 25px;margin-bottom: -6px;"></ion-icon> <label style="font-size: 20px;margin-left: 6px">Intitulé :</label>
+                <label style="font-size: 20px; margin-left: 6px;">{{docs.nom}}</label>
+                <br><br>
+
+
+                <ion-icon name="person" style="font-size: 25px;margin-bottom: -6px;"></ion-icon><label style="font-size: 20px;margin-left: 6px">Créé par :</label>
+                <label style="font-size: 20px; margin-left: 6px;">{{docs.owner.nom}} {{docs.owner.prenom}}</label>
+                <br><br>
+
+                <ion-icon name="calendar" style="font-size: 25px;margin-bottom: -6px;"></ion-icon><label style="font-size: 20px;margin-left: 6px">Date Création :</label>
+                <label style="font-size: 20px; margin-left: 6px;">{{docs.dateCreation | date: 'dd-MM-yyyy' }}</label>
+                <br><br>
+
+                <ng-container *ngIf='docs.commentaire'>
+                    <ion-icon name="chatboxes" style="font-size: 25px;margin-bottom: -6px;"></ion-icon><label style="font-size: 20px;margin-left: 6px">Commentaire :</label>
+                    <label style="font-size: 20px; margin-left: 6px;">{{docs.commentaire}}</label>
+                    <br><br>
+                </ng-container>
+
+                <ng-container *ngIf='!docs.commentaire && docs.destinataire.id == this?.currentUser'>
+                    <div class="form-group">
+                        <ion-icon name="chatboxes" style="font-size: 25px;margin-bottom: -6px;"></ion-icon><label for="desciption" style="font-size: 20px;margin-left: 6px">Commentaire :</label>
+                        <textarea [(ngModel)]="document.commentaire" name="document.commentaire" class="form-control form-control-large" style="font-size: 12px;width:100%;" name="description" rows="4"></textarea>
+                    </div>
+                    <ng-container *ngIf="!document.commentaire && verifeChamp">
+                        <br>
+                        <div style="font-size: 10px;color:red;margin-top: -20px;">* Champ obligatoire </div>
+                    </ng-container>
+                </ng-container>
+            </ion-card-content>
+        </ion-card>
+
+        <ng-container *ngIf='docs.etat!="0" && docs.etat!="1" && docs.destinataire.id == this?.currentUser'>
+            <button type="button" class="btn btn-success" (click)="validerDocs()" style="width: 40%;border-radius: 35px;font-size: 20px;float: right;margin-right: 30px;margin-top: 15px;">Valider
+  </button>
+            <button type="button" class="btn btn-danger" (click)="RefuserDocs()" style="width: 40%;border-radius: 35px;font-size: 20px;margin-top: 15px;float: left;margin-left: 30px;">Refuser
+  </button>
+        </ng-container>
+    </div>
+</ion-content>

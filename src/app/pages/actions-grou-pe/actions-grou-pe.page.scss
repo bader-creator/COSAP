@@ -1,0 +1,87 @@
+.table tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.table td {
+    text-align: left;
+    vertical-align: inherit;
+}
+
+.table th {
+    padding: 1.8rem;
+    border-top: 1px solid #dee2e6;
+}
+
+#tabledtwo td {
+    padding: 0.75rem;
+    padding-left: 81px;
+}
+
+#tabledtwo th {
+    padding: 1.85rem;
+}
+
+#tablethree th {
+    padding: 1.4rem;
+    padding-left: 67px;
+}
+
+#tablethree td {
+    padding: 1rem;
+    padding-left: 152px;
+}
+
+body {
+    font-family: Montserrat, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color: #f4f3ef;
+    background: #eee;
+}
+
+ion-item {
+    --ion-background-color: #9cb3e3 !important;
+}
+
+ion-item .docs {
+    --ion-background-color: #f3d25d !important;
+}
+
+ion-item .AffichageProjet {
+    --ion-background-color: #47c384 !important;
+}
+
+ion-label {
+    font-weight: 700;
+    color: #3a3838;
+    font-size: 17px;
+    z-index: 3;
+    font-family: Roboto Condensed;
+    overflow: initial;
+}
+
+h1 {
+    font-weight: normal;
+    letter-spacing: -1px;
+    color: #34495e;
+}
+
+#icons {
+    width: 50px;
+    box-shadow: 0px 1px 6px 0px rgba(134, 134, 134, 0.59);
+    padding: 10px;
+}
+
+.table {
+    background: #f4f3ef;
+    border-radius: 0.4em;
+    overflow: hidden;
+}
+
+.list-img {
+    box-shadow: 0px 1px 6px 0px rgba(134, 134, 134, 0.59);
+    width: 60px;
+    padding: 2px;
+    height: 60px;
+}

@@ -1,0 +1,75 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start" (click)="onDismiss()">
+            <ion-icon name="arrow-round-back" size="large"></ion-icon>
+
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-segment [(ngModel)]="segment">
+        <ion-segment-button value="personnel" checked>
+            <ion-label><b>Staff</b></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="stagiaire">
+
+            <ion-label><b>Stagiaires</b></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="cameroun">
+
+            <ion-label><b>SFM Cameroun</b></ion-label>
+        </ion-segment-button>
+
+    </ion-segment>
+    <ng-container *ngIf='segment=="personnel"'>
+        <ion-searchbar (keyup)="onKey($event)"></ion-searchbar>
+        <div *ngFor="let user of userssearch" (click)="userselect(user)">
+
+
+            <div class="avatar" style="height: 40px;width: 60px; float: left;margin-left: 20px;">
+                <img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpdX6tPX96Zk00S47LcCYAdoFK8INeCElPeJrVDrh8phAGqUZP_g">
+            </div>
+            <div style="height: 40px;font-size: 12px">
+                {{user?.email}}<br> {{user?.nom}} {{user?.prenom}} <br> {{user?.charge}} % par mois
+            </div>
+            <br>
+
+
+        </div>
+    </ng-container>
+    <ng-container *ngIf='segment=="stagiaire"'>
+        <ion-searchbar (keyup)="onSearchStagaire($event)"></ion-searchbar>
+        <div *ngFor="let stagiaire of StagiaireSearch" (click)="userselect(stagiaire)">
+
+
+            <div class="avatar" style="height: 40px;width: 60px; float: left;margin-left: 20px;">
+                <img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpdX6tPX96Zk00S47LcCYAdoFK8INeCElPeJrVDrh8phAGqUZP_g">
+            </div>
+            <div style="height: 40px;font-size: 12px">
+                {{stagiaire?.email}}<br> {{stagiaire?.nom}} {{stagiaire?.prenom}} <br> {{stagiaire?.charge}} % par mois
+            </div>
+            <br>
+
+
+        </div>
+    </ng-container>
+    <ng-container *ngIf='segment=="cameroun"'>
+        <ion-searchbar (keyup)="onSearchuserCameroun($event)"></ion-searchbar>
+        <div *ngFor="let cameroun of camerounSearch" (click)="userselect(cameroun)">
+
+
+            <div class="avatar" style="height: 40px;width: 60px; float: left;margin-left: 20px;">
+                <img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpdX6tPX96Zk00S47LcCYAdoFK8INeCElPeJrVDrh8phAGqUZP_g">
+            </div>
+            <div style="height: 40px;font-size: 12px">
+                {{cameroun?.email}}<br> {{cameroun?.nom}} {{cameroun?.prenom}} <br> {{cameroun?.charge}} % par mois
+            </div>
+            <br>
+
+
+        </div>
+    </ng-container>
+
+</ion-content>

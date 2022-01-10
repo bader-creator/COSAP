@@ -1,0 +1,58 @@
+ion-card{
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    padding: 10px 0px 45px 0px;
+}
+
+ion-icon{
+    font-size: 22px;
+    color: black;
+}
+.overme {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 213px;
+    font-weight: 700;
+    font-size: 18px;
+    z-index: 3;
+    color: #00080bc9;
+    font-family: Roboto Condensed;
+    position: absolute;
+    top: -16px;
+    left: 61px;
+}
+.list-img {
+    margin-left: -20px;
+    box-shadow: 0px 1px 6px 0px rgba(134, 134, 134, 0.59);
+    width: 60px;
+    padding: 2px;
+    height: 60px;
+    margin-top: -7px;
+}
+ion-label {
+    font-weight: 700;
+    font-size: 18px;
+    z-index: 3;
+    color: #00080bc9;
+    font-family: Roboto Condensed;
+    overflow: initial;
+    position: relative;
+    top: -4px;
+    margin-left: 4px;
+}
+
+.type {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 213px;
+    font-weight: 700;
+    font-size: 18px;
+    z-index: 3;
+    color: #00080bc9;
+    font-family: Roboto Condensed;
+    position: absolute;
+    top: 12px;
+    left: 61px;
+}

@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-buttons slot="secondary">
+      <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/add-equipement'
+        color="secondary">
+        <ion-icon slot="start" name="add-circle"></ion-icon>
+      </ion-button>
+      <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+        <ion-icon slot="start" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Equipements</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <div class="container-fluid">
+    <div class="row">
+      <ion-card (click)="GoToList('D2S')">
+        <ion-card-header>
+          <ion-card-title>D2S</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </div>
+    <div class="row">
+      <ion-card (click)="GoToList('Gadget')">
+        <ion-card-header>
+          <ion-card-title>Gadget</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </div>
+
+    <div class="row">
+      <ion-card (click)="GoToList('Informatique')">
+        <ion-card-header>
+          <ion-card-title>M.Informatique</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </div>
+    <div class="row">
+      <ion-card (click)="GoToList('Telephones')">
+        <ion-card-header>
+          <ion-card-title>Télephones</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </div>
+
+    <div class="row">
+      <ion-card (click)="GoToList('Bureautique')">
+        <ion-card-header>
+          <ion-card-title>Bureautique</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </div>
+    <div class="row">
+      <ion-card (click)="GoToList('Divers')">
+        <ion-card-header>
+          <ion-card-title>Divers</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </div>
+
+    <div class="row">
+      <ion-card (click)="GoToList('Mobilier')">
+        <ion-card-header>
+          <ion-card-title>Mobilier</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

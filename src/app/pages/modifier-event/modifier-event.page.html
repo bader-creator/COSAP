@@ -1,0 +1,267 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Modifier un événement
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+
+    <div class="profile-card card text-center">
+
+        <div class="card-body" style="padding: 0.8rem">
+
+            <div class="d-flex px-1 w-100 align-items-center text-left">
+                <div class="w-100">
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                        Nom
+                    </p>
+                    <br>
+                    <input [(ngModel)]="event.nom" name="event.nom" class="form-control">
+                    <br>
+
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                        Lieu
+                    </p>
+                    <br>
+                    <input [(ngModel)]="event.lieu" name="event.lieu" class="form-control">
+
+                    <br>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <br>
+    <div class="profile-card card text-center">
+        <div class="card-body" style="padding: 0.8rem">
+            <div class="d-flex px-1 w-100 align-items-center text-left">
+                <div class="w-100">
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                        Type
+                    </p>
+                    <br>
+                    <select class="browser-default custom-select" [(ngModel)]="event.type">
+                        <ng-container *ngFor="let type of typeEvents;">
+                            <option value="{{type}}">{{type}}</option>
+                        </ng-container>
+                    </select>
+                    <br>
+                    <br>
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 4px;float: left;">
+                        Participant
+                    </p>
+                    <select class="browser-default custom-select" [(ngModel)]="event.users" multiple="true">
+                        <option value="1">Staff</option>
+                        <option value="2">SFM Cameroun</option>
+                        <option value="3">Stagiaire</option>
+                        <option value="4">Guest</option>
+                    </select>
+
+                    <ng-container *ngFor="let user of event.users">
+                        <ng-container *ngIf='user == "1"'>
+                            <br>
+                            <br>
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                                Staff
+                            </p>
+                            <br>
+                            <select multiple="true" class=" browser-default custom-select "
+                                [(ngModel)]="event.participantStaff">
+                                <option *ngFor="let pro of proprietaires;" [value]="pro?.id">{{pro.nom}}
+                                    {{pro.prenom}}
+                                </option>
+                            </select>
+                        </ng-container>
+
+                        <ng-container *ngIf='user == "2"'>
+                            <br>
+                            <br>
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                                SFM Cameroun
+                            </p>
+                            <br>
+                            <select multiple="true" class=" browser-default custom-select "
+                                [(ngModel)]="event.participantCameroun ">
+                                <option *ngFor="let pro of cameroun;" [value]="pro?.id">{{pro.nom}}
+                                    {{pro.prenom}}
+                                </option>
+                            </select>
+                        </ng-container>
+
+                        <ng-container *ngIf='user == "3"'>
+                            <br>
+                            <br>
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                                Stagiaire
+                            </p>
+                            <br>
+                            <select multiple="true" class=" browser-default custom-select"
+                                [(ngModel)]="event.participantStagiaire ">
+                                <option *ngFor="let pro of stagiaires;" [value]="pro?.id">{{pro.nom}}
+                                    {{pro.prenom}}
+                                </option>
+                            </select>
+                        </ng-container>
+
+                        <ng-container *ngIf='user == "4"'>
+                            <br>
+                            <br>
+                            <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                                Guest
+                            </p>
+                            <br>
+                            <select multiple="true" class=" browser-default custom-select "
+                                [(ngModel)]="event.participantGuest ">
+                                <option *ngFor="let pro of guest;" [value]="pro?.id">{{pro.nom}} {{pro.prenom}}
+                                </option>
+                            </select>
+                        </ng-container>
+                    </ng-container>
+                    <br>
+                    <br>
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                        Description
+                    </p>
+                    <br>
+                    <input [(ngModel)]="event.description" name="event.description" class="form-control">
+                    <br>
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                        Salle
+                    </p>
+                    <br>
+                    <select class="browser-default custom-select" [(ngModel)]="event.salle">
+                        <option selected>none</option>
+                        <ng-container *ngFor="let s of salles;">
+                            <ng-container *ngIf="s">
+                                <option value="{{s?.id}}">{{s?.etage}} {{s?.nom}}</option>
+                            </ng-container>
+                        </ng-container>
+                    </select>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="profile-card card text-center">
+
+        <div class="card-body" style="padding: 0.8rem">
+
+            <div class="d-flex px-1 w-100 align-items-center text-left">
+                <div class="w-100">
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                        Date debut :
+                    </p>
+
+
+
+                    <div class="row">
+                        <ion-item style="margin-right: 10px; font-size: 14px;">
+                            <ion-icon name="calendar"></ion-icon>
+                            <ion-datetime (ionChange)="UpdateMyDate()" displayFormat="DD MMM ,YYYY" min="2019-10-17"
+                                max="2022-12-31" placeholder="Select Date" [(ngModel)]="event.debut" name="event.debut">
+                            </ion-datetime>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-icon name="time"></ion-icon>
+                            <ion-datetime (ionChange)="onDateDebutChanged()" displayFormat="HH:mm"
+                                minuteValues="00,15,30,45" placeholder="Select Time" [(ngModel)]="event.timedebut"
+                                name="event.timedebut"></ion-datetime>
+                        </ion-item>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <br>
+
+    <div class="profile-card card text-center">
+
+        <div class="card-body" style="padding: 0.8rem">
+
+            <div class="d-flex px-1 w-100 align-items-center text-left">
+                <div class="w-100">
+                    <p class="text-muted font-weight-bold small" style="margin-bottom: 0;">
+                        Date fin :
+                    </p>
+
+                    <div class="row">
+                        <ion-item style="margin-right: 10px;font-size: 14px;">
+                            <ion-icon name="calendar"></ion-icon>
+                            <ion-datetime (ionChange)="onDateFinChanged()" displayFormat="DD MMM ,YYYY" min="2019-10-17"
+                                max="2022-12-31" placeholder="Select Date" [(ngModel)]="event.fin" name="event.fin">
+                            </ion-datetime>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-icon name="time"></ion-icon>
+                            <ion-datetime (ionChange)="onDateFinChanged()" displayFormat="HH:mm"
+                                placeholder="Select Time" minuteValues="00,15,30,45" [(ngModel)]="event.timefin"
+                                name="event.timefin">
+                            </ion-datetime>
+                        </ion-item>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <br>
+
+
+
+
+    <button type="button" class="btn btn-block btn-success" (click)="ModifierEvenement()" (click)="ShowNotifReunion()">
+        Modifier événement</button>
+
+</ion-content>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Ionic App</title>
+
+    <base href="/"/>
+
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+
+
+
+    <!--add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js">
+
+
+
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2">
+</head>
+
+<body>
+    <div class="text-center" style="margin-top: 40%;">
+        <img src="assets/icon/Logo.png" style="width: 110px;height: 70px">
+        <br>
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+
+    <app-root>
+
+    </app-root>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="assets/sb-admin.min.js"></script>
+
+    <script>
+        function close() {
+            $("#exampleModalLong").hide();
+        }
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+
+            navigator.serviceWorker.register('service-worker.js')
+
+            .then(() => console.log('service worker installed'))
+
+            .catch(err => console.log('Error', err));
+
+        }
+    </script>
+
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+
+</html>

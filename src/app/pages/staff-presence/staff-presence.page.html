@@ -1,0 +1,154 @@
+<ion-header>
+    <ion-toolbar color="secondary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title> Présence Guest </ion-title>
+
+    </ion-toolbar>
+
+</ion-header>
+
+
+
+<ion-content no-padding no-margin>
+
+
+
+
+    <div class="presence">
+
+        <div class="row" style="overflow-x: auto;margin-top: 10px;margin-left: 10px;margin-right: 10px">
+
+
+
+            <div class="table-responsive-xl">
+                <table class="table table-striped">
+
+                    <thead style="display: block;">
+                        <tr>
+                            <th style="margin-left: 0px;margin-right: 0px;padding-top: 0px;padding-bottom: 0px">
+                                <div
+                                    style="width:47px;text-align: center;padding: .75rem;padding-top: 0px;padding-bottom: 0px">
+                                    Nom</div>
+                            </th>
+                            <ng-container *ngFor="let i of datearray;">
+                                <th style="margin-left: 0px;margin-right: 0px;padding-top: 0px;padding-bottom: 0px"
+                                    *ngIf=" deleteDimanche(i) != 'di' ">
+                                    <div style="width:30px;padding-left: 0px;padding-right: 0px;text-align: center;">
+                                        {{i[0]}}</div>
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+
+                    <tbody style="display: block;overflow-y:auto;">
+
+
+                        <tr *ngFor="let ev of listInfoUserTrier;">
+                            <td style="height:46px;margin: 0px;padding: 0px;">
+                                <div class="avatar">
+                                    <img alt="" src="{{env}}{{ev?.path}}">
+                                </div>
+                            </td>
+
+                            <ng-container *ngFor="let ia of datearray;index as i">
+
+                                <td style="margin: 0px;padding: 0px;" *ngIf=" deleteDimanche(ia) != 'di' "
+                                    (click)="settings(ev,i,ia)">
+                                    <div style="width:30px;margin: 0px;padding: 0px;position: relative">
+
+
+                                        <div style="display: block;height:46px;margin: 0px; padding: 0px;position: absolute; 
+                                    left: 0px;top: 0px;right: 0px; opacity:0;">.</div>
+
+
+                                        <ng-container *ngFor="let event of ev?.events;">
+                                            <ng-container *ngIf="event[i]?.value && event[i]?.type=='Événement'">
+                                                <div style="display: block;height:46px;margin: 0px;padding: 0px;background-color:#9f8cf3;color: #9f8cf3;position: absolute; 
+                        left: 0px;top: 0px;right: 0px;"></div>
+                                            </ng-container>
+                                        </ng-container>
+
+
+
+
+                                        <ng-container *ngFor="let r of ev?.events;">
+                                            <ng-container *ngIf="r[i]?.value && r[i]?.type=='En réunion'">
+                                                <div style="display: block;height:46px;margin: 0px;padding: 0px;background-color:#9f8cf3;color: #9f8cf3;position: absolute; 
+                        left: 0px;top: 0px;right: 0px; ">.</div>
+                                            </ng-container>
+                                        </ng-container>
+
+
+
+
+                                        <ng-container *ngFor="let d of ev?.events;">
+                                            <ng-container *ngIf="d[i]?.value && d[i]?.type=='En déplacement'">
+                                                <div style="display: block;height:46px;margin: 0px;padding: 0px;background-color:#9f8cf3;color: #9f8cf3;position: absolute; 
+                        left: 0px;top: 0px;right: 0px; ">.</div>
+                                            </ng-container>
+                                        </ng-container>
+
+
+                                        <ng-container *ngFor="let t of ev?.teletravail;">
+                                            <ng-container *ngIf="t[i]?.value">
+                                                <div style="display: block;height:46px;margin: 0px;padding: 0px;background-color:#1df78a;color: #1df78a;position: absolute; 
+                            left: 0px;top: 0px;right: 0px; ">.</div>
+                                            </ng-container>
+                                        </ng-container>
+
+
+                                        <ng-container *ngFor="let c of ev?.conges;">
+                                            <ng-container *ngIf="c[i]?.value">
+                                                <div style="display: block;height:46px;margin: 0px;padding: 0px;background-color:#f0a79a;color: #f0a79a;position: absolute; 
+                            left: 0px;top: 0px;right: 0px; ">.</div>
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <ng-container *ngFor="let s of ev?.sorties;index as e">
+                                            <ng-container *ngIf="s[i]?.value">
+                                                <div style="display: block;height:46px;margin: 0px;padding: 0px;background-color:#f0a79a;color: #f0a79a;position: absolute; 
+                      left: 0px;top: 0px;right: 0px; ">.</div>
+                                            </ng-container>
+                                        </ng-container>
+
+
+
+
+
+
+                                        <ng-container *ngFor="let t of ev?.tickets;">
+                                            <ng-container *ngIf="t[i]?.value">
+                                                <div style="display: block;height:46px;margin: 0px;padding: 0px;position: absolute; 
+                                      left: 0px;top: 0px;right: 0px; ">
+                                                    <img src="./../../../assets/icon/ticket.png"
+                                                        style="width:30px;height:30px;margin: 0px;padding: 0px;" />
+
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+
+                                    </div>
+                                </td>
+
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</ion-content>>

@@ -1,0 +1,361 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Add action
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+
+
+    <form role="form" class="" style="margin:  10px">
+
+
+
+        <a style="color: #2BBBAD" (click)="listUsers(1)"> Ajouter un Responsable</a>
+        <div *ngIf="this.userSelected && this.api.validation!=true">
+
+            <div class="avatar" style="height: 40px;width: 60px; float: left;margin-left: 20px;">
+                <img alt=""
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpdX6tPX96Zk00S47LcCYAdoFK8INeCElPeJrVDrh8phAGqUZP_g">
+            </div>
+            <div style="height: 40px;font-size: 12px;padding-top: 3px">
+                {{this.userSelected?.email}}<br> {{this.userSelected?.prenom}} {{this.userSelected?.nom}} <br>
+                {{this.userSelected?.charge}}
+                <ng-container *ngIf='this.userSelected?.charge != null'> % par mois</ng-container>
+
+            </div>
+        </div>
+        <div *ngIf="this.userSelected2 && this.api.validation==true">
+
+            <div class="avatar" style="height: 40px;width: 60px; float: left;margin-left: 20px;">
+                <img alt=""
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpdX6tPX96Zk00S47LcCYAdoFK8INeCElPeJrVDrh8phAGqUZP_g">
+            </div>
+            <div style="height: 40px;font-size: 12px;padding-top: 3px">
+                {{this.userSelected2?.email}}<br> {{this.userSelected2?.prenom}} {{this.userSelected2?.nom}} <br>
+                {{this.userSelected2?.charge}}
+                <ng-container *ngIf='this.userSelected2?.charge != null'> % par mois</ng-container>
+
+            </div>
+        </div>
+        <ng-container *ngIf="this.api.validation!=true">
+            <ng-container *ngIf="!this.userSelected && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="this.api.validation==true">
+            <ng-container *ngIf="!this.userSelected2 && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </ng-container>
+        <br>
+
+
+
+
+        <a style="color: #2BBBAD" (click)="listUsers(2)">Utilisateurs en copie</a>
+        <div *ngFor="let user of this.usersEnCopie;" style="font-size: 12px;margin-left: 20px;">
+            <img src="./../../../assets/icon/notok.png" (click)="deleteUser(user?.email)"
+                style="width:15px;height:15px;margin-right: 5px;" /> {{user?.email}} <br> {{user?.charge}}
+            <ng-container *ngIf='this.user?.charge != null'>% par mois</ng-container>
+
+        </div>
+
+
+        <div class="form-group">
+            <label for="inputname">Intitulé</label>
+            <input [(ngModel)]="ticketObject.titre" name="ticketObject.titre" class="form-control input-sm">
+            <ng-container *ngIf="!ticketObject.titre && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </div>
+
+        <div class="form-group ">
+            <label for="exampleFormControlSelect1">
+                <ng-container *ngIf='labelprioriter'>
+                    {{labelprioriter.name}}
+                </ng-container>
+                <ng-container *ngIf='!labelprioriter'>
+                    Priorité
+                </ng-container>
+            </label>
+            <select class="form-control" name="ticketObject.idprioriter" [(ngModel)]="ticketObject.idprioriter">
+                <option *ngFor="let p of prioriter;" [value]="p?.id">{{p.name}}</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">
+                <ng-container *ngIf='labeltypetache'>
+                    {{labeltypetache.name}}
+                </ng-container>
+                <br>
+                <ng-container *ngIf='!labeltypetache'>Type d'action</ng-container><br>
+            </label>
+
+            <div class="form-group">
+
+                <select class="form-control" name="ticketObject.idtache" [(ngModel)]="ticketObject.idtypetache">
+                    <option [value]="1">Technique</option>
+                    <option [value]="2">Commercial</option>
+                    <option [value]="3">Administratif et financier</option>
+                    <option [value]="4">GRH et MQ</option>
+                </select>
+                <ng-container *ngIf="!ticketObject.idtache && verifeChamp">
+                    <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                </ng-container>
+            </div>
+
+            <ng-container *ngIf='ticketObject.idtypetache == "1" '>
+                <div class="form-group">
+                    <select class="custom-select" name="ticketObject.idtechnique" [(ngModel)]="ticketObject.idtache">
+                        <option *ngFor="let technique of techniques;" [value]="technique?.id">{{technique.valeur}}
+                        </option>
+                    </select>
+                    <ng-container *ngIf="!ticketObject.idtache && verifeChamp">
+                        <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf='ticketObject.idtypetache == "2" '>
+                <div class="form-group">
+                    <select class="custom-select" name="ticketObject.idcommercial" [(ngModel)]="ticketObject.idtache">
+                        <option *ngFor="let Commercial of Commercials;" [value]="Commercial?.id">{{Commercial.valeur}}
+                        </option>
+                    </select>
+                    <ng-container *ngIf="!ticketObject.idtache && verifeChamp">
+                        <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf='ticketObject.idtypetache == "3" '>
+                <div class="form-group">
+                    <select class="custom-select" name="ticketObject.idadminstratif" [(ngModel)]="ticketObject.idtache">
+                        <option *ngFor="let adminstratif of adminstratifs;" [value]="adminstratif?.id">
+                            {{adminstratif.valeur}}</option>
+                    </select>
+                    <ng-container *ngIf="!ticketObject.idtache && verifeChamp">
+                        <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf='ticketObject.idtypetache == "4" '>
+                <div class="form-group">
+                    <select class="custom-select" name="ticketObject.idgrh" [(ngModel)]="ticketObject.idtache">
+                        <option *ngFor="let g of grh;" [value]="g?.id">{{g.valeur}}</option>
+                    </select>
+                    <ng-container *ngIf="!ticketObject.idtache && verifeChamp">
+                        <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">
+                <ng-container *ngIf='labeltypeprojet'>
+                    {{labeltypeprojet.name}}
+                </ng-container>
+                <ng-container *ngIf='!labelprioriter'>
+                    Type de Projet
+                </ng-container>
+            </label>
+            <select class="custom-select" name="ticketObject.idtypeprojet" [(ngModel)]="ticketObject.idtypeprojet">
+                <option *ngFor="let p of typeprojets;" [value]="p?.code">{{p.name}}</option>
+            </select>
+
+            <ng-container *ngIf="!ticketObject.idtypeprojet && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </div>
+
+
+
+        <ng-container *ngIf='ticketObject.idtypeprojet == "V01" || ticketObject.idtypeprojet == "V02"'>
+            <div class="form-group">
+                <select class="custom-select" name="ticketObject.idsoumission" [(ngModel)]="ticketObject.idsoumission">
+                    <option *ngFor="let p of soumission;" [value]="p?.id">{{p.title}}</option>
+                </select>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf='ticketObject.idtypeprojet == "V04"'>
+            <div class="form-group">
+                <select class="custom-select" name="ticketObject.idproposition"
+                    [(ngModel)]="ticketObject.idproposition">
+                    <option *ngFor="let p of proposition;" [value]="p?.id">{{p.intitule}}</option>
+                </select>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf='ticketObject.idtypeprojet == "V05"'>
+            <div class="form-group">
+                <select class="custom-select" name="ticketObject.idformation" [(ngModel)]="ticketObject.idformation">
+                    <option *ngFor="let p of formation;" [value]="p?.id">{{p.intitule}}</option>
+                </select>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf='ticketObject.idtypeprojet == "V06"'>
+            <div class="form-group">
+                <select class="custom-select" name="ticketObject.idinterne" [(ngModel)]="ticketObject.idinterne">
+                    <option *ngFor="let p of interne;" [value]="p?.id">{{p.libelle}}</option>
+                </select>
+            </div>
+
+        </ng-container>
+        <ng-container *ngIf='ticketObject.idtypeprojet == "V08"'>
+            <div class="form-group">
+                <select class="custom-select" name="ticketObject.idexterne" [(ngModel)]="ticketObject.idexterne">
+                    <option *ngFor="let p of externe;" [value]="p?.id">{{p.libelle}}</option>
+                </select>
+            </div>
+
+        </ng-container>
+
+
+        <div class="form-group">
+            <label for="desciption">Description</label>
+            <textarea [(ngModel)]="ticketObject.description" name="ticketObject.description"
+                class="form-control form-control-large" style="font-size: 12px;width:100%;" name="description" id=""
+                rows="4"></textarea>
+        </div>
+
+        <div class="row">
+            <div class="form-group  col-4">
+                <label for="nj">Nombre d'h/j</label>
+                <input (keyup)="onKey($event)" [(ngModel)]="ticketObject.nbrHj" name="ticketObject.nbrHj" type="number"
+                    style="font-size: 12px; width:100%;" class="form-control form-control-large" id="nj"
+                    placeholder="h/j">
+                <ng-container *ngIf="!ticketObject.nbrHj && verifeChamp">
+                    <br>
+                    <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                </ng-container>
+            </div>
+
+            <div class="form-group  col-4">
+                <label for="po">Points</label>
+                <input [(ngModel)]="ticketObject.points" name="ticketObject.points" type="number"
+                    style="font-size: 12px; width:100%;" class="form-control form-control-large" id="po"
+                    placeholder="Points">
+
+            </div>
+
+            <div class="dropdown  col-4">
+            </div>
+        </div>
+
+
+        <div class="profile-card card text-center">
+
+            <div class="card-body" style="padding: 0.8rem">
+    
+                <div class="d-flex px-1 w-100 align-items-center text-left">
+                    <div class="w-100">
+                        <p class="text-muted font-weight-bold small" style="margin-bottom: 0;float: left;">
+                            <ion-icon name="calendar" style="font-size: 18px;margin-bottom: -3px;"></ion-icon>
+                            Date Limite :
+                        </p>
+                        <br>
+                        <input class="form-control" type="datetime-local" min="{{ticketObject.Echeance}}" placeholder="Select Time" [(ngModel)]="ticketObject.Echeance" name="ticketObject.Echeance" />
+
+                    </div>
+    
+                </div>
+    
+    
+            </div>
+        </div>
+        
+        <br>
+
+
+
+
+
+        <div (click)="presentAlertConfirm()" style="margin-top: 10px;">
+            <img width="20px" style="float: left;" src="../../../assets/icon/pp.png" />
+            <div style="font-size: 12px;float: left;margin-left: 5px;width:40%;text-align: left"><b>pièce jointe </b>
+            </div>
+
+
+
+        </div>
+
+        <br>
+        <br>
+
+
+
+
+
+        <button *ngIf="loadFile" (click)="addticket()" type="button" class="btn btn-block btn-success">
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Confirmer demande</button>
+        <button *ngIf="!loadFile" (click)="addticket()" type="button" class="btn btn-block btn-success">Confirmer
+            demande</button>
+        <button (click)="resetView()" type="button" class="btn btn-block btn-danger">Annuler demande</button>
+
+
+    </form>
+
+
+
+
+</ion-content>
+
+
+<ion-footer no-padding no-marging>
+
+    <ion-segment no-padding no-marging style="font-size: 10px;" [(ngModel)]="segment">
+        <ion-segment-button style="min-width: 60px;" routerDirection='root' routerLink="/task/Request">
+            <ion-icon size="small" name="md-trending-up"></ion-icon>
+        </ion-segment-button>
+
+        <ion-segment-button style="min-width: 60px;" routerDirection='root' routerLink="/task/To Do">
+            <ion-icon size="small" name="md-trending-down"></ion-icon>
+        </ion-segment-button>
+
+        <ion-segment-button style="min-width: 60px;" routerDirection='root' routerLink="/task/EnCopie">
+            <ion-icon size="small" name="undo"></ion-icon>
+        </ion-segment-button>
+
+        <ion-segment-button style="min-width: 60px;" routerDirection='root' routerLink="/task/BU">
+            <ion-icon size="small" name="contacts"></ion-icon>
+        </ion-segment-button>
+
+        <ion-segment-button style="min-width: 60px;" routerDirection='root' routerLink="/task/Archive">
+            <ion-icon size="small" name="filing"></ion-icon>
+        </ion-segment-button>
+
+        <ion-segment-button style="min-width: 60px;" routerDirection='root' routerLink='/add-task'>
+            <ion-icon size="small" name="add"></ion-icon>
+        </ion-segment-button>
+
+    </ion-segment>
+
+</ion-footer>

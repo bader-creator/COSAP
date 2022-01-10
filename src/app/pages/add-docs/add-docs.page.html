@@ -1,0 +1,58 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Ajouter un document
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="card">
+        <ion-card-header>
+            <button class="Download" (click)="download()"><i class="fa fa-download"></i>Download</button>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list no-line>
+                <div (click)="StorgaeFile()" style="margin-top: 10px; ">
+                    <img width="20px" style="float: left; width: 14%;" src="../../../assets/icon/pp.png" />
+                    <div style="font-size: 17px;float: left;margin-left: 8px;text-align: left;margin-top: 13px;"><b>sélectionner un fichier</b></div>
+                </div>
+                <br><br><br>
+                <div class="form-group">
+                    <label for="inputname">Intitulé</label>
+                    <input [(ngModel)]="document.titre" name="document.titre" class="form-control input-sm">
+                    <ng-container *ngIf="!document.titre && verifeChamp">
+                        <br>
+                        <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                    </ng-container>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputname">Destinataire</label>
+                    <select class="custom-select" [(ngModel)]="document.destinataire" name="document.destinataire">
+                        
+                        <option  *ngFor="let pro of proprietaires;" [value]="pro?.id" >{{pro.firstName}} {{pro.lastName}}</option>
+                    </select>
+                    <ng-container *ngIf="!document.destinataire && verifeChamp">
+                        <br>
+                        <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+                    </ng-container>
+                </div>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+    <button type="button" class="btn btn-block btn-success" (click)="ajouterDocs()" style="margin: 27px;width: 85%;border-radius: 35px;font-size: 19px;">Envoi
+    </button>
+    <button type="button" class="btn btn-block  btn-danger" (click)="annuler()" style="width: 85%;border-radius: 35px;font-size: 19px;margin-left: 28px;margin-top: -17px;">Annuler
+    </button>
+</ion-content>

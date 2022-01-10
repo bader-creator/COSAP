@@ -1,0 +1,296 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start" (click)="onDismiss()">
+            <ion-icon name="arrow-round-back" size="large"></ion-icon>
+        </ion-buttons>
+        <ng-container *ngIf='historique==true'>
+            <ion-title>Historique</ion-title>
+        </ng-container>
+        <ng-container *ngIf='detail==true'>
+            <ion-title>Détail</ion-title>
+        </ng-container>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ng-container *ngIf='historique==true'>
+        <div class="container" style="height: 100%; width: 100%;">
+            <div class="row" *ngFor="let h of Historique" style="margin-bottom: 6px;">
+                <div class="container-fluid content">
+                    <ng-container *ngIf='h?.etat=="1"'>
+                        <div class="card" style="border: 3px solid rgba(0, 189, 16, 0.125);background-color: rgba(8, 220, 26, 0.125);">
+                            <div class="card-body">
+                                <div class="d-flex  w-100 align-items-center text-left">
+                                    <div class="col">
+
+                                        <div class="row">
+                                            <ion-icon name="chatbubbles" style="font-size: 20px;position: absolute;"></ion-icon>
+                                            <ion-label style="margin-left: 24px;">{{h.commentaire}}</ion-label>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div>
+                                                <ion-icon name="settings" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">RAS</ion-label>
+
+                                            </div>
+                                            <ng-container *ngIf='h?.photo'>
+                                                <div style="position: absolute;left: 125px;margin-top: -5px;">
+                                                    <img style="width: 17%; margin-top: -8px;" src="../../../assets/icon/pp.png" />
+                                                    <a href="{{env}}{{h?.photo}}" download="att" style="font-size: 20px;">Pièce jointe</a>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div style="padding-right: 75px;">
+                                                <ion-icon name="desktop" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.hours}} H</ion-label>
+                                            </div>
+
+
+                                            <div>
+                                                <ion-icon name="calendar" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.dateCreation | date: 'dd-MM-yyyy'}}</ion-label>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf='h?.etat=="2"'>
+                        <div class="card" style="border: 3px solid rgba(219, 3, 3, 0.125);background-color: rgba(209, 87, 87, 0.125)">
+                            <div class="card-body">
+                                <div class="d-flex  w-100 align-items-center text-left">
+                                    <div class="col">
+
+                                        <div class="row">
+                                            <ion-icon name="chatbubbles" style="font-size: 20px;position: absolute;"></ion-icon>
+                                            <ion-label style="margin-left: 24px;">{{h.commentaire}}</ion-label>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div>
+                                                <ion-icon name="settings" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">Blocage</ion-label>
+
+                                            </div>
+                                            <ng-container *ngIf='h?.photo'>
+                                                <div style="position: absolute;left: 125px;margin-top: -5px;">
+                                                    <img style="width: 17%; margin-top: -8px;" src="../../../assets/icon/pp.png" />
+                                                    <a href="{{env}}{{h?.photo}}" download="att" style="font-size: 20px;">Pièce jointe</a>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div style="padding-right: 75px;">
+                                                <ion-icon name="desktop" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.hours}} H</ion-label>
+                                            </div>
+
+
+                                            <div>
+                                                <ion-icon name="calendar" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.dateCreation | date: 'dd-MM-yyyy'}}</ion-label>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf='h?.etat=="3"'>
+                        <div class="card" style="border: 3px solid rgba(235, 193, 7, 0.125);background-color: rgba(235, 193, 7, 0.125)">
+                            <div class="card-body">
+                                <div class="d-flex  w-100 align-items-center text-left">
+                                    <div class="col">
+
+                                        <div class="row">
+                                            <ion-icon name="chatbubbles" style="font-size: 20px;position: absolute;"></ion-icon>
+                                            <ion-label style="margin-left: 24px;">{{h.commentaire}}</ion-label>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div>
+                                                <ion-icon name="settings" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">Retard</ion-label>
+                                            </div>
+                                            <ng-container *ngIf='h?.photo'>
+                                                <div style="position: absolute;left: 125px;margin-top: -5px;">
+                                                    <img style="width: 17%; margin-top: -8px;" src="../../../assets/icon/pp.png" />
+                                                    <a href="{{env}}{{h?.photo}}" download="att" style="font-size: 20px;">Pièce jointe</a>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div style="padding-right: 75px;">
+                                                <ion-icon name="desktop" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.hours}} H</ion-label>
+                                            </div>
+
+
+                                            <div>
+                                                <ion-icon name="calendar" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.dateCreation | date: 'dd-MM-yyyy'}}</ion-label>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+    <ng-container *ngIf='detail==true'>
+        <div class="container" style="height: 100%; width: 100%;">
+            <div class="row" *ngFor="let h of Detail" style="margin-bottom: 6px;">
+                <div class="container-fluid content">
+                    <ng-container *ngIf='h?.etat=="1"'>
+                        <div class="card" style="border: 3px solid rgba(0, 189, 16, 0.125);background-color: rgba(8, 220, 26, 0.125);">
+                            <div class="card-body">
+                                <div class="d-flex  w-100 align-items-center text-left">
+                                    <div class="col">
+
+                                        <div class="row">
+                                            <ion-icon name="chatbubbles" style="font-size: 20px;position: absolute;"></ion-icon>
+                                            <ion-label style="margin-left: 24px;">{{h.commentaire}}</ion-label>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div>
+                                                <ion-icon name="settings" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">RAS</ion-label>
+
+                                            </div>
+                                            <ng-container *ngIf='h?.photo'>
+                                                <div style="position: absolute;left: 125px;margin-top: -5px;">
+                                                    <img style="width: 17%; margin-top: -8px;" src="../../../assets/icon/pp.png" />
+                                                    <a href="{{env}}{{h?.photo}}" download="att" style="font-size: 20px;">Pièce jointe</a>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div style="padding-right: 75px;">
+                                                <ion-icon name="desktop" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.hours}} H</ion-label>
+                                            </div>
+
+
+                                            <div>
+                                                <ion-icon name="calendar" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.dateCreation | date: 'dd-MM-yyyy'}}</ion-label>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf='h?.etat=="2"'>
+                        <div class="card" style="border: 3px solid rgba(219, 3, 3, 0.125);background-color: rgba(209, 87, 87, 0.125)">
+                            <div class="card-body">
+                                <div class="d-flex  w-100 align-items-center text-left">
+                                    <div class="col">
+
+                                        <div class="row">
+                                            <ion-icon name="chatbubbles" style="font-size: 20px;position: absolute;"></ion-icon>
+                                            <ion-label style="margin-left: 24px;">{{h.commentaire}}</ion-label>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div>
+                                                <ion-icon name="settings" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">Blocage</ion-label>
+
+                                            </div>
+                                            <ng-container *ngIf='h?.photo'>
+                                                <div style="position: absolute;left: 125px;margin-top: -5px;">
+                                                    <img style="width: 17%; margin-top: -8px;" src="../../../assets/icon/pp.png" />
+                                                    <a href="{{env}}{{h?.photo}}" download="att" style="font-size: 20px;">Pièce jointe</a>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div style="padding-right: 75px;">
+                                                <ion-icon name="desktop" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.hours}} H</ion-label>
+                                            </div>
+
+
+                                            <div>
+                                                <ion-icon name="calendar" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.dateCreation | date: 'dd-MM-yyyy'}}</ion-label>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf='h?.etat=="3"'>
+                        <div class="card" style="border: 3px solid rgba(235, 193, 7, 0.125);">
+                            <div class="card-body">
+                                <div class="d-flex  w-100 align-items-center text-left">
+                                    <div class="col">
+
+                                        <div class="row">
+                                            <ion-icon name="chatbubbles" style="font-size: 20px;position: absolute;"></ion-icon>
+                                            <ion-label style="margin-left: 24px;">{{h.commentaire}}</ion-label>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div>
+                                                <ion-icon name="settings" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">Retard</ion-label>
+                                            </div>
+                                            <ng-container *ngIf='h?.photo'>
+                                                <div style="position: absolute;left: 125px;margin-top: -5px;">
+                                                    <img style="width: 17%; margin-top: -8px;" src="../../../assets/icon/pp.png" />
+                                                    <a href="{{env}}{{h?.photo}}" download="att" style="font-size: 20px;">Pièce jointe</a>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div style="padding-right: 75px;">
+                                                <ion-icon name="desktop" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.hours}} H</ion-label>
+                                            </div>
+
+
+                                            <div>
+                                                <ion-icon name="calendar" style="font-size: 20px;position: absolute;"></ion-icon>
+                                                <ion-label style="margin-left: 24px;">{{h.dateCreation | date: 'dd-MM-yyyy'}}</ion-label>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+</ion-content>

@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="secondary">
+      <ion-button fill="solid" style="font-size: 18px;" (click)="closeModal()" color="tertiary">
+        <ion-icon slot="start" name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Vérification de disponibilité</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding no-margin>
+
+  <div class="presence">
+    <div class="row">
+      <div class="col-4">
+        <ion-icon name="color-palette" style="color: #1df78a;"></ion-icon>
+        <ion-label>Télétravail</ion-label>
+      </div>
+      <div class="col-4">
+        <ion-icon name="color-palette" style="color: #f0a79a;"></ion-icon>
+        <ion-label>Congé & Sortie</ion-label>
+      </div>
+      <div class="col-4">
+        <ion-icon name="color-palette" style="color: #9f8cf3;"></ion-icon>
+        <ion-label>événement</ion-label>
+      </div>
+    </div>
+    <div class="row" style="overflow-x: auto;margin-top: 10px;margin-left: 10px;margin-right: 10px">
+
+      <div class="table-responsive-xl">
+        <table class="table table-striped">
+
+          <thead style="display: block;">
+            <tr>
+              <th style="margin-left: 0px;margin-right: 0px;padding-top: 0px;padding-bottom: 0px">
+                <div style="width:50px;text-align: center;padding: .75rem;padding-top: 0px;padding-bottom: 0px">
+                  Photo</div>
+              </th>
+              <ng-container *ngFor="let i of datearray;">
+                <th style="margin-left: 0px;margin-right: 0px;padding-top: 0px;padding-bottom: 0px">
+                  <div style="width:50px;padding-left: 0px;padding-right: 0px;text-align: center;">
+                    {{i}} H
+                  </div>
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+
+          <tbody style="display: block;overflow-y:auto;">
+            <tr *ngFor="let p of Presences;">
+              <td style="height:46px;margin: 0px;padding: 0px;">
+                <div class="avatar">
+                  <img alt="" src="{{env}}{{p?.user?.path}}">
+                </div>
+              </td>
+              <ng-container *ngFor="let ia of datearray;index as i">
+
+                <ng-container
+                  *ngIf="p?.demandeConges.length==0 && p?.TeleTravail.length==0 && p?.demandeSorties.length==0 && p?.evenements.length==0 ">
+                  <td style="margin: 0px;padding: 0px;">
+                    <div style="width:50px;position: relative">
+
+                      <div style="display: block;height:46px;position: absolute; 
+                            left: 0px;top: 0px;right: 0px; opacity:0;">.</div>
+                    </div>
+                  </td>
+                </ng-container>
+
+
+
+                <ng-container *ngIf="p?.demandeConges.length!=0">
+                  <ng-container *ngFor="let c of p?.demandeConges;">
+                    <td style="margin: 0px;padding: 0px;background-color:#f0a79a;color: #f0a79a;">
+                      <div style="width:50px;position: relative ;background-color:#f0a79a;color: #f0a79a;">
+                      </div>
+                    </td>
+                  </ng-container>
+                </ng-container>
+
+                <ng-container *ngIf="p?.TeleTravail.length!=0">
+                  <ng-container *ngFor="let t of p?.TeleTravail;">
+
+                    <td style="margin: 0px;padding: 0px;background-color:#1df78a;color: #1df78a;">
+                      <div style="width:50px;position: relative ;background-color:#1df78a;color: #1df78a;">
+                      </div>
+                    </td>
+                  </ng-container>
+                </ng-container>
+
+              </ng-container>
+              <ng-container *ngIf="p?.demandeSorties.length!=0">
+                <ng-container *ngFor="let dem of p?.demandeSorties;">
+
+                  <ng-container *ngFor="let s of dem?.sortie">
+
+                    <td *ngIf="s==false" style="margin: 0px;padding: 0px;">
+                      <div style="width:50px;position: relative ;">
+                      </div>
+                    </td>
+
+                    <td *ngIf=" s==true" style="margin: 0px;padding: 0px;background-color:#f0a79a;color: #f0a79a;">
+                      <div style="width:50px;position: relative ;background-color:#f0a79a;color: #f0a79a;">
+                      </div>
+                    </td>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="p?.evenements.length!=0">
+                <ng-container *ngFor="let ev of p?.evenements?.events">
+                  <td *ngIf="ev==false" style="margin: 0px;padding: 0px;">
+                    <div style="width:50px;position: relative ;">
+                    </div>
+                  </td>
+                  <td *ngIf="ev==true" style="margin: 0px;padding: 0px;background-color:#9f8cf3;color: #9f8cf3;">
+                    <div style="width:50px;position: relative ;background-color:#9f8cf3;color: #9f8cf3;">
+                    </div>
+                  </td>
+                </ng-container>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Traçabilité
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+    <div class="card" style="margin:8px;">
+        <ng-container *ngFor="let task of ticketTracability ">
+            <div class="card-body" style="padding:10px;">
+                <p style="font-size: 14px; color:grey; margin-bottom: 0; overflow: hidden;">{{task?.comment}}</p>
+                <div style="float: right;font-size: 12px;margin-right:10px; color:grey;">
+                    <i class="far fa-calendar-alt" style="margin-right:2px;"></i> {{task?.dateAction | date: 'dd-MM-yyyy'}}
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+</ion-content>

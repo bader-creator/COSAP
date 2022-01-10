@@ -1,0 +1,187 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home'
+                color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Ajouter un equipement</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form role="form" class="" style="margin:  10px">
+
+        <div class="form-group">
+            <label>Description :</label>
+            <textarea [(ngModel)]="equipements.description" name="equipements.description"
+                class="form-control form-control-large" style="font-size: 12px;width:100%;" name="description" id=""
+                rows="4"></textarea>
+
+        </div>
+
+        <div class="form-group">
+            <label>Groupe :</label>
+            <select class="browser-default custom-select" [(ngModel)]="equipements.type" name="equipements.type">
+                <option value="D2S">D2S</option>
+                <option value="Gadget">Gadget</option>
+                <option value="informatique">M.informatique</option>
+                <option value="Telephones">Telephones</option>
+                <option value="Bureautique">Bureautique</option>
+                <option value="Divers">Divers</option>
+                <option value="Mobilier">Mobilier</option>
+            </select>
+            <ng-container *ngIf="!equipements.type && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </div>
+
+        <div class="form-group">
+            <label>Propriétaire :</label>
+            <select class="browser-default custom-select" [(ngModel)]="equipements.users" name="equipements.users">
+                <option value="1">Staff</option>
+                <option value="2">SFM Cameroun</option>
+                <option value="3">Stagiaire</option>
+                <option value="4">Guest</option>
+            </select>
+        </div>
+        <ng-container *ngIf='equipements.users == "1"'>
+            <div class="form-group">
+                <label>Staff :</label>
+                <select class=" browser-default custom-select " [(ngModel)]="equipements.idproprietaire"
+                    name="equipements.staff">
+                    <option *ngFor="let pro of proprietaires;" [value]="pro?.id">{{pro.nom}} {{pro.prenom}}</option>
+                </select>
+            </div>
+        </ng-container>
+        <ng-container *ngIf='equipements.users == "2"'>
+            <div class="form-group">
+                <label>SFM Cameroun :</label>
+                <select class=" browser-default custom-select " [(ngModel)]="equipements.idproprietaire"
+                    name="equipements.cameroun">
+                    <option *ngFor="let pro of cameroun;" [value]="pro?.id">{{pro.nom}} {{pro.prenom}}</option>
+                </select>
+            </div>
+        </ng-container>
+        <ng-container *ngIf='equipements.users == "3"'>
+            <div class="form-group">
+                <label>Stagiaire :</label>
+                <select class=" browser-default custom-select " [(ngModel)]="equipements.idproprietaire"
+                    name="equipements.stagiaire">
+                    <option *ngFor="let pro of stagiaires;" [value]="pro?.id">{{pro.nom}} {{pro.prenom}}</option>
+                </select>
+            </div>
+        </ng-container>
+        <ng-container *ngIf='equipements.users == "4"'>
+            <div class="form-group">
+                <label>Guest :</label>
+                <select class=" browser-default custom-select " [(ngModel)]="equipements.idproprietaire"
+                    name="equipements.guest">
+                    <option *ngFor="let pro of guest;" [value]="pro?.id">{{pro.nom}} {{pro.prenom}}</option>
+                </select>
+            </div>
+        </ng-container>
+
+
+
+        <div class="form-group">
+            <label>Date Acquisition :</label>
+            <ion-item>
+                <ion-icon name="calendar"></ion-icon>
+                <ion-datetime displayFormat="DD/MM/YYYY" min="2019-10-17" max="2022-12-31" placeholder="Select Date"
+                    [(ngModel)]="equipements.dateAcquisition" name="equipements.dateAcquisition"></ion-datetime>
+            </ion-item>
+        </div>
+
+        <div class="form-group">
+            <label>Catégorie:</label>
+            <select class="custom-select" [(ngModel)]="equipements.idcategorie" name="equipements.idcategorie">
+                <option *ngFor="let categorie of categories;" [value]="categorie?.id">{{categorie.name}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Etat:</label>
+            <select class="custom-select" [(ngModel)]="equipements.idetat" name="equipements.idetat">
+                <option *ngFor="let etat of etats;" [value]="etat?.id">{{etat.name}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Prix">Prix :</label>
+            <input type="number" [(ngModel)]="equipements.prix" name="equipements.prix"
+                style="font-size: 12px; width:100%;" class="form-control form-control-large">
+        </div>
+
+        <div class="form-group">
+            <label for="Quantite">Quantite :</label>
+            <input type="number" [(ngModel)]="equipements.quantite" name="equipements.quantite"
+                style="font-size: 12px; width:100%;" class="form-control form-control-large">
+
+            <ng-container *ngIf="!equipements.quantite && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </div>
+
+        <div class="form-group">
+            <label>Numéro de série / Réference : </label>
+            <textarea [(ngModel)]="equipements.num_serie" name="equipements.num_serie" class="form-control input-sm"
+                style="font-size: 12px;width:100%;"></textarea>
+
+        </div>
+
+        <div class="form-group">
+            <label>Localisation : </label>
+            <textarea [(ngModel)]="equipements.localisation" name="equipements.localisation"
+                class="form-control input-sm" style="font-size: 12px;width:100%;"></textarea>
+
+            <ng-container *ngIf="!equipements.localisation && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </div><br>
+
+
+        <div class="form-group">
+            <label>Nom : </label>
+            <textarea [(ngModel)]="equipements.nom" name="equipements.nom" class="form-control input-sm"
+                style="font-size: 12px;width:100%;"></textarea>
+
+            <ng-container *ngIf="!equipements.nom && verifeChamp">
+                <br>
+                <div style="font-size: 10px;color:red">* Champ obligatoire </div>
+            </ng-container>
+        </div>
+
+        <div class="form-group">
+            <label>Commentaire :</label>
+            <textarea [(ngModel)]="equipements.commentaire" name="equipements.commentaire"
+                class="form-control form-control-large" style="font-size: 12px;width:100%;" id="" rows="4"></textarea>
+        </div>
+        <br>
+        <div (click)="presentAlertConfirm()" style="margin-top: 10px; ">
+            <img width="20px" style="float: left;" src="../../../assets/icon/pp.png" />
+            <div style="font-size: 12px;float: left;margin-left: 5px;width:40%;text-align: left"><b>pièce jointe </b>
+            </div>
+        </div>
+        <br>
+        <br>
+        <button *ngIf="loadFile" (click)="addEquipement()" type="button" class="btn btn-block btn-success">
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Enregistrer</button>
+        <button *ngIf="!loadFile" (click)="addEquipement()" type="button"
+            class="btn btn-block btn-success">Enregistrer</button>
+
+        <button type="button" class="btn btn-block btn-danger" routerDirection='root'
+            routerLink='/add-equipement'>Annuler</button>
+
+
+    </form>
+
+</ion-content>

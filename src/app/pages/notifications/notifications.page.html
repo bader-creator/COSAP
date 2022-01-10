@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title style="color:white;font-family: Roboto;
+      font-weight: 700;
+      line-height: 58px;
+      text-align: center;margin-right: -65px;">
+      Notification
+    </ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button fill="solid" style="font-size: 18px;" (click)="closeModal()" color="secondary">
+        <ion-icon slot="start" name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+  <h5 *ngIf="Alerts?.length == 0" style="text-align: center; margin-top: 30%">Pas de notification</h5>
+  <ng-container *ngFor="let alert of Alerts;let i = index ">
+    <ion-card (click)="ConsulterNotif(alert,i)">
+      <div class="row">
+        <div class="col-2">
+          <ion-thumbnail slot="start">
+            <img src=" ../../../../assets/icon/alarme/critique.png">
+          </ion-thumbnail>
+        </div>
+        <div class="col-10">
+          <ion-label>{{alert.title}}</ion-label><br>
+          <ion-label>{{alert.message}}</ion-label>
+        </div>
+      </div>
+    </ion-card>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,323 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" routerDirection='root' routerLink='/home' color="secondary">
+                <ion-icon slot="start" name="home"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            Demande
+        </ion-title>
+
+
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <img src='{{env}}{{conge?.personnel?.user?.path || "empty.png"}}' class="shadow-lg img-fluid z-depth-1 rounded-circle" style="width:200px;height: 200px;">
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h1><b>{{conge?.personnel?.nom}} {{conge?.personnel?.prenom}}</b></h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h5 style="margin-top: 0px;color: #FF8800">{{ conge?.personnel?.user?.job?.name || "...."}} </h5>
+    </div>
+
+    <br>
+
+
+
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-sm-11 col-md-8 col-lg-5">
+
+
+                <div class="profile-card py-3 card">
+                    <div class="card-body px-4 px-md-3 py-3">
+
+                        <div class="row mt-1 justify-content-center">
+
+
+                            <div *ngIf='conge?.nbJours == "1" ' class="desc" style="width: 100%;text-align: center;"> Congé {{conge?.nbJours }} jour</div>
+                            <br>
+                            <div *ngIf='conge?.nbJours != "1" ' class="desc" style="width: 100%;text-align: center;"> Congé {{conge?.nbJours }} jours</div>
+                            <br>
+                            <div class="desc" style="width: 100%;text-align: center;"> {{conge?.typeConge?.libelle }}</div>
+                            <br>
+
+
+
+
+                            <div class="row" style="width: 100%;">
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Début</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateDebutConge| date: 'dd-MM-yyyy' }}</b></span>
+
+
+                                </div>
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Fin</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateFinConge | date: 'dd-MM-yyyy' }}</b></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="width: 100%;">
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Demande</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateDemande | date: 'dd-MM-yyyy' }}</b></span>
+
+
+                                </div>
+                                <div class="col" style="text-align: center;">
+
+                                    <label style="color:#59687f;font-size: 12px;">Date Reprise</label><br>
+                                    <span style="font-size: 14px;"><b>{{conge?.dateReprise | date: 'dd-MM-yyyy' }}</b></span>
+
+                                </div>
+
+                            </div>
+                            <br>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+
+    <ng-container *ngIf="conge?.etat=='En Cours'">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-success" (click)="traiterdemande('Supprimée')">Annuler</button>
+            </div>
+        </div>
+    </ng-container>
+    <br>
+
+
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="fas fa-at"></i>&nbsp;&nbsp;{{conge?.personnel?.email}}</div>
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="fas fa-mobile-alt"></i> &nbsp;&nbsp;+216 {{conge?.personnel?.telephone}}</div>
+    <div class="d-flex" style="text-align: left;font-size: 14px;margin-bottom: 5px;color:#59687f;margin-left: 3rem;">
+        <i class="far fa-building"></i> &nbsp;&nbsp;{{conge?.personnel?.adresse}}</div>
+
+
+
+
+
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+    <ion-header>
+        <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="#" style="font-size: 16px">Détail</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" routerDirection='root' routerLink='/index'>
+                      <ion-icon name="business"></ion-icon>
+                      Accueil
+                      </a>
+                  </li>
+                  <li class="nav-item ">
+                      <a class="nav-link" routerDirection='root' routerLink='/listdemande'>
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                        Ajouter une demande
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerDirection='root' routerLink='/event'>
+                          <ion-icon name="add-circle-outline"></ion-icon>
+                          Ajouter un Événement
+                          </a>
+                      </li>
+              <li class="nav-item">
+                  <a class="nav-link" routerDirection='root' routerLink='/congeavalider'>
+                    <ion-icon name="checkbox-outline"></ion-icon>
+                    Demandes à valider
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerDirection='root' routerLink='/historiqueconge'>
+                      <ion-icon name="flash"></ion-icon>
+                      Mes Demandes
+                      </a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <ion-icon name="pricetags"></ion-icon>
+                        Actions
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" routerDirection='root' routerLink='/task' >Actions</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" routerDirection='root' routerLink='/add-task'>Add action</a>
+                    </div>
+                  </li>
+      
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <ion-icon name="contact"></ion-icon>
+              Profil
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" routerDirection='root' routerLink='/profile' >Profil</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" (click)="logout();">Déconnexion</a>
+            </div>
+          </li>
+            </ul>
+      
+          </div>
+        </nav>
+      </ion-header> 
+  <ion-content>
+  
+
+
+
+      <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-sm-6">
+        
+                    <div class="card hovercard">
+                        <div class="cardheader">
+        
+                        </div>
+                        <div class="avatar">
+                            <img alt="" src="{{env}}{{conge?.personnel?.user?.path}}">
+                        </div>
+                        <div class="info">
+                            <div class="title">
+                                <a target="_blank" >{{conge?.personnel?.nom}} {{conge?.personnel?.prenom}}</a>
+                            </div>
+                            <div class="desc"> Congé {{conge?.nbJours }} jours</div>
+
+                        
+
+                          <div class="row">
+                              <div class="col">
+                           
+                                      <label style="color:#59687f;font-size: 12px;">Date Début</label><br>
+                                      <span style="font-size: 14px;"><b>{{conge?.dateDebutConge| date: 'dd-MM-yyyy HH:mm' }}</b></span>
+                                
+
+                              </div>
+                              <div class="col">
+
+                                  <label style="color:#59687f;font-size: 12px;">Date Fin</label><br>
+                                  <span style="font-size: 14px;"><b>{{conge?.dateFinConge | date: 'dd-MM-yyyy HH:mm' }}</b></span>
+
+                              </div>
+                         
+                            </div>            
+                            
+                              <div class="row">
+                                  <div class="col">
+                               
+                                          <label style="color:#59687f;font-size: 12px;">Date Demande</label><br>
+                                          <span style="font-size: 14px;"><b>{{conge?.dateDemande | date: 'dd-MM-yyyy HH:mm' }}</b></span>
+                                    
+    
+                                  </div>
+                                  <div class="col">
+    
+                                      <label style="color:#59687f;font-size: 12px;">Date Reprise</label><br>
+                                      <span style="font-size: 14px;"><b>{{conge?.dateReprise | date: 'dd-MM-yyyy HH:mm' }}</b></span>
+    
+                                  </div>
+                             
+                                </div>
+                                <br>
+
+
+
+                            
+                            <div class="desc" style="text-align: left;font-size: 14px;margin-bottom: 5px;"><i class="fas fa-briefcase"></i> {{conge?.personnel?.poste?.intitule}}</div>
+                            <div class="desc" style="text-align: left;font-size: 14px;margin-bottom: 5px;"><i class="fas fa-at"></i> {{conge?.personnel?.email}}</div>
+                            <div class="desc" style="text-align: left;font-size: 14px;margin-bottom: 5px;"><i class="fas fa-mobile-alt"></i> +216 {{conge?.personnel?.telephone}}</div>
+                            <div class="desc" style="text-align: left;font-size: 14px;margin-bottom: 5px;"><i class="far fa-building"></i> {{conge?.personnel?.adresse}}</div> 
+                            
+                            
+
+
+                          
+                    <ng-container *ngIf="conge?.etat=='En Cours'"  >
+                        <div class="row">
+                            <div class="col">
+                              <button type="button" class="btn btn-success" (click)="traiterdemande('Supprimée')">Annuler</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                        
+
+
+
+                        </div>
+                  
+                    </div>
+        
+                </div>
+        
+          </div>
+        </div>
+<br>
+  
+      
+  
+  
+  </ion-content >
+-->

@@ -1,0 +1,22 @@
+ion-label {
+    color: #515252;
+    font-family: fantasy;
+    font-weight: 700;
+    line-height: 29px;
+    text-align: center;
+    font-size: 15px;
+}
+ion-icon{
+    margin: 0px 4px -3px 0px;
+    font-size: 18px;
+}
+ion-card{
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .75rem;
+    padding: 15px;
+}
+ion-thumbnail{
+    --size: 40px;
+    margin-top: 5px;
+}

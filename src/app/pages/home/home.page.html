@@ -1,0 +1,340 @@
+<ion-header>
+    <ion-toolbar color="secondary" fixed>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button fill="solid" style="font-size: 18px;" (click)="GoesTONotifs()" color="secondary">
+                <ion-icon slot="start" name="notifications"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            COSAP
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="getstart">
+    <div style="height: 100%;">
+        <div class="d-flex flex-wrap" style="margin-top: auto; margin-bottom: auto;">
+            <ng-container *ngIf="!this?.Stagiaire && !this?.Guest ">
+                <div class="card shadow-lg p-3 rounded" style="width: 95%; background-color: #ff4444; padding: 2px;"
+                    (click)="showNews(feedInterne)">
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                        <i class="far fa-newspaper text-white"></i> {{feedInterne?.title}}
+                        <span style="
+                font-size: 10px;
+                padding: 0px;
+                margin: 0px;
+                float: right;
+                color: white;
+              ">{{feedInterne?.published | date: 'dd-MM-yyyy HH:mm' }}</span>
+                    </h5>
+                    <p class="card-text text-white limit" style="font-size: 12px;">
+                        {{feedInterne?.content}}
+                    </p>
+                </div>
+            </ng-container>
+
+            <div class="card bg-secondary shadow-lg p-3 rounded" style="width: 95%; padding: 2px;"
+                (click)="showNews(feedExterne)">
+                <span style="
+            font-size: 10px;
+            padding: 0px;
+            margin: 0px;
+            float: right;
+            color: white;
+          ">{{feedExterne?.pubDate | date: 'dd-MM-yyyy HH:mm' }}</span>
+
+                <h5 class="card-title text-white" style="
+            margin-bottom: 2px;
+            margin-top: 6px;
+            white-space: nowrap;
+            width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          ">
+                    <i class="far fa-newspaper text-white"></i> {{feedExterne?.title}}
+                </h5>
+            </div>
+
+            <ng-container *ngIf="!this?.Stagiaire && !this?.sfmCameroun">
+                <div class="card shadow-lg p-3 rounded" style="width: 45%; background-color: #33b5e5;height: 162px;">
+                    <i class="fas fa-chalkboard-teacher text-white fa-2x"></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;"
+                        routerDirection="root" routerLink="/index">
+                        Présence
+                    </h5>
+                    <ng-container *ngIf='this?.comex == true'>
+                        <div class="row" style="padding: 15px 0px 0px 7px;">
+                            <a style="font-size: 13px; color: white;" routerDirection="root"
+                                routerLink="/sfm-cameroun-presence">
+                                <ion-icon name="person" style="font-size: 15px;margin-bottom: -2px;"></ion-icon>
+                                SFM Cameroun
+                            </a>
+                        </div>
+                    </ng-container>
+
+                    <div class="row">
+                        <div class="col" style="margin-left: -8px; position: absolute; bottom: 17px;">
+                            <a style="font-size: 13px; color: white;" routerDirection="root"
+                                routerLink="/presence-stagiaire">
+                                <ion-icon name="person" style="font-size: 15px;margin-bottom: -2px;"></ion-icon>
+                                Stagiaire
+                            </a>
+                        </div>
+                        <div class="col" style="position: absolute; right: -86px; bottom: 17px;">
+                            <a style="font-size: 13px; color: white;" routerDirection="root"
+                                routerLink="/staff-presence">
+                                <ion-icon name="person" style="font-size: 15px;margin-bottom: -2px;"></ion-icon>
+                                Guest
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <!-----------------------------------------SFMcameroun---------------------------------------------------------->
+
+            <ng-container *ngIf="this?.sfmCameroun">
+                <div class="card shadow-lg p-3 rounded" style="width: 45%; background-color: #33b5e5;"
+                    routerDirection="root" routerLink="/sfm-cameroun-presence">
+                    <i class="fas fa-chalkboard-teacher text-white fa-2x"></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                        Présence
+                    </h5>
+                    <p class="card-text text-white" style="font-size: 12px;"></p>
+                </div>
+            </ng-container>
+            <!-----------------------------------------SFMcameroun---------------------------------------------------------->
+            <!-----------------------------------------Stagiaire---------------------------------------------------------->
+
+            <ng-container *ngIf="this?.Stagiaire">
+                <div class="card shadow-lg p-3 rounded" style="width: 45%; background-color: #33b5e5;"
+                    routerDirection="root" routerLink="/presence-stagiaire">
+                    <i class="fas fa-chalkboard-teacher text-white fa-2x"></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                        Présence
+                    </h5>
+                    <p class="card-text text-white" style="font-size: 12px;"></p>
+                </div>
+            </ng-container>
+            <!-----------------------------------------Stagiaire---------------------------------------------------------->
+
+            <ng-container *ngIf="!this?.Stagiaire && !this?.sfmCameroun">
+                <div class="card shadow-lg p-3 rounded" style="width: 45%; background-color: #3f729b;">
+                    <i class="fas fa-tasks text-white fa-2x"></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;"
+                        routerDirection="root" routerLink="/task/Request">
+                        Action
+                        <span class="badge badge-pill badge-danger" *ngIf="dashboard?.tickets_critiques > 0 "
+                            style="font-size: 12px;">{{dashboard?.tickets_critiques}} Critiques</span>
+                    </h5>
+                    <p class="card-text text-white" style="font-size: 12px;" routerDirection="root"
+                        routerLink="/task/Request">
+                        {{dashboard?.TicketToDo || "0"}} actions
+                    </p>
+                    <div style="margin-top: -7px;">
+                        <a style="float: right; font-size: 12px; color: white;" routerDirection="root"
+                            routerLink="/add-task"><i class="fas fa-plus-circle text-white"></i> add</a>
+                    </div>
+                </div>
+            </ng-container>
+            <!-----------------------------------------Stagiaire---------------------------------------------------------->
+
+            <ng-container *ngIf="this?.Stagiaire">
+                <div class="card shadow-lg p-3 rounded" style="width: 45%; background-color: #3f729b;">
+                    <i class="fas fa-tasks text-white fa-2x"></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;"
+                        routerDirection="root" routerLink="/task/Request">
+                        Action
+                        <span class="badge badge-pill badge-danger" *ngIf="dashboard?.tickets_critiques > 0 "
+                            style="font-size: 12px;">{{dashboard?.tickets_critiques}} Critiques</span>
+                    </h5>
+                    <p class="card-text text-white" style="font-size: 12px;" routerDirection="root"
+                        routerLink="/task/Request">
+                        {{dashboard?.TicketToDo || "0"}} actions
+                    </p>
+                    <div>
+                        <a style="float: right; font-size: 12px; color: white;" (click)="presentAlert()"><i
+                                class="fas fa-plus-circle text-white"></i> add</a>
+                    </div>
+                </div>
+            </ng-container>
+            <!-----------------------------------------Stagiaire---------------------------------------------------------->
+
+            <div class="card shadow-lg p-3 rounded" style="width: 45%; background-color: #aa66cc;">
+                <i class="fas fa-umbrella-beach text-white fa-2x"></i>
+                <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;" routerDirection="root"
+                    routerLink="/historiqueconge">
+                    Congés
+                </h5>
+                <ng-container *ngIf='this?.comex == true && this?.CountGrh.length != 0'>
+                    <div class="row">
+                        <div class="col-4">
+                            <ion-badge color="primary">{{this?.CountGrh?.demandeConges['0']?.demande_conge}} C
+                            </ion-badge>
+                        </div>
+                        <div class="col-4">
+                            <ion-badge color="primary">{{this?.CountGrh?.demandeSorties['0']?.demande_sorite}} S
+                            </ion-badge>
+                        </div>
+                        <div class="col-4">
+                            <ion-badge color="primary">{{this?.CountGrh?.teletravail['0']?.demande_teletravail}} T
+                            </ion-badge>
+                        </div>
+                    </div>
+                </ng-container>
+                <div
+                    *ngIf='dashboard?.soldePersonnel?.soldeConge == "1" && dashboard?.soldePersonnel?.soldeMaladie != "1"'>
+                    <p class="card-text text-white" style="font-size: 12px;">
+                        {{dashboard?.soldePersonnel?.soldeConge || "0"}} jour
+                        {{dashboard?.soldePersonnel?.soldeMaladie || "0"}} jours M
+                    </p>
+                    <a style="float: right; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/listdemande"><i class="fas fa-plus-circle text-white"></i> add</a>
+                    <a style="float: left; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/congeavalider"><i class="fas fa-plus-circle text-white"></i> valider</a>
+                </div>
+
+                <div
+                    *ngIf='dashboard?.soldePersonnel?.soldeConge != "1" && dashboard?.soldePersonnel?.soldeMaladie == "1"'>
+                    <p class="card-text text-white" style="font-size: 12px;">
+                        {{dashboard?.soldePersonnel?.soldeConge || "0"}} jours
+                        {{dashboard?.soldePersonnel?.soldeMaladie || "0"}} jour M
+                    </p>
+                    <a style="float: right; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/listdemande"><i class="fas fa-plus-circle text-white"></i> add</a>
+                    <a style="float: left; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/congeavalider"><i class="fas fa-plus-circle text-white"></i> valider</a>
+                </div>
+
+                <div
+                    *ngIf='dashboard?.soldePersonnel?.soldeConge == "1" && dashboard?.soldePersonnel?.soldeMaladie == "1"'>
+                    <p class="card-text text-white" style="font-size: 12px;">
+                        {{dashboard?.soldePersonnel?.soldeConge || "0"}} jour
+                        {{dashboard?.soldePersonnel?.soldeMaladie || "0"}} jour M
+                    </p>
+                    <a style="float: right; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/listdemande"><i class="fas fa-plus-circle text-white"></i> add</a>
+                    <a style="float: left; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/congeavalider"><i class="fas fa-plus-circle text-white"></i> valider</a>
+                </div>
+
+                <div
+                    *ngIf='dashboard?.soldePersonnel?.soldeConge != "1" && dashboard?.soldePersonnel?.soldeMaladie != "1"'>
+                    <p class="card-text text-white" style="font-size: 12px;">
+                        {{dashboard?.soldePersonnel?.soldeConge || "0"}} jours
+                        {{dashboard?.soldePersonnel?.soldeMaladie || "0"}} jours M
+                    </p>
+                    <a style="float: right; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/listdemande"><i class="fas fa-plus-circle text-white"></i> add</a>
+                    <a style="float: left; font-size: 12px; color: white;" routerDirection="root"
+                        routerLink="/congeavalider"><i class="fas fa-plus-circle text-white"></i> valider</a>
+                </div>
+            </div>
+
+            <div class="card shadow-lg p-3 rounded" style="width: 45%; background-color: #ffbb33;">
+                <i class="far fa-calendar-alt text-white fa-2x"></i>
+                <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                    Événement
+                </h5>
+                <p class="card-text text-white" style="font-size: 12px;">
+                    {{dashboard?.count_evenements || "0"}} événements
+                </p>
+                <div class="row">
+                    <div class="col" style="margin-left: -8px;">
+                        <a style="font-size: 12px; color: white;" routerDirection="root" routerLink="/list-reunion">
+                            <i class="fa fa-users text-white" style="padding-right: 6px;"></i>List</a>
+                    </div>
+                    <div class="col" style="margin-right: -39px;">
+                        <a style="text-align: right; font-size: 12px; color: white;" routerDirection="root"
+                            routerLink="/event"><i class="fas fa-plus-circle text-white"></i> add</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-lg p-3 rounded" style="
+          width: 45%;
+          margin-left: 9px;
+          margin-right: 9px;
+          background-color: #2bbbad;
+        " routerDirection="root" routerLink="/profile">
+                <i class="far fa-user-circle text-white fa-2x"></i>
+                <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                    Profil
+                </h5>
+                <p class="card-text text-white" style="font-size: 12px;"></p>
+                <a style="text-align: right; font-size: 12px; color: white;"></a>
+            </div>
+
+            <div class="card bg-dark shadow-lg p-3 rounded"
+                style="width: 45%; height: 100%; margin-left: 9px; margin-right: 9px;">
+                <div routerDirection="root" routerLink="/list-projet">
+                    <i class="fas fa-clone text-white fa-2x"></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                        Communication & Projets
+                    </h5>
+                    <p class="card-text text-white" style="font-size: 12px;"></p>
+                    <a style="text-align: right; font-size: 12px; color: white;"> </a>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <a style="text-align: right; font-size: 15px; color: white;" routerDirection="root"
+                            routerLink="/actions-grou-pe"><i class="fas fa-chalkboard-teacher text-white"></i> Bilan
+                            quotidien</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-lg p-3 rounded" style="
+          width: 45%;
+          margin-left: 9px;
+          margin-right: 9px;
+          background-color: #7f7fd5;
+        " routerDirection="root" routerLink="/equipement-by-group">
+                <i class="fas fa-dolly-flatbed text-white fa-2x"></i>
+                <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                    Click & Go
+                </h5>
+                <p class="card-text text-white" style="font-size: 12px;"></p>
+                <a style="text-align: right; font-size: 12px; color: white;"> </a>
+            </div>
+
+            <ng-container *ngIf="!this?.Stagiaire">
+                <div class="card shadow-lg p-3 rounded" style="
+            width: 45%;
+            margin-left: 9px;
+            margin-right: 9px;
+            background-color: rgb(175, 2, 123);
+          " routerDirection="root" routerLink="/liste-documents">
+                    <i class="fas fa-folder text-white fa-2x" aria-hidden="true "></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                        Gestion des actes administratifs
+                    </h5>
+                    <p class="card-text text-white" style="font-size: 12px;"></p>
+                    <a style="text-align: right; font-size: 12px; color: white;"> </a>
+                </div>
+            </ng-container>
+
+            <!-----------------------------------------Stagiaire---------------------------------------------------------->
+
+            <ng-container *ngIf="this?.Stagiaire">
+                <div class="card shadow-lg p-3 rounded" style="
+            width: 45%;
+            margin-left: 9px;
+            margin-right: 9px;
+            background-color: rgb(175, 2, 123);
+          " (click)="presentAlert()">
+                    <i class="fas fa-folder text-white fa-2x" aria-hidden="true "></i>
+                    <h5 class="card-title text-white" style="margin-bottom: 2px; margin-top: 6px;">
+                        Gestion des actes administratifs
+                    </h5>
+                    <p class="card-text text-white" style="font-size: 12px;"></p>
+                    <a style="text-align: right; font-size: 12px; color: white;"> </a>
+                </div>
+            </ng-container>
+
+            <!-----------------------------------------Stagiaire---------------------------------------------------------->
+        </div>
+    </div>
+</ion-content>
